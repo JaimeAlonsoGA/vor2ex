@@ -2,8 +2,11 @@ import FetchDataSteps from "@/components/tutorial/fetch-data-steps";
 import { createClient } from "@/utils/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { redirect } from "next/navigation";
+import config from "../../utils/config";
+import { cookies } from "next/headers";
 
 export default async function ProtectedPage() {
+  const baseUrl = config.base_url;
   const supabase = await createClient();
 
   const {
@@ -12,6 +15,28 @@ export default async function ProtectedPage() {
 
   if (!user) {
     return redirect("/sign-in");
+  }
+
+  const { data: credentials, error } = await supabase
+    .from("credentials")
+    .select("amz_access_token, amz_refresh_token, amz_expires_in")
+    .eq("user_id", user.id)
+    .single();
+
+  const now = new Date();
+  const isExpired =
+    credentials && credentials.amz_expires_in
+      ? new Date(credentials.amz_expires_in) < now
+      : true;
+
+  if (!credentials || !credentials.amz_access_token || isExpired || error) {
+    const cookieHeader = (await cookies()).toString();
+    await fetch(`${baseUrl}/api/amazon/tokens`, {
+      method: "POST",
+      headers: {
+        Cookie: cookieHeader,
+      },
+    });
   }
 
   return (
