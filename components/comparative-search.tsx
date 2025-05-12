@@ -13,8 +13,9 @@ import { AmazonResultsTable } from "./amazon-results-table";
 import { AlibabaResultsTable } from "./alibaba-results-table";
 import { AlibabaResponse } from "@/lib/models/products/alibaba-response";
 import { AmazonResponse } from "@/lib/models/products/amazon-response";
+import { searchCatalogItems } from "@/services/amazon.service";
 
-export default function ComparativeSearch({ baseUrl }: { baseUrl: string }) {
+export default function ComparativeSearch() {
   const [keyword, setKeyword] = useState<string>("");
   const [amazonResults, setAmazonResults] = useState<AmazonResponse | null>(
     null
@@ -30,16 +31,12 @@ export default function ComparativeSearch({ baseUrl }: { baseUrl: string }) {
 
     setIsLoading(true);
     try {
-      const res = await fetch(
-        `${baseUrl}/api/amazon/products?keywords=${keyword}`
-      );
-      const data = await res.json();
+      const data = await searchCatalogItems(keyword);
       console.log("DATA", data);
 
-      // const amazonData = await searchAmazon(keyword);
       const alibabaData = await searchAlibaba(keyword);
 
-      setAmazonResults(data.data);
+      setAmazonResults(data);
       setAlibabaResults(alibabaData);
     } catch (error) {
       console.error("Error searching products:", error);
@@ -55,7 +52,7 @@ export default function ComparativeSearch({ baseUrl }: { baseUrl: string }) {
   };
 
   return (
-    <Card className="w-full mx-auto">
+    <Card>
       <CardHeader>
         <CardTitle className="text-2xl font-bold">
           Comparative Product Search
@@ -128,12 +125,8 @@ export default function ComparativeSearch({ baseUrl }: { baseUrl: string }) {
             <TabsContent value="split" className="mt-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-3">
-                    Amazon Results
-                  </h3>
-                  {amazonResults && (
-                    <AmazonResultsTable data={amazonResults} />
-                  )}
+                  <h3 className="text-lg font-semibold mb-3">Amazon Results</h3>
+                  {amazonResults && <AmazonResultsTable data={amazonResults} />}
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold mb-3">
@@ -153,9 +146,7 @@ export default function ComparativeSearch({ baseUrl }: { baseUrl: string }) {
 
             <TabsContent value="alibaba" className="mt-4">
               <h3 className="text-lg font-semibold mb-3">Alibaba Results</h3>
-              {alibabaResults && (
-                <AlibabaResultsTable data={alibabaResults} />
-              )}
+              {alibabaResults && <AlibabaResultsTable data={alibabaResults} />}
             </TabsContent>
           </Tabs>
         )}

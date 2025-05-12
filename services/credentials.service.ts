@@ -18,7 +18,7 @@ async function getCredentials() {
 
 async function createAmazonCredentials({ token }: { token: AmazonToken }) {
   const supabase = await createClient();
-  const user_id = getUserId();
+  const user_id = await getUserId();
 
   const expiresAt = new Date(Date.now() + (token.expires_in || 0) * 1000);
 

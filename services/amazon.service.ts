@@ -1,4 +1,4 @@
-"use server" 
+"use server";
 
 import { cookies } from "next/headers";
 import { getCredentials } from "./credentials.service";
@@ -53,11 +53,5 @@ async function searchCatalogItems(keywords: string) {
 
   const query = `/catalog/2022-04-01/items?marketplaceIds=${marketplaceId}&keywords=${keywords}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
 
-  const response = await fetchAmazon({ method: "GET", query });
-
-  const data = await response.json();
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  return await fetchAmazon({ method: "GET", query });
 }

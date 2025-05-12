@@ -1,16 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
-import { getUserId } from "./services/auth.service";
-
-import { validateAmazonTokens } from "./lib/functions/validate-tokens";
 
 export async function middleware(request: NextRequest) {
   await updateSession(request);
-
-  const userId = await getUserId();
-  if (!userId) return NextResponse.redirect(new URL("/sign-in", request.url));
-
-  await validateAmazonTokens();
 
   return NextResponse.next();
 }
