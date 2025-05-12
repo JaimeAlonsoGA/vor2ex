@@ -1,0 +1,6 @@
+tailwind bg-classes
+    examples: 
+        bg-accent
+        text-foreground
+        ... 
+<h2>font-bold text-2xl mb-4
