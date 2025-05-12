@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import type { AlibabaResponse } from "@/lib/response"
+import { AlibabaResponse } from "@/lib/models/products/alibaba-response"
 
 interface AlibabaResultsTableProps {
   data: AlibabaResponse

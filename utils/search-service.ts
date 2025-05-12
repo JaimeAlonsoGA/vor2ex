@@ -1,4 +1,5 @@
-import { AlibabaResponse, AmazonResponse } from "./response";
+import { AlibabaResponse } from "@/lib/models/products/alibaba-response";
+import { AmazonResponse } from "@/lib/models/products/amazon-response";
 
 // Mock data based on the provided examples
 const amazonMockData: AmazonResponse = {
@@ -56,7 +57,7 @@ const amazonMockData: AmazonResponse = {
           images: [
             {
               variant: "MAIN",
-              link: "https://m.media-amazon.com/images/I/51DZzp3w3vL.jpg",
+              link: "",
               height: 333,
               width: 500,
             },

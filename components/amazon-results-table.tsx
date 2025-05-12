@@ -3,13 +3,14 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import type { AmazonResponse } from "@/lib/response"
+import { AmazonResponse } from "@/lib/models/products/amazon-response"
 
 interface AmazonResultsTableProps {
   data: AmazonResponse
 }
 
 export function AmazonResultsTable({ data }: AmazonResultsTableProps) {
+  if (!data) return null
   return (
     <Card>
       <CardContent className="p-0">
