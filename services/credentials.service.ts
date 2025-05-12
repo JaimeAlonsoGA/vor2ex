@@ -42,7 +42,7 @@ async function createAmazonCredentials({ token }: { token: AmazonToken }) {
 async function updateAmazonCredentials({
   token,
 }: {
-  token: { expires_in: number; access_token: string; refresh_token: string };
+  token: AmazonToken;
 }) {
   const supabase = await createClient();
   const userId = await getUserId();

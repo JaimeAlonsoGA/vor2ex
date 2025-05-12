@@ -19,7 +19,7 @@ export async function validateAmazonTokens() {
     });
   } else if (new Date(credentials.amz_expires_at) < new Date()) {
     const token = await fetchAccessToken();
-    await updateAmazonCredentials(token).then((res) => {
+    await updateAmazonCredentials({ token }).then((res) => {
       if (res.status !== 200) {
         console.error("Error updating Amazon credentials");
       } else console.log("Amazon credentials updated");
