@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { createClient } from "@/utils/supabase/server";
 import { getUserId } from "./auth.service";
 
@@ -16,7 +16,7 @@ async function getCredentials() {
   return { credentials, error };
 }
 
-async function createAmazonCredentials({ token }: { token: AmazonToken }) {
+async function createAmazonCredentials(token: AmazonToken) {
   const supabase = await createClient();
   const user_id = await getUserId();
 
@@ -39,15 +39,12 @@ async function createAmazonCredentials({ token }: { token: AmazonToken }) {
   });
 }
 
-async function updateAmazonCredentials({
-  token,
-}: {
-  token: AmazonToken;
-}) {
+async function updateAmazonCredentials(token: AmazonToken) {
   const supabase = await createClient();
   const userId = await getUserId();
 
   const expiresAt = new Date(Date.now() + (token.expires_in || 0) * 1000);
+  console.log("Expires at", expiresAt);
 
   const { error } = await supabase
     .from("credentials")

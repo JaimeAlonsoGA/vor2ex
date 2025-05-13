@@ -1,4 +1,4 @@
-import { AlibabaResponse } from "@/lib/models/products/alibaba-response";
+import { AlibabaResponse } from "@/lib/models/alibaba/alibaba-response";
 import { AmazonResponse } from "@/lib/models/products/amazon-response";
 
 // Mock data based on the provided examples

@@ -11,9 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { searchAlibaba } from "@/utils/search-service";
 import { AmazonResultsTable } from "./amazon-results-table";
 import { AlibabaResultsTable } from "./alibaba-results-table";
-import { AlibabaResponse } from "@/lib/models/products/alibaba-response";
-import { AmazonResponse } from "@/lib/models/products/amazon-response";
+import { AlibabaResponse } from "@/lib/models/alibaba/alibaba-response";
 import { searchCatalogItems } from "@/services/amazon.service";
+import { AmazonResponse } from "@/lib/models/amazon/searchCatalogItems";
 
 export default function ComparativeSearch() {
   const [keyword, setKeyword] = useState<string>("");
@@ -32,7 +32,7 @@ export default function ComparativeSearch() {
     setIsLoading(true);
     try {
       const data = await searchCatalogItems(keyword);
-      console.log("DATA", data);
+      console.log("Amazon DATA:", data);
 
       const alibabaData = await searchAlibaba(keyword);
 

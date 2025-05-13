@@ -16,19 +16,24 @@ async function fetchAmazon({
   const endpoint = config.amazon.endpoint_eu;
   const { credentials } = await getCredentials();
 
-  return fetch(`${endpoint}/${query}`, {
+  const response = await fetch(`${endpoint}/${query}`, {
     method,
     headers: {
       Accept: "application/json",
       "x-amz-access-token": credentials?.amz_access_token,
     },
-  }).then((response) => {
-    if (!response.ok) throw new Error("Error fetching products");
-    return response.json();
   });
+
+  if (!response.ok) {
+    const errorDetails = await response.text();
+    throw new Error(
+      `Error fetching products: ${response.status} ${response.statusText}. Details: ${errorDetails}`
+    );
+  }
+  return response.json();
 }
 
-async function fetchAccessToken() {
+async function fetchAccessToken(token?: string) {
   const cookieHeader = (await cookies()).toString();
   return await fetch("https://api.amazon.com/auth/o2/token", {
     method: "POST",
@@ -38,7 +43,7 @@ async function fetchAccessToken() {
     },
     body: JSON.stringify({
       grant_type: "refresh_token",
-      refresh_token: process.env.AMAZON_REFRESH_TOKEN || "",
+      refresh_token: token ?? (process.env.AMAZON_REFRESH_TOKEN || ""),
       client_id: process.env.AMAZON_CLIENT_ID || "",
       client_secret: process.env.AMAZON_CLIENT_SECRET || "",
     }),

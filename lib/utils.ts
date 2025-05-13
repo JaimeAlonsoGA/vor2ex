@@ -5,4 +5,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const MAX_WIDTH_SIZE = " max-w-7xl ";
+export const MAX_WIDTH_SIZE = " max-w-5xl ";
