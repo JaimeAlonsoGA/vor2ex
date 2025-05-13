@@ -43,9 +43,9 @@ export default function RootLayout({
               <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
                 <div
                   className={cn(
-                    "w-full ",
+                    "w-full",
                     MAX_WIDTH_SIZE,
-                    " flex justify-between items-center p-3 px-5 text-sm"
+                    "flex justify-between items-center p-3 px-5 text-sm"
                   )}
                 >
                   <div className="flex gap-5 items-center font-semibold">
@@ -59,9 +59,9 @@ export default function RootLayout({
               </nav>
               <div
                 className={cn(
-                  "flex flex-col gap-20 ",
+                  "flex flex-col gap-20",
                   MAX_WIDTH_SIZE,
-                  " w-full p-5"
+                  "w-full p-5"
                 )}
               >
                 {children}

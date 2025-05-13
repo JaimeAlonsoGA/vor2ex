@@ -1,3 +1,5 @@
+import { AmazonOfferResponse } from "./getItemOffers";
+
 export interface AmazonResponse {
   numberOfResults: number;
   pagination?: {
@@ -55,7 +57,7 @@ export interface AmazonItem {
       rank: number;
     }>;
   }>;
-  summaries?: Array<{
+  summaries?: {
     marketplaceId: string;
     itemName?: string;
     brand?: string;
@@ -71,5 +73,6 @@ export interface AmazonItem {
       displayName: string;
       classificationId: string;
     };
-  }>;
+  }[];
+  offers: AmazonOfferResponse;
 }

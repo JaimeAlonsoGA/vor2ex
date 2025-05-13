@@ -8,1160 +8,326 @@ tailwind bg-classes
 
 Amazon real mock-up response: 
 {
-    "numberOfResults": 5868,
-    "pagination": {
-        "nextToken": "9HkIVcuuPmX_bm51o3-igBfN45pxW4Ru7ElIM6GCECYCuXJKzT26f4dDZylIkZJb_6OxtXLXCbdwt_JvE7qiRjVuXtzeHgpuwen6pwMlkdB2l6R6DfphIS98Vwc21t-JqEmTSSnnjWNaftQw39CvXx1l1vj7KQoFIa7pWiOPHyaYWP7sBE9Fg7cGN2wE0an5ePw96h6ZL7m6olRxFOcqTWNanEVRjipq"
-    },
-    "refinements": {
-        "brands": [
-            {
-                "numberOfResults": 3342,
-                "brandName": "OWSIHNZBF"
-            },
-            {
-                "numberOfResults": 933,
-                "brandName": "XILVCC"
-            },
-            {
-                "numberOfResults": 781,
-                "brandName": "Artfield"
-            },
-            {
-                "numberOfResults": 410,
-                "brandName": "Mrpotts73 Nómada Digital"
-            },
-            {
-                "numberOfResults": 342,
-                "brandName": "Witch Halloween Costume Idea"
-            },
-            {
-                "numberOfResults": 330,
-                "brandName": "Halloween Pride Yoga LGBT"
-            },
-            {
-                "numberOfResults": 324,
-                "brandName": "Digital Nomad Halloween"
-            },
-            {
-                "numberOfResults": 299,
-                "brandName": "Funny Digital Nomad Life Remote Worker"
-            },
-            {
-                "numberOfResults": 236,
-                "brandName": "Equipo Nómada Digital Para Autónomos"
-            },
-            {
-                "numberOfResults": 176,
-                "brandName": "Digital Nomad"
-            }
-        ],
-        "classifications": [
-            {
-                "numberOfResults": 7790,
-                "displayName": "Electrónica",
-                "classificationId": "599371031"
-            },
-            {
-                "numberOfResults": 4710,
-                "displayName": "Informática",
-                "classificationId": "667050031"
-            },
-            {
-                "numberOfResults": 4354,
-                "displayName": "Moda",
-                "classificationId": "5512277031"
-            },
-            {
-                "numberOfResults": 1192,
-                "displayName": "Libros",
-                "classificationId": "599365031"
-            },
-            {
-                "numberOfResults": 937,
-                "displayName": "Hogar y cocina",
-                "classificationId": "599392031"
-            },
-            {
-                "numberOfResults": 130,
-                "displayName": "Bricolaje y herramientas",
-                "classificationId": "2454134031"
-            },
-            {
-                "numberOfResults": 114,
-                "displayName": "Oficina y papelería",
-                "classificationId": "3628729031"
-            },
-            {
-                "numberOfResults": 87,
-                "displayName": "Industria, empresas y ciencia",
-                "classificationId": "5866089031"
-            },
-            {
-                "numberOfResults": 67,
-                "displayName": "Deportes y aire libre",
-                "classificationId": "2665403031"
-            },
-            {
-                "numberOfResults": 51,
-                "displayName": "Coche y moto",
-                "classificationId": "1951052031"
-            }
-        ]
-    },
-    "items": [
+    "asin": "B0DG59PDMW",
+    "identifiers": [
         {
-            "asin": "8408234714",
+            "marketplaceId": "A1RKKUPIHCS9HS",
             "identifiers": [
                 {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9788408234715"
-                        },
-                        {
-                            "identifierType": "ISBN",
-                            "identifier": "8408234714"
-                        }
-                    ]
-                }
-            ],
-            "images": [
+                    "identifierType": "EAN",
+                    "identifier": "0728725439249"
+                },
                 {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/81Y6BmtTVPL.jpg",
-                            "height": 2560,
-                            "width": 1978
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/517tQCoisoL.jpg",
-                            "height": 500,
-                            "width": 386
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/517tQCoisoL._SL75_.jpg",
-                            "height": 75,
-                            "width": 58
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [
-                        {
-                            "classificationId": "902730031",
-                            "title": "Guías turisticas",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902730031",
-                            "rank": 4484
-                        },
-                        {
-                            "classificationId": "902610031",
-                            "title": "Hogar, manualidades y estilos de vida (Libros)",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902610031",
-                            "rank": 31784
-                        }
-                    ],
-                    "displayGroupRanks": [
-                        {
-                            "websiteDisplayGroup": "book_display_on_website",
-                            "title": "Libros",
-                            "link": "https://www.amazon.es/gp/bestsellers/books",
-                            "rank": 221394
-                        }
-                    ]
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "brand": "GeoPlaneta",
-                    "browseClassification": {
-                        "displayName": "Hogar, manualidades y estilos de vida",
-                        "classificationId": "902610031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Bindloss, Joe"
-                        },
-                        {
-                            "role": {
-                                "displayName": "Traductor",
-                                "value": "translator"
-                            },
-                            "value": "Portas Requena, Eduard"
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "La guía del nómada digital: El manual práctico que te inspirará y te ayudará a cambiar tu vida y a trabajar viajando (Viaje y aventura)",
-                    "manufacturer": "GeoPlaneta",
-                    "memorabilia": false,
-                    "releaseDate": "2020-11-24",
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
-                }
-            ]
-        },
-        {
-            "asin": "1838690425",
-            "identifiers": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9781838690427"
-                        },
-                        {
-                            "identifierType": "GTIN",
-                            "identifier": "09781838690427"
-                        },
-                        {
-                            "identifierType": "ISBN",
-                            "identifier": "1838690425"
-                        }
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/81ESxi1jRfL.jpg",
-                            "height": 2480,
-                            "width": 1950
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51pMjNfQV8L.jpg",
-                            "height": 500,
-                            "width": 393
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51pMjNfQV8L._SL75_.jpg",
-                            "height": 75,
-                            "width": 59
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [
-                        {
-                            "classificationId": "902733031",
-                            "title": "Obras ilustradas de viaje",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902733031",
-                            "rank": 941
-                        },
-                        {
-                            "classificationId": "902597031",
-                            "title": "Empresa, estrategia y gestión (Libros)",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902597031",
-                            "rank": 18892
-                        },
-                        {
-                            "classificationId": "902718031",
-                            "title": "Desarrollo personal y autoayuda (Libros)",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902718031",
-                            "rank": 39183
-                        }
-                    ],
-                    "displayGroupRanks": []
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "brand": "Lonely Planet",
-                    "browseClassification": {
-                        "displayName": "Empresa, estrategia y gestión",
-                        "classificationId": "902597031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Planet, Lonely"
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "The Digital Nomad Handbook: practical tips and inspiration for living and working on the road (Lonely Planet)",
-                    "manufacturer": "Lonely Planet",
-                    "memorabilia": false,
-                    "packageQuantity": 1,
-                    "partNumber": "37870457",
-                    "releaseDate": "2020-07-16",
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
-                }
-            ]
-        },
-        {
-            "asin": "1398613053",
-            "identifiers": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9781398613058"
-                        },
-                        {
-                            "identifierType": "GTIN",
-                            "identifier": "09781398613058"
-                        },
-                        {
-                            "identifierType": "ISBN",
-                            "identifier": "1398613053"
-                        }
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/71DN8ZsVpwL.jpg",
-                            "height": 2551,
-                            "width": 1630
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51wuix38PGL.jpg",
-                            "height": 500,
-                            "width": 319
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51wuix38PGL._SL75_.jpg",
-                            "height": 75,
-                            "width": 48
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [
-                        {
-                            "classificationId": "15246801031",
-                            "title": "Emprendimiento empresarial",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/15246801031",
-                            "rank": 3215
-                        },
-                        {
-                            "classificationId": "902730031",
-                            "title": "Guías turisticas",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902730031",
-                            "rank": 10626
-                        },
-                        {
-                            "classificationId": "902596031",
-                            "title": "Economía (Libros)",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902596031",
-                            "rank": 14631
-                        }
-                    ],
-                    "displayGroupRanks": []
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "brand": "Kogan Page",
-                    "browseClassification": {
-                        "displayName": "Economía",
-                        "classificationId": "902596031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Ihrig, Kayla"
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "How to Be a Digital Nomad: Build a Successful Career While Travelling the World",
-                    "manufacturer": "Kogan Page",
-                    "memorabilia": false,
-                    "packageQuantity": 1,
-                    "partNumber": "9781398613058",
-                    "releaseDate": "2024-01-03",
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
-                }
-            ]
-        },
-        {
-            "asin": "1520794142",
-            "identifiers": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9781520794143"
-                        },
-                        {
-                            "identifierType": "GTIN",
-                            "identifier": "09781520794143"
-                        },
-                        {
-                            "identifierType": "ISBN",
-                            "identifier": "1520794142"
-                        }
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51Pt2ezzhJL.jpg",
-                            "height": 900,
-                            "width": 600
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51Pt2ezzhJL._SL75_.jpg",
-                            "height": 75,
-                            "width": 50
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [
-                        {
-                            "classificationId": "902730031",
-                            "title": "Guías turisticas",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902730031",
-                            "rank": 12744
-                        },
-                        {
-                            "classificationId": "88806424031",
-                            "title": "Libros en inglés",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/88806424031",
-                            "rank": 332240
-                        },
-                        {
-                            "classificationId": "88806423031",
-                            "title": "Libros en idiomas extranjeros",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/88806423031",
-                            "rank": 463171
-                        }
-                    ],
-                    "displayGroupRanks": []
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "browseClassification": {
-                        "displayName": "Guías turisticas",
-                        "classificationId": "902730031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Knudson, Peter"
-                        },
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Conaway, Katherine"
-                        },
-                        {
-                            "role": {
-                                "displayName": "Ilustrador",
-                                "value": "illustrator"
-                            },
-                            "value": "Hom, Lauren"
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "The Digital Nomad Survival Guide: How to Successfully Travel the World While Working Remotely",
-                    "manufacturer": "Independently published",
-                    "memorabilia": false,
-                    "releaseDate": "2017-05-08",
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
-                }
-            ]
-        },
-        {
-            "asin": "1119867452",
-            "identifiers": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9781119867456"
-                        },
-                        {
-                            "identifierType": "GTIN",
-                            "identifier": "09781119867456"
-                        },
-                        {
-                            "identifierType": "ISBN",
-                            "identifier": "1119867452"
-                        }
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/81ZBvBlzQOL.jpg",
-                            "height": 2560,
-                            "width": 2042
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51Dxcphv4tL.jpg",
-                            "height": 500,
-                            "width": 399
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51Dxcphv4tL._SL75_.jpg",
-                            "height": 75,
-                            "width": 60
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [
-                        {
-                            "classificationId": "15246803031",
-                            "title": "Recursos humanos",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/15246803031",
-                            "rank": 1950
-                        },
-                        {
-                            "classificationId": "902617031",
-                            "title": "Mantenimiento del hogar y la vivienda (Libros)",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902617031",
-                            "rank": 5588
-                        },
-                        {
-                            "classificationId": "902730031",
-                            "title": "Guías turisticas",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902730031",
-                            "rank": 11984
-                        }
-                    ],
-                    "displayGroupRanks": []
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "brand": "For Dummies",
-                    "browseClassification": {
-                        "displayName": "Empresa, estrategia y gestión",
-                        "classificationId": "902597031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Wilson, Kristin M."
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "Digital Nomads For Dummies (For Dummies (Computer/Tech))",
-                    "manufacturer": "For Dummies",
-                    "memorabilia": false,
-                    "partNumber": "9781119867456",
-                    "releaseDate": "2022-10-20",
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
-                }
-            ]
-        },
-        {
-            "asin": "B0F1L7TF7J",
-            "identifiers": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9798314189696"
-                        },
-                        {
-                            "identifierType": "GTIN",
-                            "identifier": "09798314189696"
-                        }
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51zuvbJtxFL.jpg",
-                            "height": 1499,
-                            "width": 1000
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/31K9qGHIzNL.jpg",
-                            "height": 500,
-                            "width": 334
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/31K9qGHIzNL._SL75_.jpg",
-                            "height": 75,
-                            "width": 50
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [
-                        {
-                            "classificationId": "902595031",
-                            "title": "Economía y empresa (Libros)",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902595031",
-                            "rank": 31825
-                        },
-                        {
-                            "classificationId": "88806424031",
-                            "title": "Libros en inglés",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/88806424031",
-                            "rank": 171147
-                        },
-                        {
-                            "classificationId": "88806423031",
-                            "title": "Libros en idiomas extranjeros",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/88806423031",
-                            "rank": 231197
-                        }
-                    ],
-                    "displayGroupRanks": []
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "browseClassification": {
-                        "displayName": "Economía y empresa",
-                        "classificationId": "902595031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Grider, Carlos"
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "Digital Nomad Nation: The Rise of a Borderless Generation",
-                    "manufacturer": "Independently published",
-                    "memorabilia": false,
-                    "releaseDate": "2025-03-15",
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
-                }
-            ]
-        },
-        {
-            "asin": "0471974994",
-            "identifiers": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9780471974994"
-                        },
-                        {
-                            "identifierType": "GTIN",
-                            "identifier": "09780471974994"
-                        },
-                        {
-                            "identifierType": "ISBN",
-                            "identifier": "0471974994"
-                        }
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/61+Qxb+crZL.jpg",
-                            "height": 1360,
-                            "width": 907
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/41GaKguWU2L.jpg",
-                            "height": 500,
-                            "width": 333
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/41GaKguWU2L._SL75_.jpg",
-                            "height": 75,
-                            "width": 50
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [],
-                    "displayGroupRanks": []
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "brand": "Wiley",
-                    "browseClassification": {
-                        "displayName": "Economía",
-                        "classificationId": "902596031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Makimoto, Tsugio"
-                        },
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Manners, David"
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "Digital Nomad",
-                    "manufacturer": "Wiley",
-                    "memorabilia": false,
-                    "packageQuantity": 1,
-                    "partNumber": "9780471974994",
-                    "releaseDate": "1997-10-28",
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
-                }
-            ]
-        },
-        {
-            "asin": "B0CZ472MK4",
-            "identifiers": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9798320494944"
-                        },
-                        {
-                            "identifierType": "GTIN",
-                            "identifier": "09798320494944"
-                        }
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/71NO8kDtMIL.jpg",
-                            "height": 1599,
-                            "width": 1000
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/41Kk+MAGW7L.jpg",
-                            "height": 500,
-                            "width": 313
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/41Kk+MAGW7L._SL75_.jpg",
-                            "height": 75,
-                            "width": 47
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [
-                        {
-                            "classificationId": "902597031",
-                            "title": "Empresa, estrategia y gestión (Libros)",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902597031",
-                            "rank": 57253
-                        },
-                        {
-                            "classificationId": "88806423031",
-                            "title": "Libros en idiomas extranjeros",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/88806423031",
-                            "rank": 784881
-                        }
-                    ],
-                    "displayGroupRanks": []
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "browseClassification": {
-                        "displayName": "Empresa, estrategia y gestión",
-                        "classificationId": "902597031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Molaro, Riccardo"
-                        },
-                        {
-                            "role": {
-                                "displayName": "Ilustrador",
-                                "value": "illustrator"
-                            },
-                            "value": "Venturini, Sabrina"
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "DIGITAL NOMAD REVOLUTION: La Guida Definitiva Per Diventare Nomade Digitale",
-                    "manufacturer": "Independently published",
-                    "memorabilia": false,
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
-                }
-            ]
-        },
-        {
-            "asin": "1519166532",
-            "identifiers": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9781519166531"
-                        },
-                        {
-                            "identifierType": "GTIN",
-                            "identifier": "09781519166531"
-                        },
-                        {
-                            "identifierType": "ISBN",
-                            "identifier": "1519166532"
-                        }
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/51w0l5LQUUL.jpg",
-                            "height": 1360,
-                            "width": 880
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/41FuWeFDpTL.jpg",
-                            "height": 500,
-                            "width": 324
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/41FuWeFDpTL._SL75_.jpg",
-                            "height": 75,
-                            "width": 49
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [],
-                    "displayGroupRanks": []
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "brand": "CREATESPACE",
-                    "browseClassification": {
-                        "displayName": "Empresa, estrategia y gestión",
-                        "classificationId": "902597031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "Brett, Dave"
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "Digital Nomad",
-                    "manufacturer": "CreateSpace Independent Publishing Platform",
-                    "memorabilia": false,
-                    "partNumber": "black & white illustrations",
-                    "releaseDate": "2015-11-01",
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
-                }
-            ]
-        },
-        {
-            "asin": "B0BP4N5ZN4",
-            "identifiers": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "identifiers": [
-                        {
-                            "identifierType": "EAN",
-                            "identifier": "9798367126921"
-                        },
-                        {
-                            "identifierType": "GTIN",
-                            "identifier": "09798367126921"
-                        }
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "images": [
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/71gRSEq-3XL.jpg",
-                            "height": 1600,
-                            "width": 1000
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/41BxYr2k5wL.jpg",
-                            "height": 500,
-                            "width": 313
-                        },
-                        {
-                            "variant": "MAIN",
-                            "link": "https://m.media-amazon.com/images/I/41BxYr2k5wL._SL75_.jpg",
-                            "height": 75,
-                            "width": 47
-                        }
-                    ]
-                }
-            ],
-            "productTypes": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "productType": "ABIS_BOOK"
-                }
-            ],
-            "salesRanks": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "classificationRanks": [
-                        {
-                            "classificationId": "902597031",
-                            "title": "Empresa, estrategia y gestión (Libros)",
-                            "link": "https://www.amazon.es/gp/bestsellers/books/902597031",
-                            "rank": 4393
-                        }
-                    ],
-                    "displayGroupRanks": [
-                        {
-                            "websiteDisplayGroup": "book_display_on_website",
-                            "title": "Libros",
-                            "link": "https://www.amazon.es/gp/bestsellers/books",
-                            "rank": 100516
-                        }
-                    ]
-                }
-            ],
-            "summaries": [
-                {
-                    "marketplaceId": "A1RKKUPIHCS9HS",
-                    "adultProduct": false,
-                    "autographed": false,
-                    "browseClassification": {
-                        "displayName": "Empresa, estrategia y gestión",
-                        "classificationId": "902597031"
-                    },
-                    "contributors": [
-                        {
-                            "role": {
-                                "displayName": "Autor",
-                                "value": "author"
-                            },
-                            "value": "de los Bosques, Roberto"
-                        },
-                        {
-                            "role": {
-                                "displayName": "Redactor",
-                                "value": "editor"
-                            },
-                            "value": "Prohibidos, Libros"
-                        }
-                    ],
-                    "itemClassification": "BASE_PRODUCT",
-                    "itemName": "Los Secretos del Nómada Digital y de la Fiscalidad Internacional: Guía Paso a Paso para Emprendedores Inteligentes que Aplican la Teoría de las ... dinero sin dinero, inversión desde cero)",
-                    "manufacturer": "Independently published",
-                    "memorabilia": false,
-                    "tradeInEligible": false,
-                    "websiteDisplayGroup": "book_display_on_website",
-                    "websiteDisplayGroupName": "Libro"
+                    "identifierType": "UPC",
+                    "identifier": "728725439249"
                 }
             ]
         }
-    ]
+    ],
+    "images": [
+        {
+            "marketplaceId": "A1RKKUPIHCS9HS",
+            "images": [
+                {
+                    "variant": "MAIN",
+                    "link": "https://m.media-amazon.com/images/I/416aKARbqrL.jpg",
+                    "height": 500,
+                    "width": 500
+                },
+                {
+                    "variant": "MAIN",
+                    "link": "https://m.media-amazon.com/images/I/416aKARbqrL._SL75_.jpg",
+                    "height": 75,
+                    "width": 75
+                },
+                {
+                    "variant": "MAIN",
+                    "link": "https://m.media-amazon.com/images/I/71HaffmVtML.jpg",
+                    "height": 1600,
+                    "width": 1600
+                },
+                {
+                    "variant": "PT01",
+                    "link": "https://m.media-amazon.com/images/I/51-iamIq4mL.jpg",
+                    "height": 500,
+                    "width": 500
+                },
+                {
+                    "variant": "PT01",
+                    "link": "https://m.media-amazon.com/images/I/51-iamIq4mL._SL75_.jpg",
+                    "height": 75,
+                    "width": 75
+                },
+                {
+                    "variant": "PT01",
+                    "link": "https://m.media-amazon.com/images/I/81Sf1zoyidL.jpg",
+                    "height": 1600,
+                    "width": 1600
+                },
+                {
+                    "variant": "PT02",
+                    "link": "https://m.media-amazon.com/images/I/51c5NXfBUQL.jpg",
+                    "height": 500,
+                    "width": 500
+                },
+                {
+                    "variant": "PT02",
+                    "link": "https://m.media-amazon.com/images/I/51c5NXfBUQL._SL75_.jpg",
+                    "height": 75,
+                    "width": 75
+                },
+                {
+                    "variant": "PT02",
+                    "link": "https://m.media-amazon.com/images/I/713WJ3eN7cL.jpg",
+                    "height": 1600,
+                    "width": 1600
+                },
+                {
+                    "variant": "PT03",
+                    "link": "https://m.media-amazon.com/images/I/41SgavJoj4L.jpg",
+                    "height": 500,
+                    "width": 500
+                },
+                {
+                    "variant": "PT03",
+                    "link": "https://m.media-amazon.com/images/I/41SgavJoj4L._SL75_.jpg",
+                    "height": 75,
+                    "width": 75
+                },
+                {
+                    "variant": "PT03",
+                    "link": "https://m.media-amazon.com/images/I/71kBhifdzhL.jpg",
+                    "height": 1600,
+                    "width": 1600
+                },
+                {
+                    "variant": "PT04",
+                    "link": "https://m.media-amazon.com/images/I/51kKNuHB5uL.jpg",
+                    "height": 500,
+                    "width": 500
+                },
+                {
+                    "variant": "PT04",
+                    "link": "https://m.media-amazon.com/images/I/51kKNuHB5uL._SL75_.jpg",
+                    "height": 75,
+                    "width": 75
+                },
+                {
+                    "variant": "PT04",
+                    "link": "https://m.media-amazon.com/images/I/71IRphUCMML.jpg",
+                    "height": 1600,
+                    "width": 1600
+                },
+                {
+                    "variant": "PT05",
+                    "link": "https://m.media-amazon.com/images/I/51F1G2uBhNL.jpg",
+                    "height": 500,
+                    "width": 500
+                },
+                {
+                    "variant": "PT05",
+                    "link": "https://m.media-amazon.com/images/I/51F1G2uBhNL._SL75_.jpg",
+                    "height": 75,
+                    "width": 75
+                },
+                {
+                    "variant": "PT05",
+                    "link": "https://m.media-amazon.com/images/I/71SXsWROj7L.jpg",
+                    "height": 1600,
+                    "width": 1600
+                },
+                {
+                    "variant": "PT06",
+                    "link": "https://m.media-amazon.com/images/I/51o66o-jkCL.jpg",
+                    "height": 500,
+                    "width": 500
+                },
+                {
+                    "variant": "PT06",
+                    "link": "https://m.media-amazon.com/images/I/51o66o-jkCL._SL75_.jpg",
+                    "height": 75,
+                    "width": 75
+                },
+                {
+                    "variant": "PT06",
+                    "link": "https://m.media-amazon.com/images/I/81D8Dx8Je-L.jpg",
+                    "height": 1600,
+                    "width": 1600
+                },
+                {
+                    "variant": "PT07",
+                    "link": "https://m.media-amazon.com/images/I/51j330fBLbL.jpg",
+                    "height": 500,
+                    "width": 500
+                },
+                {
+                    "variant": "PT07",
+                    "link": "https://m.media-amazon.com/images/I/51j330fBLbL._SL75_.jpg",
+                    "height": 75,
+                    "width": 75
+                },
+                {
+                    "variant": "PT07",
+                    "link": "https://m.media-amazon.com/images/I/81Dql5+l8XL.jpg",
+                    "height": 1600,
+                    "width": 1600
+                }
+            ]
+        }
+    ],
+    "productTypes": [
+        {
+            "marketplaceId": "A1RKKUPIHCS9HS",
+            "productType": "FIREPLACE"
+        }
+    ],
+    "salesRanks": [
+        {
+            "marketplaceId": "A1RKKUPIHCS9HS",
+            "classificationRanks": [
+                {
+                    "classificationId": "2844308031",
+                    "title": "Chimeneas de gel y etanol",
+                    "link": "https://www.amazon.es/gp/bestsellers/tools/2844308031",
+                    "rank": 138
+                }
+            ],
+            "displayGroupRanks": [
+                {
+                    "websiteDisplayGroup": "home_improvement_display_on_website",
+                    "title": "Bricolaje y herramientas",
+                    "link": "https://www.amazon.es/gp/bestsellers/tools",
+                    "rank": 176949
+                }
+            ]
+        }
+    ],
+    "summaries": [
+        {
+            "marketplaceId": "A1RKKUPIHCS9HS",
+            "adultProduct": false,
+            "autographed": false,
+            "brand": "MOYKSRR",
+            "browseClassification": {
+                "displayName": "Chimeneas de gel y etanol",
+                "classificationId": "2844308031"
+            },
+            "color": "Negro",
+            "itemClassification": "BASE_PRODUCT",
+            "itemName": "MOYKSRR Chimenea de Mesa, Chimenea Bioetanol, Hoguera de Bioetanol Portátil con 2 Cámaras de Combustión, Duración de Combustión Infinita, para Interior y Exterior, Jardín, Balcón, Salón",
+            "manufacturer": "MOYKSRR",
+            "memorabilia": false,
+            "modelNumber": "BL001",
+            "partNumber": "BL001",
+            "size": "28*14cm",
+            "tradeInEligible": false,
+            "websiteDisplayGroup": "kitchen_display_on_website",
+            "websiteDisplayGroupName": "Cocina"
+        }
+    ],
+    "offers": {
+        "payload": {
+            "ASIN": "B0DG59PDMW",
+            "status": "Success",
+            "ItemCondition": "New",
+            "Identifier": {
+                "MarketplaceId": "A1RKKUPIHCS9HS",
+                "ItemCondition": "New",
+                "ASIN": "B0DG59PDMW"
+            },
+            "Summary": {
+                "LowestPrices": [
+                    {
+                        "condition": "new",
+                        "fulfillmentChannel": "Amazon",
+                        "LandedPrice": {
+                            "CurrencyCode": "EUR",
+                            "Amount": 22.99
+                        },
+                        "ListingPrice": {
+                            "CurrencyCode": "EUR",
+                            "Amount": 22.99
+                        },
+                        "Shipping": {
+                            "CurrencyCode": "EUR",
+                            "Amount": 0
+                        }
+                    }
+                ],
+                "BuyBoxPrices": [
+                    {
+                        "condition": "New",
+                        "LandedPrice": {
+                            "CurrencyCode": "EUR",
+                            "Amount": 22.99
+                        },
+                        "ListingPrice": {
+                            "CurrencyCode": "EUR",
+                            "Amount": 22.99
+                        },
+                        "Shipping": {
+                            "CurrencyCode": "EUR",
+                            "Amount": 0
+                        }
+                    }
+                ],
+                "NumberOfOffers": [
+                    {
+                        "condition": "new",
+                        "fulfillmentChannel": "Amazon",
+                        "OfferCount": 1
+                    }
+                ],
+                "BuyBoxEligibleOffers": [
+                    {
+                        "condition": "new",
+                        "fulfillmentChannel": "Amazon",
+                        "OfferCount": 1
+                    }
+                ],
+                "SalesRankings": [
+                    {
+                        "ProductCategoryId": "home_improvement_display_on_website",
+                        "Rank": 176505
+                    },
+                    {
+                        "ProductCategoryId": "2844308031",
+                        "Rank": 138
+                    }
+                ],
+                "TotalOfferCount": 1
+            },
+            "Offers": [
+                {
+                    "Shipping": {
+                        "CurrencyCode": "EUR",
+                        "Amount": 0
+                    },
+                    "ListingPrice": {
+                        "CurrencyCode": "EUR",
+                        "Amount": 22.99
+                    },
+                    "ShippingTime": {
+                        "maximumHours": 0,
+                        "minimumHours": 0,
+                        "availabilityType": "NOW"
+                    },
+                    "SellerFeedbackRating": {
+                        "FeedbackCount": 47,
+                        "SellerPositiveFeedbackRating": 100
+                    },
+                    "PrimeInformation": {
+                        "IsPrime": true,
+                        "IsNationalPrime": true
+                    },
+                    "SubCondition": "new",
+                    "SellerId": "A3EDAQR7TO75CI",
+                    "IsFeaturedMerchant": true,
+                    "IsBuyBoxWinner": true,
+                    "IsFulfilledByAmazon": true
+                }
+            ],
+            "marketplaceId": "A1RKKUPIHCS9HS"
+        }
+    }
 }

@@ -44,7 +44,6 @@ async function updateAmazonCredentials(token: AmazonToken) {
   const userId = await getUserId();
 
   const expiresAt = new Date(Date.now() + (token.expires_in || 0) * 1000);
-  console.log("Expires at", expiresAt);
 
   const { error } = await supabase
     .from("credentials")

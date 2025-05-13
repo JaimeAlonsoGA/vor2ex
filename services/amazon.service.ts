@@ -3,15 +3,25 @@
 import { cookies } from "next/headers";
 import { getCredentials } from "./credentials.service";
 import config from "@/orm.config";
+import { AmazonOfferResponse } from "@/lib/models/amazon/getItemOffers";
+import { AmazonFeesEstimateResponse } from "@/lib/models/amazon/getFeeEstimate";
 
-export { fetchAmazon, fetchAccessToken, searchCatalogItems };
+export {
+  fetchAmazon,
+  fetchAccessToken,
+  searchCatalogItems,
+  getItemOffers,
+  getFeesEstimate,
+};
 
 async function fetchAmazon({
   method = "GET",
   query,
+  body,
 }: {
   method: string;
   query: string;
+  body?: string;
 }) {
   const endpoint = config.amazon.endpoint_eu;
   const { credentials } = await getCredentials();
@@ -22,6 +32,7 @@ async function fetchAmazon({
       Accept: "application/json",
       "x-amz-access-token": credentials?.amz_access_token,
     },
+    body,
   });
 
   if (!response.ok) {
@@ -55,8 +66,44 @@ async function fetchAccessToken(token?: string) {
 
 async function searchCatalogItems(keywords: string) {
   const marketplaceId = config.amazon.marketplaceId_spain;
-
   const query = `/catalog/2022-04-01/items?marketplaceIds=${marketplaceId}&keywords=${keywords}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
-
   return await fetchAmazon({ method: "GET", query });
+}
+
+async function getItemOffers(asin: string): Promise<AmazonOfferResponse> {
+  const marketplaceId = config.amazon.marketplaceId_spain;
+  const query = `products/pricing/v0/items/${asin}/offers?MarketplaceId=${marketplaceId}&ItemCondition=New`;
+  return await fetchAmazon({ method: "GET", query });
+}
+
+async function getFeesEstimate(
+  asin: string,
+  price: number
+): Promise<AmazonFeesEstimateResponse> {
+  const marketplaceId = config.amazon.marketplaceId_spain;
+  const payload = {
+    FeesEstimateRequest: {
+      MarketplaceId: marketplaceId,
+      IdType: "ASIN",
+      IdValue: asin,
+      Identifier: asin,
+      IsAmazonFulfilled: true,
+      PriceToEstimateFees: {
+        ListingPrice: {
+          CurrencyCode: "EUR",
+          Amount: price,
+        },
+        Shipping: {
+          CurrencyCode: "EUR",
+          Amount: 0,
+        },
+      },
+    },
+  };
+  const query = `/products/fees/v0/listings/fees`;
+  return await fetchAmazon({
+    method: "POST",
+    query,
+    body: JSON.stringify(payload),
+  });
 }
