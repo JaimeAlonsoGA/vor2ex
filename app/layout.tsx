@@ -44,7 +44,7 @@ export default function RootLayout({
                 <div
                   className={cn(
                     "w-full",
-                    MAX_WIDTH_SIZE,
+                    "max-w-7xl",
                     "flex justify-between items-center p-3 px-5 text-sm"
                   )}
                 >
@@ -60,7 +60,7 @@ export default function RootLayout({
               <div
                 className={cn(
                   "flex flex-col gap-20",
-                  MAX_WIDTH_SIZE,
+                  "max-w-7xl",
                   "w-full p-5"
                 )}
               >
