@@ -3,8 +3,8 @@
 import { cookies } from "next/headers";
 import { getCredentials } from "./credentials.service";
 import config from "@/orm.config";
-import { AmazonOfferResponse } from "@/lib/models/amazon/getItemOffers";
-import { AmazonFeesEstimateResponse } from "@/lib/models/amazon/getFeeEstimate";
+import { AmazonOfferResponse } from "@/lib/types/amazon/getItemOffers";
+import { AmazonFeesEstimateResponse } from "@/lib/types/amazon/getFeeEstimate";
 
 export {
   fetchAmazon,
@@ -49,15 +49,15 @@ async function fetchAccessToken(token?: string) {
   return await fetch("https://api.amazon.com/auth/o2/token", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
       cookie: cookieHeader,
     },
-    body: JSON.stringify({
+    body: new URLSearchParams({
       grant_type: "refresh_token",
       refresh_token: token ?? (process.env.AMAZON_REFRESH_TOKEN || ""),
       client_id: process.env.AMAZON_CLIENT_ID || "",
       client_secret: process.env.AMAZON_CLIENT_SECRET || "",
-    }),
+    })
   }).then((response) => {
     if (!response.ok) throw new Error("Error fetching access token");
     return response.json();
@@ -67,6 +67,18 @@ async function fetchAccessToken(token?: string) {
 async function searchCatalogItems(keywords: string) {
   const marketplaceId = config.amazon.marketplaceId_spain;
   const query = `/catalog/2022-04-01/items?marketplaceIds=${marketplaceId}&keywords=${keywords}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
+  return await fetchAmazon({ method: "GET", query });
+}
+
+export async function fetchNextAmazonCatalogPage(pageToken: string, keywords: string) {
+  const marketplaceId = config.amazon.marketplaceId_spain;
+  const query = `/catalog/2022-04-01/items?marketplaceIds=${marketplaceId}&keywords=${encodeURIComponent(keywords)}&pageToken=${encodeURIComponent(pageToken)}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
+  return await fetchAmazon({ method: "GET", query });
+}
+
+export async function fetchPreviousAmazonCatalogPage(pageToken: string, keywords: string) {
+  const marketplaceId = config.amazon.marketplaceId_spain;
+  const query = `/catalog/2022-04-01/items?marketplaceIds=${marketplaceId}&keywords=${encodeURIComponent(keywords)}&pageToken=${encodeURIComponent(pageToken)}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
   return await fetchAmazon({ method: "GET", query });
 }
 

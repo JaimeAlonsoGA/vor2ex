@@ -15,11 +15,11 @@ export async function validateAmazonTokens() {
   const fiveMinutes = 5 * 60 * 1000;
 
   if (!credentials || !credentials.amz_access_token || error) {
-    //no credentials: create new token
+    //no credentials or expired: create new token
     const token = (await fetchAccessToken()) as AmazonToken;
     await createAmazonCredentials(token).then((res) => {
       if (res.status !== 200) {
-        console.error("Error creating Amazon credentials");
+        console.error({status: res.status, message: "Error creating Amazon credentials" });
       } else console.log("Amazon credentials created");
     });
   } else if (timeLeft < 0) {
@@ -27,7 +27,7 @@ export async function validateAmazonTokens() {
     const token = await fetchAccessToken();
     updateAmazonCredentials(token).then((res) => {
       if (res.status !== 200) {
-        console.error("Error updating Amazon credentials");
+        console.error({status: res.status, message: "Error updating Amazon credentials" });
       } else console.log("Amazon credentials outdated, created new token");
     });
   } else if (timeLeft <= fiveMinutes) {
@@ -35,7 +35,7 @@ export async function validateAmazonTokens() {
     const token = await fetchAccessToken(credentials.amz_refresh_token);
     await updateAmazonCredentials(token).then((res) => {
       if (res.status !== 200) {
-        console.error("Error updating Amazon credentials");
+        console.error({status: res.status, message: "Error updating Amazon credentials" });
       } else console.log("Amazon credentials updated");
     });
   }

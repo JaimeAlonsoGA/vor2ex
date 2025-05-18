@@ -8,6 +8,10 @@ const config = {
     endpoint_eu: process.env.AMAZON_EU_ENDPOINT!,
     endpoint_na: process.env.AMAZON_NA_ENDPOINT!,
   },
+  alibaba: {
+    clientSecret: process.env.ALIBABA_SECRET_ID!,
+    appKey: process.env.ALIBABA_APP_KEY!,
+  },
   base_url: process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : "http://localhost:3000",
