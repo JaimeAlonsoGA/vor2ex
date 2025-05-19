@@ -13,9 +13,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { estimateMonthlySales } from '@/lib/functions/estimate-monthly-sales';
-import { AmazonItem } from '@/lib/types/amazon/amazonItem';
+import { AmazonItem } from '@/lib/types/amazon/sp-api/amazonItem';
 import { amazonResponseToProductCard } from '@/lib/factories/amazon-item';
-import { AmazonResponse } from '@/lib/types/amazon/searchCatalogItems';
+import { AmazonResponse } from '@/lib/types/amazon/sp-api/searchCatalogItems';
 import { PAGE_SIZE } from '.';
 
 interface ComparativeTableProps {
@@ -49,8 +49,41 @@ export default function ComparativeTable({ searchTerm, isLoading, amazonProducts
     created: true,
   });
 
+  function renderAmazonPagination() {
+    return (
+      <div className="flex justify-center gap-2 mt-4">
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={amazonPage === 1}
+          onClick={() => {
+            onLoadPreviousAmazonPage?.();
+          }}
+        >
+          Previous
+        </Button>
+        <span className="text-xs flex items-center">
+          Page {amazonPage} of {totalAmazonPages}
+        </span>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={amazonPage === totalAmazonPages}
+          onClick={() => {
+            if (amazonProducts?.pagination?.nextToken) {
+              onLoadNextAmazonPage?.();
+            }
+          }}
+        >
+          Next
+        </Button>
+      </div>
+    );
+  }
+
   const getSortedAmazonProducts = () => {
     if (!amazonProducts) return [];
+
     let sorted = [...amazonProducts.items];
     switch (sortType) {
       case 'price-low':
@@ -169,33 +202,7 @@ export default function ComparativeTable({ searchTerm, isLoading, amazonProducts
                     </div>
                   )}
                   <div className="flex justify-center gap-2 mt-4">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={amazonPage === 1}
-                      onClick={() => {
-                        if (amazonProducts?.pagination?.previousToken) {
-                          onLoadPreviousAmazonPage?.();
-                        }
-                      }}
-                    >
-                      Previous
-                    </Button>
-                    <span className="text-xs flex items-center">
-                      Page {amazonPage} of {totalAmazonPages}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={amazonPage === totalAmazonPages}
-                      onClick={() => {
-                        if (amazonProducts?.pagination?.nextToken) {
-                          onLoadNextAmazonPage?.();
-                        }
-                      }}
-                    >
-                      Next
-                    </Button>
+                    {renderAmazonPagination()}
                   </div>
                 </div>
               </>

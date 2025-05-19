@@ -5,9 +5,9 @@ import PriceDistribution from './price-distribution';
 import SalesTrends from './sales-trends';
 import MarketSummary from './market-summary';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AmazonItem } from '@/lib/types/amazon/amazonItem';
+import { AmazonItem } from '@/lib/types/amazon/sp-api/amazonItem';
 import { amazonResponseToProductCard } from '@/lib/factories/amazon-item';
-import { AmazonResponse } from '@/lib/types/amazon/searchCatalogItems';
+import { AmazonResponse } from '@/lib/types/amazon/sp-api/searchCatalogItems';
 import CategoryDistribution from './category-distribution';
 
 interface MarketInsightsProps {

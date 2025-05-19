@@ -1,5 +1,5 @@
 import { estimateMonthlySales } from "../functions/estimate-monthly-sales";
-import { AmazonItem } from "../types/amazon/amazonItem";
+import { AmazonItem } from "../types/amazon/sp-api/amazonItem";
 import { Product } from "../types/product";
 
 export function amazonResponseToProductCard(item: AmazonItem): Product {

@@ -12,6 +12,12 @@ const config = {
     clientSecret: process.env.ALIBABA_SECRET_ID!,
     appKey: process.env.ALIBABA_APP_KEY!,
   },
+  decodo: {
+    baseUrl: process.env.DECODO_REALTIME_ENDPOINT!,
+    auth: process.env.DECODO_AUTHENTICATION_KEY!,
+    password: process.env.DECODO_PASSWORD!,
+    access_token: process.env.DECODO_ACCESS_TOKEN!
+  },
   base_url: process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : "http://localhost:3000",

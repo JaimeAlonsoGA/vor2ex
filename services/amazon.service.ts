@@ -3,8 +3,8 @@
 import { cookies } from "next/headers";
 import { getCredentials } from "./credentials.service";
 import config from "@/orm.config";
-import { AmazonOfferResponse } from "@/lib/types/amazon/getItemOffers";
-import { AmazonFeesEstimateResponse } from "@/lib/types/amazon/getFeeEstimate";
+import { AmazonOfferResponse } from "@/lib/types/amazon/sp-api/getItemOffers";
+import { AmazonFeesEstimateResponse } from "@/lib/types/amazon/sp-api/getFeeEstimate";
 
 export {
   fetchAmazon,

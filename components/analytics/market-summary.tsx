@@ -12,7 +12,7 @@ import {
   Tag
 } from 'lucide-react';
 import { Product } from '@/lib/types/product';
-import { AmazonResponse } from '@/lib/types/amazon/searchCatalogItems';
+import { AmazonResponse } from '@/lib/types/amazon/sp-api/searchCatalogItems';
 import { amazonResponseToProductCard } from '@/lib/factories/amazon-item';
 
 interface MarketSummaryProps {

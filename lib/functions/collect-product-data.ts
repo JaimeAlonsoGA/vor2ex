@@ -1,4 +1,6 @@
 import {
+  fetchNextAmazonCatalogPage,
+  fetchPreviousAmazonCatalogPage,
   getFeesEstimate,
   getItemOffers,
   searchCatalogItems,
@@ -10,9 +12,20 @@ async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function collectAmazonCatalogData(keyword: string) {
-  const catalog = await searchCatalogItems(keyword);
-
+async function collectAmazonCatalogData(keyword: string, pagination?: 'next' | 'previous', token?: string) {
+  let catalog;
+  if (pagination === 'next') {
+    catalog = await fetchNextAmazonCatalogPage(token!, keyword);
+  }
+  if (pagination === 'previous') {
+    catalog = await fetchPreviousAmazonCatalogPage(token!, keyword);
+  }
+  else {
+    catalog = await searchCatalogItems(keyword);
+  }
+  if (!catalog) {
+    return null;
+  }
   if (catalog.items) {
     const itemsWithOffers = await Promise.all(
       catalog.items.map(async (item: any) => {
@@ -27,7 +40,7 @@ async function collectAmazonCatalogData(keyword: string) {
               if (retries === 0) {
                 return { ...item, offers: null, error: "QuotaExceeded" };
               }
-              await delay(1500); // Wait 1.5 seconds before retry
+              await delay(2000); // Wait 2 seconds before retry
             } else {
               return { ...item, offers: null, error: e?.message || "Unknown error" };
             }

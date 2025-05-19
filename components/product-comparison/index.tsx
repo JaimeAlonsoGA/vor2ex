@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { collectAmazonCatalogData } from '@/lib/functions/collect-product-data';
 import { searchAlibaba } from '@/utils/search-service';
-import { AmazonResponse } from '@/lib/types/amazon/searchCatalogItems';
+import { AmazonResponse } from '@/lib/types/amazon/sp-api/searchCatalogItems';
 import { fetchNextAmazonCatalogPage, fetchPreviousAmazonCatalogPage } from '@/services/amazon.service';
 
 export const PAGE_SIZE = 10;
@@ -42,7 +42,7 @@ export default function ProductComparison() {
     if (!amazonProducts?.pagination?.nextToken) return;
     setIsLoading(true);
     try {
-      const nextPage = await fetchNextAmazonCatalogPage(amazonProducts.pagination.nextToken, searchTerm);
+      const nextPage = await collectAmazonCatalogData(searchTerm, 'next', amazonProducts.pagination.nextToken);
       setAmazonProducts(prev => {
         if (!prev) return nextPage;
         return {
@@ -56,6 +56,7 @@ export default function ProductComparison() {
       console.error('Error fetching next Amazon page:', error);
     } finally {
       setIsLoading(false);
+      setAmazonPage(prev => prev + 1);
     }
   };
 
@@ -63,7 +64,7 @@ export default function ProductComparison() {
     if (!amazonProducts?.pagination?.previousToken) return;
     setIsLoading(true);
     try {
-      const prevPage = await fetchPreviousAmazonCatalogPage(amazonProducts.pagination.previousToken, searchTerm);
+      const prevPage = await collectAmazonCatalogData(searchTerm, 'previous', amazonProducts.pagination.previousToken);
       setAmazonProducts(prev => {
         if (!prev) return prevPage;
         return {
@@ -77,6 +78,7 @@ export default function ProductComparison() {
       console.error('Error fetching previous Amazon page:', error);
     } finally {
       setIsLoading(false);
+      setAmazonPage(prev => prev - 1);
     }
   };
 
