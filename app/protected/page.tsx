@@ -9,8 +9,7 @@ export default async function ProtectedPage() {
   const userId = getUserId();
   if (!userId) {
     redirect("/sign-in");
-  }
-  await validateAmazonTokens();
+  } else await validateAmazonTokens();
 
   return (
     <div className="flex-1 flex flex-col gap-12 w-full">

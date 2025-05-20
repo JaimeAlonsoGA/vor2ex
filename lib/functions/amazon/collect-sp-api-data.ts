@@ -1,10 +1,11 @@
 import {
   fetchNextAmazonCatalogPage,
   fetchPreviousAmazonCatalogPage,
-  getFeesEstimate,
   getItemOffers,
   searchCatalogItems,
-} from "@/services/amazon.service";
+} from "@/services/sp-api/amazon.service";
+import { AmazonItem, AmazonResponse } from "@/lib/types/amazon/sp-api/amazon-item";
+import { AmazonAPIFactoryResponse } from "@/lib/types/amazon/amazon-factory";
 
 export { collectAmazonCatalogData };
 
@@ -12,19 +13,17 @@ async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function collectAmazonCatalogData(keyword: string, pagination?: 'next' | 'previous', token?: string) {
-  let catalog;
+async function collectAmazonCatalogData(keyword: string, pagination?: 'next' | 'previous', paginationToken?: string): Promise<AmazonAPIFactoryResponse> {
+  let catalog: AmazonResponse;
+  let catalogItems: AmazonItem[] = [];
   if (pagination === 'next') {
-    catalog = await fetchNextAmazonCatalogPage(token!, keyword);
+    catalog = await fetchNextAmazonCatalogPage(paginationToken!, keyword);
   }
   if (pagination === 'previous') {
-    catalog = await fetchPreviousAmazonCatalogPage(token!, keyword);
+    catalog = await fetchPreviousAmazonCatalogPage(paginationToken!, keyword);
   }
   else {
     catalog = await searchCatalogItems(keyword);
-  }
-  if (!catalog) {
-    return null;
   }
   if (catalog.items) {
     const itemsWithOffers = await Promise.all(
@@ -40,7 +39,7 @@ async function collectAmazonCatalogData(keyword: string, pagination?: 'next' | '
               if (retries === 0) {
                 return { ...item, offers: null, error: "QuotaExceeded" };
               }
-              await delay(2000); // Wait 2 seconds before retry
+              await delay(2500); // Wait 2.5 seconds before retry
             } else {
               return { ...item, offers: null, error: e?.message || "Unknown error" };
             }
@@ -48,12 +47,7 @@ async function collectAmazonCatalogData(keyword: string, pagination?: 'next' | '
         }
       })
     );
-    catalog.items = itemsWithOffers;
+    catalogItems = itemsWithOffers as AmazonItem[];
   }
-  return catalog;
+  return { items: catalogItems, numberOfResults: catalog.numberOfResults, pagination: catalog.pagination, brands: catalog.refinements?.brands };
 }
-
-// const lowestPrice =
-//   offers?.Summary?.LowestPrices?.[0]?.ListingPrice?.Amount ?? 0;
-// const fees = await getFeesEstimate(item.asin, lowestPrice);
-// return { ...item, offers, fees };

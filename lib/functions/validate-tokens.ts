@@ -1,6 +1,6 @@
 "use server";
 
-import { fetchAccessToken } from "@/services/amazon.service";
+import { fetchAccessToken } from "@/services/sp-api/amazon.service";
 import {
   createAmazonCredentials,
   getCredentials,
