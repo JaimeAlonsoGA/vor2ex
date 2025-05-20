@@ -1,13 +1,14 @@
 import {
   fetchNextAmazonCatalogPage,
   fetchPreviousAmazonCatalogPage,
+  getCatalogItem,
   getItemOffers,
   searchCatalogItems,
 } from "@/services/sp-api/amazon.service";
 import { AmazonItem, AmazonResponse } from "@/lib/types/amazon/sp-api/amazon-item";
 import { AmazonAPIFactoryResponse } from "@/lib/types/amazon/amazon-factory";
 
-export { collectAmazonCatalogData };
+export { collectAmazonCatalogData, collectAmazonCatalogDataByAsin };
 
 async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -50,4 +51,37 @@ async function collectAmazonCatalogData(keyword: string, pagination?: 'next' | '
     catalogItems = itemsWithOffers as AmazonItem[];
   }
   return { items: catalogItems, numberOfResults: catalog.numberOfResults, pagination: catalog.pagination, brands: catalog.refinements?.brands };
+}
+
+async function collectAmazonCatalogDataByAsin(asin: string): Promise<AmazonItem | null> {
+  try {
+    const catalogItem = await getCatalogItem(asin);
+    if (!catalogItem) return null;
+
+    let offers = null;
+    let error: string | undefined = undefined;
+    let retries = 3;
+
+    while (retries > 0) {
+      try {
+        offers = await getItemOffers(asin);
+        break;
+      } catch (e: any) {
+        if (e?.code === "QuotaExceeded" || e?.status === 429) {
+          retries--;
+          if (retries === 0) {
+            error = "QuotaExceeded";
+            break;
+          }
+          await new Promise((resolve) => setTimeout(resolve, 2500));
+        } else {
+          error = e?.message || "Unknown error";
+          break;
+        }
+      }
+    }
+    return { ...catalogItem, offers } as AmazonItem;
+  } catch (err) {
+    return null;
+  }
 }

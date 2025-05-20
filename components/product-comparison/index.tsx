@@ -30,27 +30,42 @@ export default function ProductComparison() {
 
     try {
       // const scraperPromise = collectAmazonSearchData(term);
-      const apiPromise = collectAmazonCatalogData(term);
 
+      const apiPromise = collectAmazonCatalogData(term);
       // const scraperData = await scraperPromise;
       // console.log('Amazon Scraper data:', scraperData);
 
       //static data from keyword: yoga sexy
       const scraperData = scraperResponseData;
-
-      setAmazonProducts(scraperData.items.map(item => productFromAmazon(item)));
+      const refinedScrapedData = scraperData.items.map(item => productFromAmazon(item));
+      setAmazonProducts(refinedScrapedData);
+      const sponsoredProducts = refinedScrapedData.filter(item => item.isSponsored);
+      const sponsoredProductsPromise = sponsoredProducts.map(item =>
+        collectAmazonCatalogData(item.asin!)
+      );
+      const sponsoredProductsData = await Promise.all(sponsoredProductsPromise);
       const apiData = await apiPromise;
       // console.log('Amazon API data:', apiData);
+      const apiByAsin = new Map<string, any>();
       if (apiData?.items?.length) {
-        const apiByAsin = new Map(apiData.items.map(apiItem => [apiItem.asin, apiItem]));
-        const mergedProducts = scraperData.items.map(item =>
-          apiByAsin.has(item.asin)
-            ? productFromAmazon(item, apiByAsin.get(item.asin))
-            : productFromAmazon(item)
-        );
-        setAmazonProducts(mergedProducts);
-        console.log('Amazon complete data:', mergedProducts);
+        apiData.items.forEach(apiItem => {
+          if (apiItem.asin) apiByAsin.set(apiItem.asin, apiItem);
+        });
       }
+      sponsoredProductsData.forEach(spData => {
+        if (spData?.items?.length) {
+          spData.items.forEach(apiItem => {
+            if (apiItem.asin) apiByAsin.set(apiItem.asin, apiItem);
+          });
+        }
+      });
+      const mergedProducts = scraperData.items.map(item =>
+        apiByAsin.has(item.asin)
+          ? productFromAmazon(item, apiByAsin.get(item.asin))
+          : productFromAmazon(item)
+      );
+      setAmazonProducts(mergedProducts);
+      console.log('Amazon complete data:', mergedProducts);
     } catch (error) {
       console.error(error);
     } finally {

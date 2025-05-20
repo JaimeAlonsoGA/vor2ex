@@ -10,6 +10,7 @@ export {
   fetchAmazon,
   fetchAccessToken,
   searchCatalogItems,
+  getCatalogItem,
   getItemOffers,
   getFeesEstimate,
 };
@@ -67,6 +68,12 @@ async function fetchAccessToken(token?: string) {
 async function searchCatalogItems(keywords: string) {
   const marketplaceId = config.amazon.marketplaceId_spain;
   const query = `/catalog/2022-04-01/items?marketplaceIds=${marketplaceId}&keywords=${keywords}&includedData=salesRanks,productTypes,identifiers,summaries,images&pageSize=20`;
+  return await fetchAmazon({ method: "GET", query });
+}
+
+async function getCatalogItem(asin: string) {
+  const marketplaceId = config.amazon.marketplaceId_spain;
+  const query = `/catalog/2022-04-01/catalog/2020-12-01/items/${asin}?marketplaceIds=${marketplaceId}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
   return await fetchAmazon({ method: "GET", query });
 }
 

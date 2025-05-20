@@ -44,9 +44,7 @@ export default function ProductCard({ product, onExpand, isExpanded }: ProductCa
         <div className="flex-1 min-w-0 flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <span className="font-semibold text-base truncate">{truncateText(product.name, 70)}</span>
-            <Badge variant={isAmazon ? 'default' : 'secondary'}>
-              {isAmazon ? 'Amazon' : 'Alibaba'}
-            </Badge>
+            {product.isSponsored && <Badge variant="default" className="bg-yellow-400 text-black">Sponsored</Badge>}
           </div>
           <div className="flex flex-wrap gap-2 items-center text-sm text-muted-foreground">
             {product.price !== undefined && (
@@ -62,11 +60,11 @@ export default function ProductCard({ product, onExpand, isExpanded }: ProductCa
             {isAmazon && product.isPrime && (
               <Badge variant="outline" className="text-blue-600 border-blue-600">Prime</Badge>
             )}
-            {isAmazon && product.fulfillmentChannel && (
-              <Badge variant="outline">{product.fulfillmentChannel}</Badge>
+            {isAmazon && product.isFulfilledByAmazon && (
+              <Badge variant="default" className="bg-foreground text-background">Fulfilled by Amazon</Badge>
             )}
-            {isAmazon && product.isBuyBoxWinner && (
-              <Badge variant="default" className="bg-yellow-400 text-black">Buy Box</Badge>
+            {isAmazon && product.category && (
+              <Badge variant="outline">{product.category}</Badge>
             )}
             {isAmazon && product.bestSeller && (
               <Badge variant="default" className="bg-orange-500 text-white">Best Seller</Badge>
@@ -179,12 +177,10 @@ export default function ProductCard({ product, onExpand, isExpanded }: ProductCa
                     <span className="font-mono text-xs">{product.sellerId}</span>
                   </div>
                 )}
-                {product.shipping && (
-                  <div>
-                    <span className="text-muted-foreground">Shipping: </span>
-                    <span>{product.shipping}</span>
-                  </div>
-                )}
+                <div>
+                  <span className="text-muted-foreground">Is Amazon Choice: </span>
+                  <span>{product.isAmazonsChoice ? "Yes" : "No"}</span>
+                </div>
                 {product.createdAt && (
                   <div className="flex items-center">
                     <Calendar className="mr-1 h-3 w-3 text-muted-foreground" />

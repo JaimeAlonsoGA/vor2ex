@@ -26,7 +26,7 @@ export interface Product {
   isAmazonsChoice?: boolean;
   bestSeller?: boolean;
   isSponsored?: boolean;
-  fulfillmentChannel?: string;
+  isFulfilledByAmazon?: boolean;
   buyBoxPrice?: number;
   buyBoxCurrency?: string;
   sellerId?: string;

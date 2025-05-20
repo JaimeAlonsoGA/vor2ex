@@ -23,12 +23,17 @@ export function productFromAmazon(
         spApiItem?.salesRanks?.[0]?.classificationRanks?.[0]?.rank ??
         spApiItem?.salesRanks?.[0]?.displayGroupRanks?.[0]?.rank;
 
+    const category =
+        spApiItem?.salesRanks?.[0]?.classificationRanks?.[0]?.title ?? undefined;
+
     const offerCount =
         item.pricing_count ??
         offers?.Summary?.TotalOfferCount ??
         (Array.isArray(offers?.Offers) ? offers.Offers.length : undefined);
 
-    const imageUrl = item.is_sponsored ? `https://images-na.ssl-images-amazon.com/images/P/${item.asin}.01.MAIN._SX320_SY320_.jpg` : item.url_image ?? image?.link;
+    const imageUrl = item.is_sponsored ? image?.link : item.url_image ?? image?.link;
+
+    const url = item.is_sponsored ? `/dp/${spApiItem?.asin}` : item.url ?? `/dp/${spApiItem?.asin}`;
 
     return {
         // Comunes
@@ -39,14 +44,14 @@ export function productFromAmazon(
         price: item.price ?? lowestPrice?.ListingPrice?.Amount,
         currency: item.currency ?? lowestPrice?.ListingPrice?.CurrencyCode,
         imageUrl: imageUrl,
-        url: item.url ?? (spApiItem ? `https://www.amazon.com/dp/${spApiItem.asin}` : ""),
+        url: url,
         rating: item.rating,
         reviews: item.reviews_count,
         createdAt: summary?.releaseDate,
 
         // Amazon
         asin: item.asin,
-        category: summary?.browseClassification?.displayName ?? undefined,
+        category: category,
         priceUpper: item.price_upper,
         priceStrikethrough: item.price_strikethrough,
         salesVolume: item.sales_volume,
@@ -61,9 +66,7 @@ export function productFromAmazon(
         isAmazonsChoice: item.is_amazons_choice,
         bestSeller: item.best_seller,
         isSponsored: item.is_sponsored,
-        fulfillmentChannel: firstOffer?.IsFulfilledByAmazon
-            ? "Amazon"
-            : undefined,
+        isFulfilledByAmazon: firstOffer?.IsFulfilledByAmazon ?? undefined,
         buyBoxPrice: buyBox?.ListingPrice?.Amount,
         buyBoxCurrency: buyBox?.ListingPrice?.CurrencyCode,
         sellerId: firstOffer?.SellerId,
