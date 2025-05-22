@@ -4,17 +4,17 @@ import {
   getCatalogItem,
   getItemOffers,
   searchCatalogItems,
-} from "@/services/sp-api/amazon.service";
+} from "@/services/amazon/sp-api/amazon.service";
 import { AmazonItem, AmazonResponse } from "@/lib/types/amazon/sp-api/amazon-item";
 import { AmazonAPIFactoryResponse } from "@/lib/types/amazon/amazon-factory";
 
-export { collectAmazonCatalogData, collectAmazonCatalogDataByAsin };
+export { collectAmazonCatalogData, collectAmazonCatalogDataByAsin, collectAmazonCatalogDataAndOffers, collectAmazonCatalogDataAndOffersByAsin };
 
 async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function collectAmazonCatalogData(keyword: string, pagination?: 'next' | 'previous', paginationToken?: string): Promise<AmazonAPIFactoryResponse> {
+async function collectAmazonCatalogDataAndOffers(keyword: string, pagination?: 'next' | 'previous', paginationToken?: string): Promise<AmazonAPIFactoryResponse> {
   let catalog: AmazonResponse;
   let catalogItems: AmazonItem[] = [];
   if (pagination === 'next') {
@@ -53,7 +53,7 @@ async function collectAmazonCatalogData(keyword: string, pagination?: 'next' | '
   return { items: catalogItems, numberOfResults: catalog.numberOfResults, pagination: catalog.pagination, brands: catalog.refinements?.brands };
 }
 
-async function collectAmazonCatalogDataByAsin(asin: string): Promise<AmazonItem | null> {
+async function collectAmazonCatalogDataAndOffersByAsin(asin: string): Promise<AmazonItem | null> {
   try {
     const catalogItem = await getCatalogItem(asin);
     if (!catalogItem) return null;
@@ -82,6 +82,36 @@ async function collectAmazonCatalogDataByAsin(asin: string): Promise<AmazonItem 
     }
     return { ...catalogItem, offers } as AmazonItem;
   } catch (err) {
+    return null;
+  }
+}
+async function collectAmazonCatalogData(
+  keyword: string,
+  pagination?: 'next' | 'previous',
+  paginationToken?: string
+): Promise<AmazonAPIFactoryResponse> {
+  let catalog: AmazonResponse;
+  if (pagination === 'next') {
+    catalog = await fetchNextAmazonCatalogPage(paginationToken!, keyword);
+  } else if (pagination === 'previous') {
+    catalog = await fetchPreviousAmazonCatalogPage(paginationToken!, keyword);
+  } else {
+    catalog = await searchCatalogItems(keyword);
+  }
+  return {
+    items: catalog.items ?? [],
+    numberOfResults: catalog.numberOfResults,
+    pagination: catalog.pagination,
+    brands: catalog.refinements?.brands,
+  };
+}
+
+async function collectAmazonCatalogDataByAsin(asin: string): Promise<AmazonItem | null> {
+  try {
+    const catalogItem = await getCatalogItem(asin);
+    if (!catalogItem) return null;
+    return catalogItem as AmazonItem;
+  } catch {
     return null;
   }
 }

@@ -49,4 +49,5 @@ export interface AmazonSearchProduct {
     is_prime?: boolean;
     price_strikethrough?: number;
     shipping_information?: string;
+    no_price_reason?: string;
 }

@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className="bg-background text-foreground min-h-screen">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <nav className="w-full border-b border-b-foreground/10 h-16 flex justify-center">
-            <div className={cn("w-full max-w-7xl flex justify-between items-center p-3 px-5 text-sm")}>
+            <div className={cn("w-full flex justify-between items-center p-3 px-5 text-sm")}>
               <div className="flex gap-5 items-center font-semibold">
                 <Link href="/">Vor2ex</Link>
               </div>
@@ -39,7 +39,7 @@ export default function RootLayout({
             </div>
           </nav>
           <main className="flex-1 w-full flex flex-col items-center">
-            <section className={cn("w-full max-w-7xl p-5 flex flex-col gap-12")}>
+            <section className={cn("w-full p-12 flex flex-col gap-12")}>
               {children}
             </section>
           </main>

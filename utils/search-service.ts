@@ -1,4 +1,4 @@
-import { AlibabaResponse } from "@/lib/types/alibaba/alibaba-response";
+import { AlibabaResponse } from "@/lib/types/alibaba/open-api/alibaba-response";
 import { AmazonResponse } from "@/lib/models/products/amazon-response";
 
 // Mock data based on the provided examples

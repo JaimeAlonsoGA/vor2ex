@@ -1,5 +1,5 @@
 import { AmazonScraperResponse } from "@/lib/types/amazon/amazon-factory";
-import { fetchAmazonSearch } from "@/services/amazon.service";
+import { fetchAmazonSearch } from "@/services/amazon/amazon.service";
 
 export { collectAmazonSearchData };
 

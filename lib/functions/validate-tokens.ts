@@ -1,6 +1,6 @@
 "use server";
 
-import { fetchAccessToken } from "@/services/sp-api/amazon.service";
+import { fetchAccessToken } from "@/services/amazon/sp-api/amazon.service";
 import {
   createAmazonCredentials,
   getCredentials,
@@ -13,7 +13,7 @@ export async function validateAmazonTokens() {
   const expiresAt = new Date(credentials?.amz_expires_at);
   const timeLeft = expiresAt.getTime() - now.getTime();
   const fiveMinutes = 5 * 60 * 1000;
-
+  
   if (!credentials || !credentials.amz_access_token || error) {
     //no credentials or expired: create new token
     const token = (await fetchAccessToken()) as AmazonToken;

@@ -6,12 +6,11 @@ export function productFromAmazon(
     item: AmazonSearchProduct,
     spApiItem?: AmazonItem
 ): Product {
-    if (spApiItem?.asin === item.asin) {
-        console.log("Refactoring item", spApiItem.asin);
-    }
     // SP-API helpers
     const summary = spApiItem?.summaries?.[0];
     const image = spApiItem?.images?.[0]?.images?.[0];
+
+    //Offers helpers
     const offersPayload = spApiItem?.offers?.payload;
     const offers = offersPayload;
     const firstOffer = Array.isArray(offers?.Offers) ? offers.Offers[0] : undefined;
@@ -44,7 +43,7 @@ export function productFromAmazon(
         price: item.price ?? lowestPrice?.ListingPrice?.Amount,
         currency: item.currency ?? lowestPrice?.ListingPrice?.CurrencyCode,
         imageUrl: imageUrl,
-        url: url,
+        url: `amazon.es${url}`,
         rating: item.rating,
         reviews: item.reviews_count,
         createdAt: summary?.releaseDate,
@@ -72,17 +71,13 @@ export function productFromAmazon(
         sellerId: firstOffer?.SellerId,
 
         // Alibaba (no aplica)
-        minOrderQuantity: undefined,
-        shippingTime: undefined,
-        packagingDesc: undefined,
-        ownerMember: undefined,
-        paymentMethods: undefined,
-        deliveryPort: undefined,
-        status: undefined,
-        weight: undefined,
-        dimensions: undefined,
-        unitType: undefined,
-        customizable: undefined,
-        bulk_discount_prices: undefined,
+        minOrder: undefined,
+        supplier: undefined,
+        years: undefined,
+        origin: undefined,
+        verified: undefined,
+        guaranteed: undefined,
+        description: undefined,
+        section: undefined,
     };
 }

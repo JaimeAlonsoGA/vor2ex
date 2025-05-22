@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { getCredentials } from "../credentials.service";
+import { getCredentials } from "../../credentials.service";
 import config from "@/orm.config";
 import { AmazonOfferResponse } from "@/lib/types/amazon/sp-api/get-item-offers";
 import { AmazonFeesEstimateResponse } from "@/lib/types/amazon/sp-api/get-fee-estimates";
@@ -73,7 +73,7 @@ async function searchCatalogItems(keywords: string) {
 
 async function getCatalogItem(asin: string) {
   const marketplaceId = config.amazon.marketplaceId_spain;
-  const query = `/catalog/2022-04-01/catalog/2020-12-01/items/${asin}?marketplaceIds=${marketplaceId}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
+  const query = `/catalog/2022-04-01/items/${asin}?marketplaceIds=${marketplaceId}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
   return await fetchAmazon({ method: "GET", query });
 }
 

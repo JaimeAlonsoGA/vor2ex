@@ -5,329 +5,65 @@ tailwind bg-classes
         ... 
 <h2>font-bold text-2xl mb-4
 
+prompt v0: 
+-En todas las vistas, que los productos de Amazon y los de alibaba tengan el mismo height.
+-En product-table: 
+En la comparación, quita los datos no relevantes (en alibaba deja MOQ, precio, verificado, guaranteed; en Amazon deja Reviews, precio y rating y categoría ) para que todo se vea más claro y conciso como el nombre. 
+-Mejora el diseño del botón de ver y colócalo en otro lugar que no ocupe espacio útil y haga al usuario scrollear.
 
-Amazon real mock-up response: 
-{
-    "asin": "B0DG59PDMW",
-    "identifiers": [
-        {
-            "marketplaceId": "A1RKKUPIHCS9HS",
-            "identifiers": [
-                {
-                    "identifierType": "EAN",
-                    "identifier": "0728725439249"
-                },
-                {
-                    "identifierType": "UPC",
-                    "identifier": "728725439249"
-                }
-            ]
+
+
+Función handleSearch que desincroniza los procesos de la api y el scraper para respuesta lo antes posible:
+
+    const handleSearch = async (term: string) => {
+    if (!term.trim()) return;
+    setAmazonPage(1);
+    setAlibabaPage(1);
+    setKeyword(term);
+    setIsLoading(true);
+
+    try {
+        // Lanza ambas promesas en paralelo
+        const scraperPromise = collectAmazonSearchData(term);
+        const apiPromise = collectAmazonCatalogDataNoOffers(term);
+
+        // Espera a que ambas terminen
+        const [scraperData, apiData] = await Promise.all([scraperPromise, apiPromise]);
+
+        // Refina los datos del scraper
+        const refinedScrapedData = scraperData.items.map(item => productFromAmazon(item));
+        const sponsoredProducts = refinedScrapedData.filter(item => item.isSponsored);
+
+        // Obtiene datos API por ASIN solo para los patrocinados
+        const sponsoredProductsPromise = sponsoredProducts.map(item =>
+        collectAmazonCatalogDataByAsinNoOffers(item.asin!)
+        );
+        const sponsoredProductsData = await Promise.all(sponsoredProductsPromise);
+
+        // Crea un mapa de asin -> apiItem
+        const apiByAsin = new Map<string, any>();
+        if (apiData?.items?.length) {
+        apiData.items.forEach(apiItem => {
+            if (apiItem.asin) apiByAsin.set(apiItem.asin, apiItem);
+        });
         }
-    ],
-    "images": [
-        {
-            "marketplaceId": "A1RKKUPIHCS9HS",
-            "images": [
-                {
-                    "variant": "MAIN",
-                    "link": "https://m.media-amazon.com/images/I/416aKARbqrL.jpg",
-                    "height": 500,
-                    "width": 500
-                },
-                {
-                    "variant": "MAIN",
-                    "link": "https://m.media-amazon.com/images/I/416aKARbqrL._SL75_.jpg",
-                    "height": 75,
-                    "width": 75
-                },
-                {
-                    "variant": "MAIN",
-                    "link": "https://m.media-amazon.com/images/I/71HaffmVtML.jpg",
-                    "height": 1600,
-                    "width": 1600
-                },
-                {
-                    "variant": "PT01",
-                    "link": "https://m.media-amazon.com/images/I/51-iamIq4mL.jpg",
-                    "height": 500,
-                    "width": 500
-                },
-                {
-                    "variant": "PT01",
-                    "link": "https://m.media-amazon.com/images/I/51-iamIq4mL._SL75_.jpg",
-                    "height": 75,
-                    "width": 75
-                },
-                {
-                    "variant": "PT01",
-                    "link": "https://m.media-amazon.com/images/I/81Sf1zoyidL.jpg",
-                    "height": 1600,
-                    "width": 1600
-                },
-                {
-                    "variant": "PT02",
-                    "link": "https://m.media-amazon.com/images/I/51c5NXfBUQL.jpg",
-                    "height": 500,
-                    "width": 500
-                },
-                {
-                    "variant": "PT02",
-                    "link": "https://m.media-amazon.com/images/I/51c5NXfBUQL._SL75_.jpg",
-                    "height": 75,
-                    "width": 75
-                },
-                {
-                    "variant": "PT02",
-                    "link": "https://m.media-amazon.com/images/I/713WJ3eN7cL.jpg",
-                    "height": 1600,
-                    "width": 1600
-                },
-                {
-                    "variant": "PT03",
-                    "link": "https://m.media-amazon.com/images/I/41SgavJoj4L.jpg",
-                    "height": 500,
-                    "width": 500
-                },
-                {
-                    "variant": "PT03",
-                    "link": "https://m.media-amazon.com/images/I/41SgavJoj4L._SL75_.jpg",
-                    "height": 75,
-                    "width": 75
-                },
-                {
-                    "variant": "PT03",
-                    "link": "https://m.media-amazon.com/images/I/71kBhifdzhL.jpg",
-                    "height": 1600,
-                    "width": 1600
-                },
-                {
-                    "variant": "PT04",
-                    "link": "https://m.media-amazon.com/images/I/51kKNuHB5uL.jpg",
-                    "height": 500,
-                    "width": 500
-                },
-                {
-                    "variant": "PT04",
-                    "link": "https://m.media-amazon.com/images/I/51kKNuHB5uL._SL75_.jpg",
-                    "height": 75,
-                    "width": 75
-                },
-                {
-                    "variant": "PT04",
-                    "link": "https://m.media-amazon.com/images/I/71IRphUCMML.jpg",
-                    "height": 1600,
-                    "width": 1600
-                },
-                {
-                    "variant": "PT05",
-                    "link": "https://m.media-amazon.com/images/I/51F1G2uBhNL.jpg",
-                    "height": 500,
-                    "width": 500
-                },
-                {
-                    "variant": "PT05",
-                    "link": "https://m.media-amazon.com/images/I/51F1G2uBhNL._SL75_.jpg",
-                    "height": 75,
-                    "width": 75
-                },
-                {
-                    "variant": "PT05",
-                    "link": "https://m.media-amazon.com/images/I/71SXsWROj7L.jpg",
-                    "height": 1600,
-                    "width": 1600
-                },
-                {
-                    "variant": "PT06",
-                    "link": "https://m.media-amazon.com/images/I/51o66o-jkCL.jpg",
-                    "height": 500,
-                    "width": 500
-                },
-                {
-                    "variant": "PT06",
-                    "link": "https://m.media-amazon.com/images/I/51o66o-jkCL._SL75_.jpg",
-                    "height": 75,
-                    "width": 75
-                },
-                {
-                    "variant": "PT06",
-                    "link": "https://m.media-amazon.com/images/I/81D8Dx8Je-L.jpg",
-                    "height": 1600,
-                    "width": 1600
-                },
-                {
-                    "variant": "PT07",
-                    "link": "https://m.media-amazon.com/images/I/51j330fBLbL.jpg",
-                    "height": 500,
-                    "width": 500
-                },
-                {
-                    "variant": "PT07",
-                    "link": "https://m.media-amazon.com/images/I/51j330fBLbL._SL75_.jpg",
-                    "height": 75,
-                    "width": 75
-                },
-                {
-                    "variant": "PT07",
-                    "link": "https://m.media-amazon.com/images/I/81Dql5+l8XL.jpg",
-                    "height": 1600,
-                    "width": 1600
-                }
-            ]
+        sponsoredProductsData.forEach(spData => {
+        if (spData && spData.asin) {
+            apiByAsin.set(spData.asin, spData);
         }
-    ],
-    "productTypes": [
-        {
-            "marketplaceId": "A1RKKUPIHCS9HS",
-            "productType": "FIREPLACE"
-        }
-    ],
-    "salesRanks": [
-        {
-            "marketplaceId": "A1RKKUPIHCS9HS",
-            "classificationRanks": [
-                {
-                    "classificationId": "2844308031",
-                    "title": "Chimeneas de gel y etanol",
-                    "link": "https://www.amazon.es/gp/bestsellers/tools/2844308031",
-                    "rank": 138
-                }
-            ],
-            "displayGroupRanks": [
-                {
-                    "websiteDisplayGroup": "home_improvement_display_on_website",
-                    "title": "Bricolaje y herramientas",
-                    "link": "https://www.amazon.es/gp/bestsellers/tools",
-                    "rank": 176949
-                }
-            ]
-        }
-    ],
-    "summaries": [
-        {
-            "marketplaceId": "A1RKKUPIHCS9HS",
-            "adultProduct": false,
-            "autographed": false,
-            "brand": "MOYKSRR",
-            "browseClassification": {
-                "displayName": "Chimeneas de gel y etanol",
-                "classificationId": "2844308031"
-            },
-            "color": "Negro",
-            "itemClassification": "BASE_PRODUCT",
-            "itemName": "MOYKSRR Chimenea de Mesa, Chimenea Bioetanol, Hoguera de Bioetanol Portátil con 2 Cámaras de Combustión, Duración de Combustión Infinita, para Interior y Exterior, Jardín, Balcón, Salón",
-            "manufacturer": "MOYKSRR",
-            "memorabilia": false,
-            "modelNumber": "BL001",
-            "partNumber": "BL001",
-            "size": "28*14cm",
-            "tradeInEligible": false,
-            "websiteDisplayGroup": "kitchen_display_on_website",
-            "websiteDisplayGroupName": "Cocina"
-        }
-    ],
-    "offers": {
-        "payload": {
-            "ASIN": "B0DG59PDMW",
-            "status": "Success",
-            "ItemCondition": "New",
-            "Identifier": {
-                "MarketplaceId": "A1RKKUPIHCS9HS",
-                "ItemCondition": "New",
-                "ASIN": "B0DG59PDMW"
-            },
-            "Summary": {
-                "LowestPrices": [
-                    {
-                        "condition": "new",
-                        "fulfillmentChannel": "Amazon",
-                        "LandedPrice": {
-                            "CurrencyCode": "EUR",
-                            "Amount": 22.99
-                        },
-                        "ListingPrice": {
-                            "CurrencyCode": "EUR",
-                            "Amount": 22.99
-                        },
-                        "Shipping": {
-                            "CurrencyCode": "EUR",
-                            "Amount": 0
-                        }
-                    }
-                ],
-                "BuyBoxPrices": [
-                    {
-                        "condition": "New",
-                        "LandedPrice": {
-                            "CurrencyCode": "EUR",
-                            "Amount": 22.99
-                        },
-                        "ListingPrice": {
-                            "CurrencyCode": "EUR",
-                            "Amount": 22.99
-                        },
-                        "Shipping": {
-                            "CurrencyCode": "EUR",
-                            "Amount": 0
-                        }
-                    }
-                ],
-                "NumberOfOffers": [
-                    {
-                        "condition": "new",
-                        "fulfillmentChannel": "Amazon",
-                        "OfferCount": 1
-                    }
-                ],
-                "BuyBoxEligibleOffers": [
-                    {
-                        "condition": "new",
-                        "fulfillmentChannel": "Amazon",
-                        "OfferCount": 1
-                    }
-                ],
-                "SalesRankings": [
-                    {
-                        "ProductCategoryId": "home_improvement_display_on_website",
-                        "Rank": 176505
-                    },
-                    {
-                        "ProductCategoryId": "2844308031",
-                        "Rank": 138
-                    }
-                ],
-                "TotalOfferCount": 1
-            },
-            "Offers": [
-                {
-                    "Shipping": {
-                        "CurrencyCode": "EUR",
-                        "Amount": 0
-                    },
-                    "ListingPrice": {
-                        "CurrencyCode": "EUR",
-                        "Amount": 22.99
-                    },
-                    "ShippingTime": {
-                        "maximumHours": 0,
-                        "minimumHours": 0,
-                        "availabilityType": "NOW"
-                    },
-                    "SellerFeedbackRating": {
-                        "FeedbackCount": 47,
-                        "SellerPositiveFeedbackRating": 100
-                    },
-                    "PrimeInformation": {
-                        "IsPrime": true,
-                        "IsNationalPrime": true
-                    },
-                    "SubCondition": "new",
-                    "SellerId": "A3EDAQR7TO75CI",
-                    "IsFeaturedMerchant": true,
-                    "IsBuyBoxWinner": true,
-                    "IsFulfilledByAmazon": true
-                }
-            ],
-            "marketplaceId": "A1RKKUPIHCS9HS"
-        }
+        });
+
+        // Fusiona los datos de ambos orígenes
+        const mergedProducts = scraperData.items.map(item =>
+        apiByAsin.has(item.asin)
+            ? productFromAmazon(item, apiByAsin.get(item.asin))
+            : productFromAmazon(item)
+        );
+        setAmazonProducts(mergedProducts);
+        console.log('Amazon complete data:', mergedProducts);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        setIsLoading(false);
     }
-}
+    };

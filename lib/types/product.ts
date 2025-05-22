@@ -11,7 +11,7 @@ export interface Product {
   rating?: number;
   reviews?: number;
   createdAt?: string;
-
+  
   // Amazon
   asin?: string;
   category?: string;
@@ -32,23 +32,14 @@ export interface Product {
   sellerId?: string;
 
   // Alibaba
-  minOrderQuantity?: number;
-  shippingTime?: string;
-  packagingDesc?: string;
-  ownerMember?: string;
-  paymentMethods?: string[];
-  deliveryPort?: string;
-  status?: string;
-  weight?: string;
-  dimensions?: string;
-  unitType?: string;
-  customizable?: boolean;
-  bulk_discount_prices?: [
-    {
-      start_quantity: string;
-      bulk_discount_price: string;
-    }
-  ];
+  minOrder?: string;
+  supplier?: string;
+  years?: number;
+  origin?: string;
+  verified?: boolean;
+  guaranteed?: boolean;
+  description?: string;
+  section?: string;
 
   // amazonGlobalLogisticsShippingCost?: number; // based on the product's weight, dimensions and port
   // amazonFees?: number; // based on the product's price, weight, dimensions and category

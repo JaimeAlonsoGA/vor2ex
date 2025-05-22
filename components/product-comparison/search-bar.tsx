@@ -23,13 +23,13 @@ export default function SearchBar({ onSearch, isLoading }: SearchBarProps) {
   return (
     <form onSubmit={handleSubmit} className="flex w-full mx-auto gap-2">
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           type="text"
-          placeholder="Search products (e.g., 'wireless headphones', 'yoga mat')"
+          placeholder="Search products..."
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          className="pl-10 bg-background"
+          className="pl-8"
         />
       </div>
       <Button type="submit" disabled={isLoading || !inputValue.trim()}>
