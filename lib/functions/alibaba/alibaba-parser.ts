@@ -1,14 +1,17 @@
 import sanitizeHtml from 'sanitize-html';
 import * as cheerio from 'cheerio';
-import { AlibabaSearchProduct } from '@/lib/types/alibaba/alibaba-search';
+import { AlibabaSearchProduct } from '@/types/alibaba/alibaba-search';
+import { parseAlibabaPrice, parseAlibabaTotalProducts } from './utils';
 
 /**
  * Extrae todos los productos posibles del HTML de Alibaba, tanto SSR como JS embebido.
  * Analiza el DOM y los scripts, y detecta dinámicamente las secciones de productos.
  */
-export function scrapeAlibabaHtml(html: string): { products: AlibabaSearchProduct[] } {
+export function scrapeAlibabaHtml(html: string): { totalProducts: number | undefined, products: AlibabaSearchProduct[] } {
     const $ = cheerio.load(html);
     const products: AlibabaSearchProduct[] = [];
+
+    const totalProducts = parseAlibabaTotalProducts(html);
 
     // --- 1. Productos embebidos en scripts JS ---
     const scripts: string[] = [];
@@ -59,7 +62,7 @@ export function scrapeAlibabaHtml(html: string): { products: AlibabaSearchProduc
                             title: sanitizeHtml(p.title, { allowedTags: [], allowedAttributes: {} }).trim(),
                             url: p.detailUrl,
                             imageUrl: p.imageUrl?.startsWith('//') ? 'https:' + p.imageUrl : p.imageUrl,
-                            price: p.localOriginalPriceRangeStr ?? '',
+                            price: parseAlibabaPrice(p.localOriginalPriceRangeStr ?? ""),
                             minOrder: p.minOrderDesc ?? '',
                             supplier: p.seller_login_id ?? '',
                             years: undefined,
@@ -122,6 +125,7 @@ export function scrapeAlibabaHtml(html: string): { products: AlibabaSearchProduc
             if (match) {
                 years = parseInt(match[1], 10);
                 origin = match[2] || undefined;
+                origin = origin?.replace("Proveedor", "")
             }
         }
 
@@ -142,7 +146,7 @@ export function scrapeAlibabaHtml(html: string): { products: AlibabaSearchProduc
                 title,
                 url,
                 imageUrl,
-                price,
+                price: parseAlibabaPrice(price) ?? undefined,
                 minOrder,
                 supplier,
                 years,
@@ -157,5 +161,5 @@ export function scrapeAlibabaHtml(html: string): { products: AlibabaSearchProduc
         }
     });
 
-    return { products };
+    return { products, totalProducts };
 }

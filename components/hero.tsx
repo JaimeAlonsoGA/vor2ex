@@ -1,41 +1,18 @@
-export default function Header() {
-  return (
-    <div className="flex flex-col gap-16 items-center">
-      <div className="flex gap-8 justify-center items-center">
-        <a
-          href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Logo
-        </a>
-        <span className="border-l rotate-45 h-6" />
-        <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
-          Logo
-        </a>
-      </div>
-      <h1 className="sr-only">Supabase and Next.js Starter Template</h1>
-      <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center">
-        The fastest way to build apps with{" "}
-        <a
-          href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-          target="_blank"
-          className="font-bold hover:underline"
-          rel="noreferrer"
-        >
-          Supabase
-        </a>{" "}
-        and{" "}
-        <a
-          href="https://nextjs.org/"
-          target="_blank"
-          className="font-bold hover:underline"
-          rel="noreferrer"
-        >
-          Next.js
-        </a>
-      </p>
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
-    </div>
-  );
+"use client";
+
+import Link from "next/link";
+
+const Hero = () => {
+    return (
+        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+            <h1 className="text-4xl font-bold">Bienvenido a Vor2ex</h1>
+            <p className="mt-4 text-lg">Tu plataforma de intercambio de información.</p>
+            <button className="mt-6 px-4 py-2 bg-blue-500 text-white rounded">
+                <Link href="/sign-in">
+                    Comenzar
+                </Link>
+            </button>
+        </div>
+    );
 }
+export default Hero;

@@ -7,6 +7,7 @@ applyTo: '**'
 - Vor2ex es un SaaS para encontrar nichos de mercado rentables en Amazon y Alibaba, ayudando a vendedores de Amazon FBA a identificar oportunidades de negocio.
 
 ## Stack y experiencia
+- Windows 
 - Eres experto en SSR, Next.js (App Router), Supabase y TypeScript.
 - Utilizas Tailwind CSS y shadcn/ui para crear interfaces modernas, responsivas y accesibles.
 - Sigues los estándares de UX más actuales y priorizas la experiencia de usuario en todos los flujos.

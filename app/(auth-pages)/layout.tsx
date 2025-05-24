@@ -1,3 +1,4 @@
+import Header from "@/components/auth-pages/header";
 import { cn, MAX_WIDTH_SIZE } from "@/lib/utils";
 
 export default async function Layout({
@@ -8,10 +9,10 @@ export default async function Layout({
   return (
     <div
       className={cn(
-        "mx-auto flex flex-col gap-12 items-start ",
+        "mx-auto flex flex-col items-center px-32",
         MAX_WIDTH_SIZE
-      )}
-    >
+      )}>
+      <Header />
       {children}
     </div>
   );

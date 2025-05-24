@@ -3,8 +3,8 @@
 import { cookies } from "next/headers";
 import { getCredentials } from "../../credentials.service";
 import config from "@/orm.config";
-import { AmazonOfferResponse } from "@/lib/types/amazon/sp-api/get-item-offers";
-import { AmazonFeesEstimateResponse } from "@/lib/types/amazon/sp-api/get-fee-estimates";
+import { AmazonOfferResponse } from "@/types/amazon/sp-api/get-item-offers";
+import { AmazonFeesEstimateResponse } from "@/types/amazon/sp-api/get-fee-estimates";
 
 export {
   fetchAmazon,
@@ -25,13 +25,17 @@ async function fetchAmazon({
   body?: string;
 }) {
   const endpoint = config.amazon.endpoint_eu;
-  const { credentials } = await getCredentials();
+  const credentials = await getCredentials();
+
+  if (!credentials?.amz_access_token) {
+    throw new Error("Amazon access token is not available");
+  }
 
   const response = await fetch(`${endpoint}/${query}`, {
     method,
     headers: {
       Accept: "application/json",
-      "x-amz-access-token": credentials?.amz_access_token,
+      "x-amz-access-token": credentials.amz_access_token,
     },
     body,
   });

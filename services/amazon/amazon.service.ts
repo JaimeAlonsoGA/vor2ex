@@ -1,6 +1,6 @@
 "use server"
 
-import { AmazonSearchApiResponse } from "@/lib/types/amazon/amazon-search";
+import { AmazonSearchApiResponse } from "@/types/amazon/amazon-search";
 import config from "@/orm.config";
 
 export { fetchAmazonSearch }
@@ -8,7 +8,7 @@ export { fetchAmazonSearch }
 async function fetchAmazonSearch(keyword: string, page: number): Promise<AmazonSearchApiResponse | undefined> {
     const auth = config.decodo.access_token;
     if (!keyword) return;
-    const response = await fetch("https://scraper-api.decodo.com/v2/scrape", {
+    const response = await fetch(config.decodo.baseUrl, {
         method: "POST",
         body: JSON.stringify({
             "target": "amazon_search",

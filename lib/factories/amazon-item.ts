@@ -1,6 +1,7 @@
-import { AmazonSearchProduct } from "../types/amazon/amazon-search";
-import { AmazonItem } from "../types/amazon/sp-api/amazon-item";
-import { Product } from "../types/product";
+import { parseSalesVolume } from "../functions/amazon/utils";
+import { AmazonSearchProduct } from "../../types/amazon/amazon-search";
+import { AmazonItem } from "../../types/amazon/sp-api/amazon-item";
+import { Product } from "../../types/product";
 
 export function productFromAmazon(
     item: AmazonSearchProduct,
@@ -43,7 +44,7 @@ export function productFromAmazon(
         price: item.price ?? lowestPrice?.ListingPrice?.Amount,
         currency: item.currency ?? lowestPrice?.ListingPrice?.CurrencyCode,
         imageUrl: imageUrl,
-        url: `amazon.es${url}`,
+        url: `https://amazon.es${url}`,
         rating: item.rating,
         reviews: item.reviews_count,
         createdAt: summary?.releaseDate,
@@ -53,7 +54,7 @@ export function productFromAmazon(
         category: category,
         priceUpper: item.price_upper,
         priceStrikethrough: item.price_strikethrough,
-        salesVolume: item.sales_volume,
+        salesVolume: parseSalesVolume(item.sales_volume),
         ranking,
         offerCount,
         shipping: item.shipping_information ??

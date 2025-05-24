@@ -1,15 +1,15 @@
-import { AlibabaSearchProduct } from "../types/alibaba/alibaba-search";
-import { Product } from "../types/product";
+import { AlibabaSearchProduct } from "../../types/alibaba/alibaba-search";
+import { Product } from "../../types/product";
 
 // Factoría para Alibaba: adapta AlibabaSearchProduct a Product
 export function productFromAlibaba(item: AlibabaSearchProduct): Product {
     return {
         // Comunes
-        id: item.url, // Usamos la URL como identificador único si no hay otro campo
+        id: item.url, 
         source: 'alibaba',
         name: item.title,
         brand: undefined,
-        price: parseFloat(item.price.replace(/[^\d.,]/g, '').replace(',', '.')) || undefined,
+        price: item.price,
         currency: undefined,
         imageUrl: item.imageUrl,
         url: item.url,
@@ -37,7 +37,7 @@ export function productFromAlibaba(item: AlibabaSearchProduct): Product {
         sellerId: undefined,
 
         // Alibaba
-        minOrder: item.minOrder,
+        minOrder: item.minOrder ? Number(item.minOrder.replace(/[^\d]/g, '')) || undefined : undefined,
         supplier: item.supplier,
         years: item.years,
         origin: item.origin,

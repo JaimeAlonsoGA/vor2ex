@@ -5,8 +5,9 @@ import {
   getItemOffers,
   searchCatalogItems,
 } from "@/services/amazon/sp-api/amazon.service";
-import { AmazonItem, AmazonResponse } from "@/lib/types/amazon/sp-api/amazon-item";
-import { AmazonAPIFactoryResponse } from "@/lib/types/amazon/amazon-factory";
+import { AmazonItem, AmazonResponse } from "@/types/amazon/sp-api/amazon-item";
+import { AmazonAPIFactoryResponse } from "@/types/amazon/amazon-factory";
+import { validateAmazonTokens } from "./validate-tokens";
 
 export { collectAmazonCatalogData, collectAmazonCatalogDataByAsin, collectAmazonCatalogDataAndOffers, collectAmazonCatalogDataAndOffersByAsin };
 
@@ -15,6 +16,8 @@ async function delay(ms: number) {
 }
 
 async function collectAmazonCatalogDataAndOffers(keyword: string, pagination?: 'next' | 'previous', paginationToken?: string): Promise<AmazonAPIFactoryResponse> {
+  await validateAmazonTokens();
+
   let catalog: AmazonResponse;
   let catalogItems: AmazonItem[] = [];
   if (pagination === 'next') {

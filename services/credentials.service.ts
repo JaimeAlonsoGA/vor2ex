@@ -1,32 +1,46 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
-import { getUserId } from "./auth.service";
+import { getAuthUser } from "./auth.service";
+import { Tables } from "@/types/supabase";
 
 export { getCredentials, createAmazonCredentials, updateAmazonCredentials };
 
-async function getCredentials() {
+async function getCredentials(): Promise<Tables<'credentials'>> {
   const supabase = await createClient();
-  const userId = await getUserId();
+  const user = await getAuthUser();
 
-  const { data: credentials, error } = await supabase
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+
+  const { data, error } = await supabase
     .from("credentials")
-    .select("amz_access_token, amz_refresh_token, amz_expires_at")
-    .eq("user_id", userId)
+    .select("*")
+    .eq("user_id", user.id)
     .single();
-  return { credentials, error };
+
+  if (error) {
+    throw new Error(`Error fetching credentials: ${error.message}`);
+  }
+
+  if (!data) {
+    throw new Error("No credentials found for the user");
+  }
+
+  return data;
 }
 
 async function createAmazonCredentials(token: AmazonToken) {
   const supabase = await createClient();
-  const user_id = await getUserId();
+  const user = await getAuthUser();
 
   const expiresAt = new Date(Date.now() + (token.expires_in || 0) * 1000);
 
   const { error } = await supabase.from("credentials").insert({
-    user_id,
+    user_id: user?.id,
     amz_access_token: token.access_token,
     amz_refresh_token: token.refresh_token,
-    amz_expires_at: expiresAt,
+    amz_expires_at: expiresAt.toISOString(),
   });
 
   if (error) {
@@ -41,7 +55,11 @@ async function createAmazonCredentials(token: AmazonToken) {
 
 async function updateAmazonCredentials(token: AmazonToken) {
   const supabase = await createClient();
-  const userId = await getUserId();
+  const user = await getAuthUser();
+
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
 
   const expiresAt = new Date(Date.now() + (token.expires_in || 0) * 1000);
 
@@ -50,9 +68,9 @@ async function updateAmazonCredentials(token: AmazonToken) {
     .update({
       amz_access_token: token.access_token,
       amz_refresh_token: token.refresh_token,
-      amz_expires_at: expiresAt,
+      amz_expires_at: expiresAt.toISOString(),
     })
-    .eq("user_id", userId);
+    .eq("user_id", user?.id);
 
   if (error) {
     return new Response("Error saving credentials", { status: 500 });

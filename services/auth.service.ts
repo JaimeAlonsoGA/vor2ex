@@ -1,17 +1,21 @@
 "use server"
+import { toast } from "@/hooks/use-toast";
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export { getUserId, signUpAction, signInAction, forgotPasswordAction, resetPasswordAction, signOutAction };
+export { getAuthUser, signUpAction, signInAction, forgotPasswordAction, resetPasswordAction, signOutAction };
 
-async function getUserId() {
+async function getAuthUser() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  return user?.id;
+  if (!user) {
+    return null;
+  }
+  return user;
 }
 
 const signUpAction = async (formData: FormData) => {
@@ -46,7 +50,7 @@ const signUpAction = async (formData: FormData) => {
       "Thanks for signing up! Please check your email for a verification link."
     );
   }
-};
+}
 
 const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
@@ -60,9 +64,9 @@ const signInAction = async (formData: FormData) => {
 
   if (error) {
     return encodedRedirect("error", "/sign-in", error.message);
+  } else {
+    return redirect("/dashboard");
   }
-
-  return redirect("/protected");
 };
 
 const forgotPasswordAction = async (formData: FormData) => {
