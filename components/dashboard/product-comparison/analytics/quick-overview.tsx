@@ -6,16 +6,10 @@ import { Button } from "@/components/ui/button";
 import { TrendingUp, Star, ShoppingCart, Users, Calendar, Tag, ChevronDown, ChevronUp, Award, Box, ShieldCheck, GripVertical, Flame, CirclePercent, Ship, Megaphone, PawPrint } from "lucide-react";
 import { formatDate } from "@/lib/functions/amazon/utils";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CARD_HEIGHT = "h-32";
 const CARD_WIDTH = "w-full";
-
-// Skeleton helper
-function SkeletonBlock({ className = "", isLoading }: { className?: string, isLoading: boolean }) {
-    return (
-        <div className={cn(isLoading && "animate-pulse", "bg-muted rounded", className)} />
-    );
-}
 
 interface CardConfig {
     key: string;
@@ -52,7 +46,12 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             badge: "Amazon",
             value: analytics?.totalAmazonProducts ?? "-",
             subtitle: "Productos encontrados",
-            skeleton: <><SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} /><SkeletonBlock className="h-4 w-24" isLoading={isLoading} /></>
+            skeleton: (
+                <>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-24" />
+                </>
+            ),
         },
         {
             key: "amazon-price",
@@ -60,10 +59,16 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             title: "Precio",
             badge: "Amazon",
             value: analytics?.avgAmazonPrice !== undefined ? `$${analytics.avgAmazonPrice.toFixed(2)}` : "-",
-            subtitle: analytics?.minAmazonPrice !== undefined && analytics?.maxAmazonPrice !== undefined
-                ? `Rango: $${analytics.minAmazonPrice.toFixed(2)} - $${analytics.maxAmazonPrice.toFixed(2)}`
-                : "Sin datos de rango",
-            skeleton: <><SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} /><SkeletonBlock className="h-4 w-32" isLoading={isLoading} /></>
+            subtitle:
+                analytics?.minAmazonPrice !== undefined && analytics?.maxAmazonPrice !== undefined
+                    ? `Rango: $${analytics.minAmazonPrice.toFixed(2)} - $${analytics.maxAmazonPrice.toFixed(2)}`
+                    : "Sin datos de rango",
+            skeleton: (
+                <>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-32" />
+                </>
+            ),
         },
         {
             key: "amazon-rating",
@@ -74,7 +79,12 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             subtitle: analytics?.totalAmazonReviews !== undefined
                 ? `${analytics.totalAmazonReviews.toLocaleString()} reseñas totales`
                 : "Sin datos de reseñas",
-            skeleton: <><SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} /><SkeletonBlock className="h-4 w-28" isLoading={isLoading} /></>
+            skeleton: (
+                <>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-28" />
+                </>
+            ),
         },
         {
             key: "amazon-sales",
@@ -85,7 +95,12 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             subtitle: analytics?.totalAmazonSalesVolume !== undefined
                 ? `${analytics.totalAmazonSalesVolume.toLocaleString()}+ comprados el último mes`
                 : "Sin datos de ventas",
-            skeleton: <><SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} /><SkeletonBlock className="h-4 w-28" isLoading={isLoading} /></>
+            skeleton: (
+                <>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-28" />
+                </>
+            ),
         },
         {
             key: "amazon-brands",
@@ -94,7 +109,12 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             badge: "Amazon",
             value: analytics?.uniqueAmazonBrands ?? "-",
             subtitle: analytics?.topAmazonBrand ? `Top: ${analytics.topAmazonBrand}` : "Sin datos de top brand",
-            skeleton: <><SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} /><SkeletonBlock className="h-4 w-24" isLoading={isLoading} /></>
+            skeleton: (
+                <>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-24" />
+                </>
+            ),
         },
         {
             key: "amazon-reviews",
@@ -103,7 +123,12 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             badge: "Amazon",
             value: analytics?.avgAmazonReviews !== undefined ? analytics.avgAmazonReviews.toFixed(2) : "-",
             subtitle: `Rango: ${analytics?.minAmazonReviews !== undefined ? analytics.minAmazonReviews.toFixed(2) : "-"} - ${analytics?.maxAmazonReviews !== undefined ? analytics.maxAmazonReviews.toFixed(2) : "-"}`,
-            skeleton: <><SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} /><SkeletonBlock className="h-4 w-28" isLoading={isLoading} /></>
+            skeleton: (
+                <>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-28" />
+                </>
+            ),
         },
         {
             key: "amazon-ranking",
@@ -111,10 +136,16 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             title: "Ranking",
             badge: "Amazon",
             value: analytics?.avgAmazonRanking !== undefined ? analytics.avgAmazonRanking.toFixed(0) : "-",
-            subtitle: analytics?.minAmazonRanking !== undefined && analytics?.maxAmazonRanking !== undefined
-                ? `Min: #${analytics.minAmazonRanking} / Max: #${analytics.maxAmazonRanking}`
-                : "Sin datos de ranking",
-            skeleton: <><SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} /><SkeletonBlock className="h-4 w-28" isLoading={isLoading} /></>
+            subtitle:
+                analytics?.minAmazonRanking !== undefined && analytics?.maxAmazonRanking !== undefined
+                    ? `Min: #${analytics.minAmazonRanking} / Max: #${analytics.maxAmazonRanking}`
+                    : "Sin datos de ranking",
+            skeleton: (
+                <>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-28" />
+                </>
+            ),
         },
         {
             key: "amazon-dates",
@@ -122,11 +153,12 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             title: "Lanzamiento",
             badge: "Amazon",
             value: analytics?.avgAmazonDate ? formatDate(analytics.avgAmazonDate) : "-",
-            subtitle: analytics?.oldestAmazonDate && analytics?.newestAmazonDate
-                ? (`Más reciente: ${formatDate(analytics.newestAmazonDate)} / 
-                   Más antiguo: ${formatDate(analytics.oldestAmazonDate)}`)
-                : "Sin datos de fechas",
-            skeleton: <SkeletonBlock className="h-8 w-20" isLoading={isLoading} />
+            subtitle:
+                analytics?.oldestAmazonDate && analytics?.newestAmazonDate
+                    ? `Más reciente: ${formatDate(analytics.newestAmazonDate)} / 
+                   Más antiguo: ${formatDate(analytics.oldestAmazonDate)}`
+                    : "Sin datos de fechas",
+            skeleton: <Skeleton className="h-8 w-20" />,
         },
         {
             key: "amazon-bestseller",
@@ -134,7 +166,7 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             title: "Best Seller",
             badge: "Amazon",
             value: analytics?.bestSellerCount !== undefined ? `${analytics.bestSellerCount}` : "-",
-            skeleton: <SkeletonBlock className="h-8 w-20" isLoading={isLoading} />
+            skeleton: <Skeleton className="h-8 w-20" />,
         },
         {
             key: "amazon-choice",
@@ -142,7 +174,7 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             title: "Amazon's Choice",
             badge: "Amazon",
             value: analytics?.amazonChoiceCount !== undefined ? `${analytics.amazonChoiceCount}` : "-",
-            skeleton: <SkeletonBlock className="h-8 w-20" isLoading={isLoading} />
+            skeleton: <Skeleton className="h-8 w-20" />,
         },
         {
             key: "amazon-prime",
@@ -151,7 +183,7 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             badge: "Amazon",
             subtitle: "Total de Prime en la primera página",
             value: analytics?.totalAmazonOfferCount !== undefined ? `${analytics.totalAmazonOfferCount}` : "-",
-            skeleton: <SkeletonBlock className="h-8 w-20" isLoading={isLoading} />
+            skeleton: <Skeleton className="h-8 w-20" />,
         },
         {
             key: "amazon-offers",
@@ -160,7 +192,7 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             badge: "Amazon",
             subtitle: "Total de ofertas en la primera página",
             value: analytics?.primeCount !== undefined ? `${analytics?.primeCount}` : "-",
-            skeleton: <SkeletonBlock className="h-8 w-20" isLoading={isLoading} />
+            skeleton: <Skeleton className="h-8 w-20" />,
         },
         {
             key: "alibaba-total",
@@ -169,7 +201,12 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             badge: "Alibaba",
             value: analytics?.totalAlibabaProducts ?? "-",
             subtitle: "Productos encontrados",
-            skeleton: <><SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} /><SkeletonBlock className="h-4 w-24" isLoading={isLoading} /></>
+            skeleton: (
+                <>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-24" />
+                </>
+            ),
         },
         {
             key: "alibaba-price",
@@ -177,10 +214,16 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             title: "Precio",
             badge: "Alibaba",
             value: analytics?.avgAlibabaPrice !== undefined ? `$${analytics.avgAlibabaPrice.toFixed(2)}` : "-",
-            subtitle: analytics?.minAlibabaPrice !== undefined && analytics?.maxAlibabaPrice !== undefined
-                ? `Rango: $${analytics.minAlibabaPrice.toFixed(2)} - $${analytics.maxAlibabaPrice.toFixed(2)}`
-                : "Sin datos de rango",
-            skeleton: <><SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} /><SkeletonBlock className="h-4 w-32" isLoading={isLoading} /></>
+            subtitle:
+                analytics?.minAlibabaPrice !== undefined && analytics?.maxAlibabaPrice !== undefined
+                    ? `Rango: $${analytics.minAlibabaPrice.toFixed(2)} - $${analytics.maxAlibabaPrice.toFixed(2)}`
+                    : "Sin datos de rango",
+            skeleton: (
+                <>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-32" />
+                </>
+            ),
         },
         {
             key: "amazon-categories",
@@ -189,7 +232,7 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             badge: "Amazon",
             subtitle: `Top category: ${analytics?.topCategory ?? "-"}`,
             value: analytics?.uniqueCategories !== undefined ? `${analytics.uniqueCategories}` : "-",
-            skeleton: <SkeletonBlock className="h-8 w-20" isLoading={isLoading} />
+            skeleton: <Skeleton className="h-8 w-20" />,
         },
         {
             key: "alibaba-suppliers",
@@ -198,7 +241,7 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             badge: "Alibaba",
             subtitle: "Total unique suppliers on first page",
             value: analytics?.uniqueAlibabaSuppliers ?? "-",
-            skeleton: <SkeletonBlock className="h-8 w-20 mb-2" isLoading={isLoading} />
+            skeleton: <Skeleton className="h-8 w-20 mb-2" />,
         },
         {
             key: "alibaba-moq",
@@ -208,11 +251,13 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
                 ? `Min | Max: ${[
                     analytics?.minAlibabaMinOrderQuantity !== undefined ? `${analytics.minAlibabaMinOrderQuantity}` : null,
                     analytics?.maxAlibabaMinOrderQuantity !== undefined ? `${analytics.maxAlibabaMinOrderQuantity}` : null,
-                ].filter(Boolean).join(" - ") || "-"}`
+                ]
+                    .filter(Boolean)
+                    .join(" - ") || "-"}`
                 : "",
             badge: "Alibaba",
             value: analytics?.avgAlibabaMinOrderQuantity !== undefined ? `${analytics.avgAlibabaMinOrderQuantity}` : "-",
-            skeleton: <SkeletonBlock className="h-8 w-20" isLoading={isLoading} />
+            skeleton: <Skeleton className="h-8 w-20" />,
         },
         {
             key: "amazon-sponsored",
@@ -221,7 +266,7 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
             subtitle: "Total sponsored on the first page",
             badge: "Amazon",
             value: analytics?.totalAmazonSponsored !== undefined ? `${analytics.totalAmazonSponsored}` : "-",
-            skeleton: <SkeletonBlock className="h-8 w-20" isLoading={isLoading} />
+            skeleton: <Skeleton className="h-8 w-20" />,
         },
     ];
 
@@ -457,7 +502,7 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
                     {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                 </Button>
                 <Button
-                    variant={editMode ? "secondary" : "outline-solid"}
+                    variant={editMode ? "secondary" : "outline"}
                     size="sm"
                     className="flex items-center gap-1"
                     onClick={() => setEditMode(e => !e)}

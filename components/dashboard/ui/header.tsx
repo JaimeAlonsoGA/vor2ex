@@ -1,4 +1,3 @@
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
@@ -7,7 +6,7 @@ import { signOutAction } from "@/services/auth.service";
 import { ThemeSwitcher } from "../../theme-switcher";
 import { Bell, ChevronDown, CreditCard, LogOut, Megaphone, Settings } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../../ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function Header() {
   const supabase = await createClient();
@@ -89,7 +88,7 @@ export default async function Header() {
             </DropdownMenu>
           ) : (
             <div className="flex gap-2">
-              <Button asChild size="sm" variant={"outline-solid"}>
+              <Button asChild size="sm" variant={"outline"}>
                 <Link href="/sign-in">Sign in</Link>
               </Button>
               <Button asChild size="sm" variant={"default"}>

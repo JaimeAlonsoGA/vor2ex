@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Product } from "@/types/product"
 
-
 export default function ProductCards({ products }: { products: Product[] }) {
     const marketplace = products[0]?.source
     // Función para renderizar estrellas

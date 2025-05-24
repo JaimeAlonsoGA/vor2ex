@@ -1,6 +1,6 @@
 'use client';
 
-import { startTransition, useEffect, useState } from 'react';
+import { useState } from 'react';
 import SearchBar from './search-bar';
 import { Product } from '@/types/product';
 import { collectAmazonCatalogData, collectAmazonCatalogDataByAsin } from '@/lib/functions/amazon/collect-sp-api-data';
@@ -10,7 +10,6 @@ import { AlibabaSearchData } from '@/lib/alibabaSearchData';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Bookmark, Download, Filter, Grid3X3, LayoutGrid, Search, SlidersHorizontal } from "lucide-react"
 import { Button } from '../../ui/button';
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ProductCards from './product-cards';
@@ -18,7 +17,6 @@ import ProductTable from './product-table';
 import { collectAlibabaSearchData } from '@/lib/functions/alibaba/collect-alibaba-data';
 import { collectAmazonSearchData } from '@/lib/functions/amazon/collect-scraper-data';
 import { StarRating } from './star-rating';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { getNicheAnalytics } from '@/lib/factories/analytics';
 import NicheQuickOverview from './analytics/quick-overview';
 import { NicheAnalytics } from '@/types/niche-analytics';
@@ -26,6 +24,7 @@ import { insertAnalytics, saveAnalytics } from '@/services/client/analytics.clie
 import { Tables } from '@/types/supabase';
 import { deleteUserAnalyticByKeyword } from '@/services/client/users-analytics.client';
 import { toast } from 'sonner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export const PAGE_SIZE = 10;
 

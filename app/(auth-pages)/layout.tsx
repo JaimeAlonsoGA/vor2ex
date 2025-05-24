@@ -1,5 +1,5 @@
 import Header from "@/components/auth-pages/header";
-import { cn, MAX_WIDTH_SIZE } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 export default async function Layout({
   children,
@@ -9,8 +9,7 @@ export default async function Layout({
   return (
     <div
       className={cn(
-        "mx-auto flex flex-col items-center px-32",
-        MAX_WIDTH_SIZE
+        "mx-auto flex flex-col items-center px-32"
       )}>
       <Header />
       {children}
