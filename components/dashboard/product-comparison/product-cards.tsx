@@ -78,9 +78,9 @@ export default function ProductCards({ products }: { products: Product[] }) {
                     </div>
 
                     {/* Contenido de la tarjeta */}
-                    <div className="p-4 flex-grow flex flex-col">
+                    <div className="p-4 grow flex flex-col">
                         <div className="flex mb-4">
-                            <div className="w-24 h-24 relative mr-4 flex-shrink-0">
+                            <div className="w-24 h-24 relative mr-4 shrink-0">
                                 <Image
                                     src={product.imageUrl || "/placeholder.svg?height=96&width=96"}
                                     alt={product.name}

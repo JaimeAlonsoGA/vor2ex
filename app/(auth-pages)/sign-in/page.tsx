@@ -18,7 +18,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
         style={{ maxHeight: "90vh" }}>
         {/* Logo */}
         <div className="flex items-center justify-center space-x-3 mb-8">
-          <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-lg bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center">
             <span className="text-white font-bold">V2</span>
           </div>
           <span className="text-2xl font-bold">Vor2ex</span>

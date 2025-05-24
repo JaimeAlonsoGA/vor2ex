@@ -457,7 +457,7 @@ export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewP
                     {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                 </Button>
                 <Button
-                    variant={editMode ? "secondary" : "outline"}
+                    variant={editMode ? "secondary" : "outline-solid"}
                     size="sm"
                     className="flex items-center gap-1"
                     onClick={() => setEditMode(e => !e)}

@@ -30,7 +30,7 @@ export function StarRating({
                         key={starValue}
                         type="button"
                         aria-label={`${starValue} estrellas o más`}
-                        className="focus:outline-none"
+                        className="focus:outline-hidden"
                         onClick={() => onChange?.(starValue)}
                         tabIndex={0}
                         role="radio"
