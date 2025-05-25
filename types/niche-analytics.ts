@@ -41,6 +41,8 @@ export interface NicheAnalytics {
     maxAlibabaPrice?: number;
     avgAlibabaPrice?: number;
     uniqueAlibabaSuppliers: number;
+    totalAlibabaVerifiedSuppliers?: number;
+    totalAlibabaGuaranteedSuppliers?: number;
     minAlibabaMinOrderQuantity?: number;
     maxAlibabaMinOrderQuantity?: number;
     avgAlibabaMinOrderQuantity?: number;

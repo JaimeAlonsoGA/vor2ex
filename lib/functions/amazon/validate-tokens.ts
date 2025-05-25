@@ -7,7 +7,7 @@ import {
   updateAmazonCredentials,
 } from "@/services/credentials.service";
 
-export async function validateAmazonTokens() {
+export async function validateAmazonTokens(): Promise<{ success: boolean }> {
   const credentials = await getCredentials();
   const now = new Date();
   const expiresAt = new Date(credentials?.amz_expires_at);
@@ -20,7 +20,11 @@ export async function validateAmazonTokens() {
     await createAmazonCredentials(token).then((res) => {
       if (res.status !== 200) {
         console.error({ status: res.status, message: "Error creating Amazon credentials" });
-      } else console.log("Amazon credentials created");
+        return { success: false };
+      } else {
+        console.log("Amazon credentials created");
+        return { success: true };
+      }
     });
   } else if (timeLeft < 0) {
     //outdated token: create new token
@@ -28,7 +32,11 @@ export async function validateAmazonTokens() {
     updateAmazonCredentials(token).then((res) => {
       if (res.status !== 200) {
         console.error({ status: res.status, message: "Error updating Amazon credentials" });
-      } else console.log("Amazon credentials outdated, created new token");
+        return { success: false };
+      } else {
+        console.log("Amazon credentials outdated, created new token");
+        return { success: true };
+      }
     });
   } else if (timeLeft <= fiveMinutes) {
     if (credentials.amz_refresh_token) {
@@ -37,8 +45,13 @@ export async function validateAmazonTokens() {
       await updateAmazonCredentials(token).then((res) => {
         if (res.status !== 200) {
           console.error({ status: res.status, message: "Error updating Amazon credentials" });
-        } else console.log("Amazon credentials updated");
+          return { success: false };
+        } else {
+          console.log("Amazon credentials updated");
+          return { success: true };
+        }
       });
     }
   }
+  return { success: true };
 }

@@ -1,6 +1,34 @@
+@config "../tailwind.config.ts";
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
+
+.scrollbar-x-none {
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+.scrollbar-x-none::-webkit-scrollbar:horizontal {
+  display: none;
+  /* Chrome, Safari, Opera */
+}
+
+/* Hide only the vertical scrollbar */
+.scrollbar-y-none {
+  overflow-y: auto;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+.scrollbar-y-none::-webkit-scrollbar:vertical {
+  display: none;
+  /* Chrome, Safari, Opera */
+}
 
 @theme {
   --color-border: hsl(var(--border));
@@ -47,14 +75,17 @@
     from {
       height: 0;
     }
+
     to {
       height: var(--radix-accordion-content-height);
     }
   }
+
   @keyframes accordion-up {
     from {
       height: var(--radix-accordion-content-height);
     }
+
     to {
       height: 0;
     }
@@ -64,10 +95,12 @@
 @utility container {
   margin-inline: auto;
   padding-inline: 2rem;
-  @media (width >= --theme(--breakpoint-sm)) {
+
+  @media (width >=--theme(--breakpoint-sm)) {
     max-width: none;
   }
-  @media (width >= 1400px) {
+
+  @media (width >=1400px) {
     max-width: 1400px;
   }
 }
@@ -81,6 +114,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -151,6 +185,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -209,6 +244,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

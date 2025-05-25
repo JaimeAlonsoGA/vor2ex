@@ -65,6 +65,9 @@ export function getNicheAnalytics(keyword: string, amazon: AmazonAPIFactoryRespo
     const alibabaRatings = alibabaProducts.map(p => p.rating).filter((v): v is number => typeof v === "number");
     const alibabaSuppliers = new Set(alibabaProducts.map((p: Product) => p.supplier).filter(Boolean));
     const alibabaMinOrderQuantities = alibabaProducts.map((p: Product) => p.minOrder).filter((v: any): v is number => typeof v === "number");
+    const totalAlibabaVerifiedSuppliers = alibabaProducts.filter((p: Product) => p.verified).length;
+    const totalAlibabaGuaranteedSuppliers = alibabaProducts.filter((p: Product) => p.guaranteed).length;
+
     // const alibabaWeights = alibabaProducts.map((p: Product) => Number(p.weight)).filter((v: any) => !isNaN(v));
     // const alibabaDimensions = alibabaProducts.map((p: Product) => p.dimensions).filter(Boolean);
 
@@ -106,14 +109,16 @@ export function getNicheAnalytics(keyword: string, amazon: AmazonAPIFactoryRespo
 
         // Alibaba statistics
         totalAlibabaProducts: alibaba.totalProducts || alibabaProducts.length,
-        avgAlibabaRating: median(alibabaRatings), // mediana
+        avgAlibabaRating: median(alibabaRatings),
         minAlibabaPrice: alibabaPrices.length ? Math.min(...alibabaPrices) : undefined,
         maxAlibabaPrice: alibabaPrices.length ? Math.max(...alibabaPrices) : undefined,
-        avgAlibabaPrice: median(alibabaPrices), // mediana
+        avgAlibabaPrice: median(alibabaPrices),
         uniqueAlibabaSuppliers: alibabaSuppliers.size,
         minAlibabaMinOrderQuantity: alibabaMinOrderQuantities.length ? Math.min(...alibabaMinOrderQuantities) : undefined,
         maxAlibabaMinOrderQuantity: alibabaMinOrderQuantities.length ? Math.max(...alibabaMinOrderQuantities) : undefined,
-        avgAlibabaMinOrderQuantity: median(alibabaMinOrderQuantities), // mediana
+        avgAlibabaMinOrderQuantity: median(alibabaMinOrderQuantities),
+        totalAlibabaVerifiedSuppliers,
+        totalAlibabaGuaranteedSuppliers,
         // minAlibabaWeight: alibabaWeights.length ? Math.min(...alibabaWeights) : undefined,
         // maxAlibabaWeight: alibabaWeights.length ? Math.max(...alibabaWeights) : undefined,
         // avgAlibabaWeight: alibabaWeights.length ? alibabaWeights.reduce((a, b) => a + b, 0) / alibabaWeights.length : undefined,
@@ -166,5 +171,56 @@ export function analyticsToDb(data: NicheAnalytics) {
         avg_alibaba_min_order_quantity: data.avgAlibabaMinOrderQuantity ?? null,
         unique_categories: data.uniqueCategories ?? null,
         top_category: data.topCategory ?? null,
+        total_verified_suppliers: data.totalAlibabaVerifiedSuppliers ?? null,
+        total_guaranteed_suppliers: data.totalAlibabaGuaranteedSuppliers ?? null,
     };
+}
+
+export function dbToAnalytics(data: Tables<'analytics'>): NicheAnalytics {
+    return {
+        keyword: data.keyword ?? "",
+        searchedAt: data.searched_at ?? "",
+
+        totalAmazonProducts: data.total_amazon_products ?? 0,
+        minAmazonPrice: data.min_amazon_price ?? undefined,
+        maxAmazonPrice: data.max_amazon_price ?? undefined,
+        avgAmazonPrice: data.avg_amazon_price ?? undefined,
+        totalAmazonSponsored: data.total_amazon_sponsored ?? undefined,
+        minAmazonRating: data.min_amazon_rating ?? undefined,
+        maxAmazonRating: data.max_amazon_rating ?? undefined,
+        avgAmazonRating: data.avg_amazon_rating ?? undefined,
+        minAmazonReviews: data.min_amazon_reviews ?? undefined,
+        maxAmazonReviews: data.max_amazon_reviews ?? undefined,
+        avgAmazonReviews: data.avg_amazon_reviews ?? undefined,
+        totalAmazonReviews: data.total_amazon_reviews ?? undefined,
+        totalAmazonSalesVolume: data.total_amazon_sales_volume ?? undefined,
+        avgAmazonSalesVolume: data.avg_amazon_sales_volume ?? undefined,
+        totalAmazonOfferCount: data.total_amazon_offer_count ?? undefined,
+        primeCount: data.prime_count ?? undefined,
+        uniqueAmazonBrands: data.unique_amazon_brands || 0,
+        uniqueCategories: data.unique_categories ?? undefined,
+        topCategory: data.top_category ?? undefined,
+        topAmazonBrand: data.top_amazon_brand ?? undefined,
+        minAmazonRanking: data.min_amazon_ranking ?? undefined,
+        maxAmazonRanking: data.max_amazon_ranking ?? undefined,
+        avgAmazonRanking: data.avg_amazon_ranking ?? undefined,
+        avgAmazonBuyBoxPrice: data.avg_amazon_buy_box_price ?? undefined,
+        bestSellerCount: data.best_seller_count ?? undefined,
+        amazonChoiceCount: data.amazon_choice_count ?? undefined,
+        oldestAmazonDate: data.oldest_amazon_date ?? undefined,
+        newestAmazonDate: data.newest_amazon_date ?? undefined,
+        avgAmazonDate: data.avg_amazon_date ?? undefined,
+
+        totalAlibabaProducts: data.total_alibaba_products || 0,
+        avgAlibabaRating: data.avg_alibaba_rating ?? undefined,
+        minAlibabaPrice: data.min_alibaba_price ?? undefined,
+        maxAlibabaPrice: data.max_alibaba_price ?? undefined,
+        avgAlibabaPrice: data.avg_alibaba_price ?? undefined,
+        uniqueAlibabaSuppliers: data.unique_alibaba_suppliers || 0,
+        totalAlibabaVerifiedSuppliers: data.total_verified_suppliers || 0,
+        totalAlibabaGuaranteedSuppliers: data.total_guaranteed_suppliers || 0,
+        minAlibabaMinOrderQuantity: data.min_alibaba_min_order_quantity ?? undefined,
+        maxAlibabaMinOrderQuantity: data.max_alibaba_min_order_quantity ?? undefined,
+        avgAlibabaMinOrderQuantity: data.avg_alibaba_min_order_quantity ?? undefined,
+    }
 }

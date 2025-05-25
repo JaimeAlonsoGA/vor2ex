@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Metadata } from "next";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
   title: "Vor2ex - Ecommerce Intelligence Platform",
@@ -16,14 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <div className="min-h-screen bg-background">
-          <main className="flex-1">
-            {children}
-            <Toaster richColors position="bottom-right" />
-          </main>
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <div className="min-h-screen bg-background">
+            <main className="flex-1">
+              {children}
+              <Toaster richColors position="bottom-right" />
+            </main>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

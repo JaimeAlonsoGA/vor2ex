@@ -1,17 +1,19 @@
-import ProductComparison from "@/components/dashboard/product-comparison/product-comparison";
+import ProductSearcherDashboard from "@/components/dashboard/product-searcher/dashboard";
 import { validateAmazonTokens } from "@/lib/functions/amazon/validate-tokens";
 import { getUserAnalyticsKeyword } from "@/services/users-analytics.service";
 import { Suspense } from "react";
 
 export default async function ProtectedPage() {
-  await validateAmazonTokens();
+  const amazonAccess = await validateAmazonTokens();
   const userAnalytics = await getUserAnalyticsKeyword();
 
+  if (!amazonAccess.success) {
+    return <div className="text-center">Couldn't connect with data providers</div>;
+  }
+
   return (
-    <div className="flex flex-col gap-12 mx-auto">
-      <Suspense fallback={<div className="text-center">Loading...</div>}>
-        <ProductComparison userAnalytics={userAnalytics} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<div className="text-center">Loading...</div>}>
+      <ProductSearcherDashboard userAnalytics={userAnalytics} />
+    </Suspense>
   );
 }
