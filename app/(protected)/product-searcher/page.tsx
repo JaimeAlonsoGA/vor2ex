@@ -1,6 +1,6 @@
 import ProductSearcherDashboard from "@/components/dashboard/product-searcher/dashboard";
 import { validateAmazonTokens } from "@/lib/functions/amazon/validate-tokens";
-import { getUserAnalyticsKeyword } from "@/services/users-analytics.service";
+import { getUserAnalyticsKeyword } from "@/services/users-analytics.server";
 import { Suspense } from "react";
 
 export default async function ProtectedPage() {

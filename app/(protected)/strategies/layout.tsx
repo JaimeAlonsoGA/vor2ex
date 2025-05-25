@@ -4,7 +4,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex flex-col gap-12 mx-auto max-w-5xl w-full px-2">
             {children}
-            <ModulesCard products opportunities tools />
+            <ModulesCard analytics opportunities tools />
         </div>
     );
 }

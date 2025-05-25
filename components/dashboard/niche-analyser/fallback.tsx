@@ -7,7 +7,7 @@ export default function AnalyticsFallback() {
                 <CardTitle>Niche Analyser</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="text-muted-foreground text-sm">No analytics to display.</p>
+                <p className="text-muted-foreground text-sm">No analytics to display</p>
             </CardContent>
         </Card>
     );

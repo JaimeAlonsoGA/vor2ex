@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { getCredentials } from "../../credentials.service";
+import { getCredentials } from "../../credentials.server";
 import config from "@/orm.config";
 import { AmazonOfferResponse } from "@/types/amazon/sp-api/get-item-offers";
 import { AmazonFeesEstimateResponse } from "@/types/amazon/sp-api/get-fee-estimates";

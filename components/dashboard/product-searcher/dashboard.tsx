@@ -16,7 +16,7 @@ import { collectAmazonSearchData } from '@/lib/functions/amazon/collect-scraper-
 import { StarRating } from './star-rating';
 import { getNicheAnalytics } from '@/lib/factories/analytics';
 import NicheQuickOverview from './analytics/quick-overview';
-import { NicheAnalytics } from '@/types/niche-analytics';
+import { NicheAnalytics } from '@/types/analytics/analytics';
 import { insertAnalytics, saveAnalytics } from '@/services/client/analytics.client';
 import { Tables } from '@/types/supabase';
 import { deleteUserAnalyticByKeyword } from '@/services/client/users-analytics.client';

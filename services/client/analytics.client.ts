@@ -1,6 +1,6 @@
-import { getAnalyticIdByKeyword } from "../analytics.service";
-import { getUserData } from "../users.service";
-import { NicheAnalytics } from "@/types/niche-analytics";
+import { getAnalyticIdByKeyword } from "../analytics.server";
+import { getUserData } from "../users.server";
+import { NicheAnalytics } from "@/types/analytics/analytics";
 import { analyticsToDb } from "@/lib/factories/analytics";
 import { createClient } from "@/utils/supabase/client";
 import { Tables } from "@/types/supabase";

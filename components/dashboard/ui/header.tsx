@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { createClient } from "@/utils/supabase/server";
-import { signOutAction } from "@/services/auth.service";
+import { signOutAction } from "@/services/auth.server";
 import { ThemeSwitcher } from "../../theme-switcher";
-import { Bell, ChevronDown, CreditCard, LogOut, Megaphone, Settings } from "lucide-react";
+import { Bell, ChevronDown, CreditCard, DraftingCompass, LogOut, Megaphone, Settings } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -64,12 +64,22 @@ export default async function Header() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  Subscriptions
+                  <Link href="/strategies" className="flex items-center w-full">
+                    <DraftingCompass className="mr-2 h-4 w-4" />
+                    Strategies
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
+                  <Link href="/settings" className="flex items-center w-full">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/subscriptions" className="flex items-center w-full">
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Subscriptions
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Megaphone className="mr-2 h-4 w-4" />

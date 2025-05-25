@@ -1,8 +1,8 @@
 "use client";
 
-import { getUserData } from "../users.service";
+import { getUserData } from "../users.server";
 import { createClient } from "@/utils/supabase/client";
-import { getAnalyticIdByKeyword } from "../analytics.service";
+import { getAnalyticIdByKeyword } from "../analytics.server";
 
 export async function deleteUserAnalyticByKeyword(keyword: string): Promise<{ success: boolean }> {
     const supabase = createClient();

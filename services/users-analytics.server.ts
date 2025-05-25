@@ -1,8 +1,8 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { getUserData } from "./users.service";
-import { getAnalyticsDataByIds, getAnalyticsIdsByIds, getAnalyticsKeywordByIds } from "./analytics.service";
+import { getUserData } from "./users.server";
+import { getAnalyticsDataByIds, getAnalyticsIdsByIds, getAnalyticsKeywordByIds } from "./analytics.server";
 import { Tables } from "@/types/supabase";
 
 export async function getUserAnalyticsData(): Promise<Tables<'analytics'>[]> {

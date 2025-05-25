@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
 import { SubmitButton } from "@/components/submit-button"
 import { FormMessage, Message } from "@/components/form-message";
-import { signInAction } from "@/services/auth.service"
+import { signInAction } from "@/services/auth.server"
 
 export default async function Login(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;
@@ -64,7 +64,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
 
         {/* Login Form */}
         <form action={signInAction}
-          className="space-y-4 w-full">
+          className="space-y-4 w-full mb-2">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -105,10 +105,11 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
             </Link>
           </div>
 
+          <FormMessage message={searchParams} />
+
           <SubmitButton pendingText="Signing In..." formAction={signInAction}>
             Sign in
           </SubmitButton>
-          <FormMessage message={searchParams} />
         </form>
 
         <div className="text-center">

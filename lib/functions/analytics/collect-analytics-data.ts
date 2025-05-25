@@ -1,6 +1,6 @@
 import { dbToAnalytics } from "@/lib/factories/analytics";
-import { getUserAnalyticsData } from "@/services/users-analytics.service";
-import { NicheAnalytics } from "@/types/niche-analytics";
+import { getUserAnalyticsData } from "@/services/users-analytics.server";
+import { NicheAnalytics } from "@/types/analytics/analytics";
 
 export async function collectAnalyticsData(): Promise<NicheAnalytics[]> {
     const userAnalytics = await getUserAnalyticsData();

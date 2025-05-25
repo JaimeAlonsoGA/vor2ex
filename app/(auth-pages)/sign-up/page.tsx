@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { SubmitButton } from "@/components/submit-button";
 import { FormMessage, Message } from "@/components/form-message";
-import { signUpAction } from "@/services/auth.service";
+import { signUpAction } from "@/services/auth.server";
 
 export default async function Signup(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;
@@ -70,7 +70,7 @@ export default async function Signup(props: { searchParams: Promise<Message> }) 
         </div>
 
         {/* Signup Form */}
-        <form action={signUpAction} className="space-y-4 w-full">
+        <form action={signUpAction} className="space-y-4 w-full mb-2">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -99,20 +99,22 @@ export default async function Signup(props: { searchParams: Promise<Message> }) 
           <div className="flex items-center space-x-2">
             <Checkbox id="accept" name="accept" required />
             <Label htmlFor="accept" className="text-sm">
-              I accept the{" "}
-              <Link href="/privacy" className="underline text-primary" tabIndex={-1}>
-                Privacy Policy
-              </Link>{" "}
-              and{" "}
-              <Link href="/terms" className="underline text-primary" tabIndex={-1}>
-                Terms of Service
-              </Link>
+              <p>
+                I accept the{" "}
+                <Link href="/privacy" className="underline text-primary" tabIndex={-1}>
+                  Privacy Policy
+                </Link>{" "}
+                and{" "}
+                <Link href="/terms" className="underline text-primary" tabIndex={-1}>
+                  Terms of Service
+                </Link>
+              </p>
             </Label>
           </div>
+          <FormMessage message={searchParams} />
           <SubmitButton formAction={signUpAction} pendingText="Signing up...">
             Sign up
           </SubmitButton>
-          <FormMessage message={searchParams} />
         </form>
 
         <div className="text-center mt-4">

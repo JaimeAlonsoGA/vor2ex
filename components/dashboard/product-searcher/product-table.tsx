@@ -169,7 +169,7 @@ export function ProductsTable({ products, onRemove, type, isLoading }: ProductTa
                       case "category":
                         return (
                           <TableCell key="category" className="align-middle h-20">
-                            <span className="text-sm">{product.category || "-"}</span>
+                            <span className={`text-sm ${product.category && "text-blue-400"}`}>{product.category || "-"}</span>
                           </TableCell>
                         );
                       case "ranking":

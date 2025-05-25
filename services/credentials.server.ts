@@ -1,11 +1,11 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
-import { getAuthUser } from "./auth.service";
+import { getAuthUser } from "./auth.server";
 import { Tables } from "@/types/supabase";
 
 export { getCredentials, createAmazonCredentials, updateAmazonCredentials };
 
-async function getCredentials(): Promise<Tables<'credentials'>> {
+async function getCredentials(): Promise<Tables<'credentials'> | null> {
   const supabase = await createClient();
   const user = await getAuthUser();
 
@@ -18,14 +18,6 @@ async function getCredentials(): Promise<Tables<'credentials'>> {
     .select("*")
     .eq("user_id", user.id)
     .single();
-
-  if (error) {
-    throw new Error(`Error fetching credentials: ${error.message}`);
-  }
-
-  if (!data) {
-    throw new Error("No credentials found for the user");
-  }
 
   return data;
 }

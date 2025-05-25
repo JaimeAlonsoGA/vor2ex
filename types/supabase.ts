@@ -204,6 +204,71 @@ export type Database = {
           },
         ]
       }
+      strategies: {
+        Row: {
+          color: string
+          description: string
+          icon: string
+          id: string
+          name: string
+          price_max: number
+          price_min: number
+          price_weight: number
+          rating_optimum: number
+          rating_weight: number
+          reviews_good: number
+          reviews_tense: number
+          reviews_top: number
+          reviews_weight: number
+          sales_weight: number
+          user_id: string
+        }
+        Insert: {
+          color: string
+          description: string
+          icon: string
+          id?: string
+          name: string
+          price_max: number
+          price_min: number
+          price_weight: number
+          rating_optimum: number
+          rating_weight: number
+          reviews_good: number
+          reviews_tense: number
+          reviews_top: number
+          reviews_weight: number
+          sales_weight: number
+          user_id: string
+        }
+        Update: {
+          color?: string
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          price_max?: number
+          price_min?: number
+          price_weight?: number
+          rating_optimum?: number
+          rating_weight?: number
+          reviews_good?: number
+          reviews_tense?: number
+          reviews_top?: number
+          reviews_weight?: number
+          sales_weight?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "strategies_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           auth_id: string

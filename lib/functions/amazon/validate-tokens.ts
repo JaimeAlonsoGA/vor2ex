@@ -5,12 +5,12 @@ import {
   createAmazonCredentials,
   getCredentials,
   updateAmazonCredentials,
-} from "@/services/credentials.service";
+} from "@/services/credentials.server";
 
 export async function validateAmazonTokens(): Promise<{ success: boolean }> {
   const credentials = await getCredentials();
   const now = new Date();
-  const expiresAt = new Date(credentials?.amz_expires_at);
+  const expiresAt = new Date(credentials?.amz_expires_at ?? 0);
   const timeLeft = expiresAt.getTime() - now.getTime();
   const fiveMinutes = 5 * 60 * 1000;
 

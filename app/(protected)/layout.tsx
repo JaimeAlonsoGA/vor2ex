@@ -1,7 +1,7 @@
 import Header from "@/components/dashboard/ui/header";
 import Sidebar from "@/components/dashboard/ui/sidebar";
-import { getAuthUser } from "@/services/auth.service";
-import { createUserIfNotExists } from "@/services/users.service";
+import { getAuthUser } from "@/services/auth.server";
+import { getUserData } from "@/services/users.server";
 import { redirect } from "next/navigation";
 
 export default async function Layout({
@@ -12,10 +12,10 @@ export default async function Layout({
     const authenticated = await getAuthUser();
     if (!authenticated) {
         redirect("/sign-in");
-    } else createUserIfNotExists();
+    }
 
     return (
-        <div className="flex min-h-screen bg-background overflow-y-hidden">
+        <div className="flex min-h-screen bg-background scrollbar-y-none">
             <Header />
             <Sidebar />
             <main className="flex-1 pt-16 max-w-7xl mx-auto w-full">

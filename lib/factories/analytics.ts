@@ -1,7 +1,7 @@
 import { Tables } from "@/types/supabase";
 import { AlibabaFactoryResponse } from "../../types/alibaba/alibaba-factory";
 import { AmazonAPIFactoryResponse } from "../../types/amazon/amazon-factory";
-import { NicheAnalytics } from "../../types/niche-analytics";
+import { NicheAnalytics } from "../../types/analytics/analytics";
 import { Product } from "../../types/product";
 import { median } from "./utils";
 
