@@ -15,7 +15,7 @@ export default async function Layout({
     }
 
     return (
-        <div className="flex min-h-screen bg-background scrollbar-y-none">
+        <div className="flex min-h-screen bg-background">
             <Header />
             <Sidebar />
             <main className="flex-1 pt-16 max-w-7xl mx-auto w-full">

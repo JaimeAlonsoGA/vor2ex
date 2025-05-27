@@ -178,6 +178,7 @@ export function analyticsToDb(data: NicheAnalytics) {
 
 export function dbToAnalytics(data: Tables<'analytics'>): NicheAnalytics {
     return {
+        id: data.id ?? undefined,
         keyword: data.keyword ?? "",
         searchedAt: data.searched_at ?? "",
 

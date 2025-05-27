@@ -3,6 +3,7 @@ import { Strategy } from "@/types/analytics/strategies";
 
 export const REQUIRED_PARAMS: (keyof Strategy)[] = [
     "ratingOptimum",
+    "salesVolumeOptimum",
     "priceMin",
     "priceMax",
     "reviewsTop",
@@ -20,6 +21,7 @@ export const EMPTY_STRATEGY = {
     icon: "Sigma",
     color: "blue-500",
     ratingOptimum: 2.5,
+    salesVolumeOptimum: 0,
     priceMin: 15,
     priceMax: 40,
     reviewsTop: 300,
@@ -29,8 +31,7 @@ export const EMPTY_STRATEGY = {
     ratingWeight: 0.2,
     priceWeight: 0.2,
     reviewsWeight: 0.2,
-    readonly: false,
-    template: false,
+    selected: false,
 }
 
 export const DEFAULT_STRATEGY: Strategy =
@@ -40,6 +41,7 @@ export const DEFAULT_STRATEGY: Strategy =
     icon: "cylinder",
     color: "red-500",
     ratingOptimum: 2.5,
+    salesVolumeOptimum: 500,
     priceMin: 15,
     priceMax: 40,
     reviewsTop: 300,
@@ -49,6 +51,7 @@ export const DEFAULT_STRATEGY: Strategy =
     ratingWeight: 0.2,
     priceWeight: 0.2,
     reviewsWeight: 0.2,
+    selected: false,
 }
 
 export const defaultUserStrategy = strategyToDb(DEFAULT_STRATEGY);
@@ -60,6 +63,7 @@ export const DEFAULT_TEMPLATES: Strategy[] = [
         icon: "cuboid",
         color: "blue-500",
         ratingOptimum: 3,
+        salesVolumeOptimum: 300,
         priceMin: 20,
         priceMax: 35,
         reviewsTop: 200,
@@ -69,6 +73,7 @@ export const DEFAULT_TEMPLATES: Strategy[] = [
         ratingWeight: 0.2,
         priceWeight: 0.2,
         reviewsWeight: 0.3,
+        selected: false,
     },
     {
         name: "Greedy",
@@ -76,6 +81,7 @@ export const DEFAULT_TEMPLATES: Strategy[] = [
         icon: "pyramid",
         color: "green-500",
         ratingOptimum: 2,
+        salesVolumeOptimum: 1000,
         priceMin: 10,
         priceMax: 50,
         reviewsTop: 500,
@@ -85,5 +91,6 @@ export const DEFAULT_TEMPLATES: Strategy[] = [
         ratingWeight: 0.1,
         priceWeight: 0.1,
         reviewsWeight: 0.2,
+        selected: false,
     },
 ]

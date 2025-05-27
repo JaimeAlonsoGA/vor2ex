@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,22 +9,77 @@ import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HelpCircle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SetStateAction } from "react";
+import { useState } from "react";
 import { getColorClass } from "@/lib/functions/strategies/utils";
 import { REQUIRED_PARAMS } from "../../../lib/strategies";
 import { COLOR_OPTIONS, ICON_OPTIONS } from "./strategies-options";
+import { deleteStrategy, insertOrUpdateStrategy } from "@/services/client/strategies.client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface StrategyEditorProps {
     strategy: Strategy;
-    onSave: (s: Strategy) => void;
-    onIconChange: (i: string) => void;
-    onParamChange: <K extends keyof Strategy>(param: K, value: number) => void;
-    onColorChange: (c: string) => void;
-    setStrategy: (value: SetStateAction<Strategy>) => void;
-    onDelete: (s: Strategy) => void;
 }
 
-export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, onColorChange, setStrategy, onDelete }: StrategyEditorProps) {
+export default function StrategyEditor({ strategy }: StrategyEditorProps) {
+    const router = useRouter();
+
+    const [draftStrategy, setDraftStrategy] = useState<Strategy>(strategy);
+
+    function handleParamChange<K extends keyof Strategy>(param: K, value: number) {
+        setDraftStrategy((prev) => ({
+            ...prev,
+            [param]: value,
+        }));
+    }
+
+    async function handleSaveStrategy(newStrategy: Strategy) {
+        if (
+            !newStrategy.name ||
+            !newStrategy.icon ||
+            !newStrategy.color ||
+            !newStrategy.description ||
+            REQUIRED_PARAMS.some((p) => newStrategy[p] === undefined)
+        ) {
+            return;
+        }
+        toast.promise(
+            insertOrUpdateStrategy(newStrategy).then((res) => {
+                router.push("/strategies");
+                router.refresh();
+                return res;
+            }),
+            {
+                loading: "Saving...",
+                success: "Strategy saved",
+                error: "Error saving strategy",
+            }
+        );
+    }
+
+    function handleIconChange(icon: string) {
+        setDraftStrategy((prev) => ({ ...prev, icon }));
+    }
+
+    function handleColorChange(color: string) {
+        setDraftStrategy((prev) => ({ ...prev, color }));
+    }
+
+    function handleDeleteStrategy(strategy: Strategy) {
+        toast.promise(
+            deleteStrategy(strategy).then((res) => {
+                router.push("/strategies");
+                router.refresh();
+                return res;
+            }),
+            {
+                loading: "Deleting...",
+                success: "Strategy deleted",
+                error: "Error deleting strategy",
+            }
+        );
+    }
+
     return (
         <section>
             <Card id="strategy-create-form" className="mb-6 animate-in fade-in">
@@ -32,7 +89,7 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                         {strategy.id &&
                             <Button
                                 variant={"destructive"}
-                                onClick={() => onDelete(strategy)}
+                                onClick={() => handleDeleteStrategy(strategy)}
                             >
                                 <Trash2 />
                             </Button>}
@@ -46,10 +103,11 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                         <div className="flex flex-col gap-1">
                             <Label htmlFor="strategy-name">Name *</Label>
                             <Input
+                                maxLength={15}
                                 id="strategy-name"
-                                value={strategy.name}
+                                value={draftStrategy.name}
                                 onChange={(e) =>
-                                    setStrategy((prev) => ({ ...prev, name: e.target.value }))
+                                    setDraftStrategy((prev) => ({ ...prev, name: e.target.value }))
                                 }
                                 required
                             />
@@ -63,13 +121,13 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                         type="button"
                                         className={cn(
                                             "cursor-pointer p-2 rounded border transition hover:border-primary",
-                                            strategy.icon === opt.value
+                                            draftStrategy.icon === opt.value
                                                 ? "border-primary bg-primary/10"
                                                 : "border-muted"
                                         )}
                                         id={`icon-${opt.value}`}
                                         aria-label={opt.label}
-                                        onClick={() => onIconChange(opt.value)}
+                                        onClick={() => handleIconChange(opt.value)}
                                     >
                                         {opt.icon}
                                     </button>
@@ -80,18 +138,15 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                             <Label htmlFor="strategy-color">Color *</Label>
                             <div className="flex gap-2 mt-1 flex-wrap">
                                 {COLOR_OPTIONS.map((color) => (
-                                    <button
-                                        key={color.value}
-                                        type="button"
-                                        className={cn(
-                                            "cursor-pointer w-7 h-4 rounded-md border transition focus:outline-none focus:ring-2 focus:ring-primary",
+                                    <Button
+                                        className={cn("h-3 w-4 hover:bg-color-none",
                                             getColorClass(color.value),
-                                            strategy.color === color.value
+                                            draftStrategy.color === color.value
                                                 ? "ring-2 ring-primary border-primary"
                                                 : "border-muted"
                                         )}
                                         aria-label={color.name}
-                                        onClick={() => onColorChange(color.value)}
+                                        onClick={() => handleColorChange(color.value)}
                                     />
                                 ))}
                             </div>
@@ -101,14 +156,44 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                         <Label htmlFor="strategy-description">Description *</Label>
                         <Input
                             id="strategy-description"
-                            value={strategy.description}
+                            value={draftStrategy.description}
                             onChange={(e) =>
-                                setStrategy((prev) => ({ ...prev, description: e.target.value }))
+                                setDraftStrategy((prev) => ({ ...prev, description: e.target.value }))
                             }
                             required
                         />
                     </div>
                     <Separator className="my-6" />
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-1">
+                            <Label htmlFor="sales-volume-optimum">Sales volume optimum *</Label>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        type="button"
+                                        tabIndex={0}
+                                        aria-label="What is the sales volume optimum?"
+                                        className="ml-1 text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary rounded-full"
+                                    >
+                                        <HelpCircle className="w-4 h-4" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent sideOffset={4}>
+                                    <p>
+                                        Ideal number of items sold per month for a product in this niche. For example, set to 300 if you want to prioritize niches where products sell about 300 units/month.
+                                    </p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
+                        <Input
+                            id="sales-volume-optimum"
+                            type="number"
+                            min={0}
+                            value={draftStrategy.salesVolumeOptimum}
+                            onChange={(e) => handleParamChange("salesVolumeOptimum", parseFloat(e.target.value))}
+                            placeholder="e.g. 300"
+                        />
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Rating Optimum with tooltip */}
                         <div className="flex flex-col gap-1">
@@ -126,7 +211,7 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                         </button>
                                     </TooltipTrigger>
                                     <TooltipContent sideOffset={4}>
-                                        Ideal average rating for the niche (1-5). Used as a reference for quality scoring.
+                                        Ideal average rating for the niche (1-5).
                                     </TooltipContent>
                                 </Tooltip>
                             </div>
@@ -136,8 +221,8 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                 min={1}
                                 max={5}
                                 step={0.1}
-                                value={strategy.ratingOptimum}
-                                onChange={(e) => onParamChange("ratingOptimum", parseFloat(e.target.value))}
+                                value={draftStrategy.ratingOptimum}
+                                onChange={(e) => handleParamChange("ratingOptimum", parseFloat(e.target.value))}
                             />
                         </div>
                         {/* Price min/max grouped */}
@@ -156,7 +241,7 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                         </button>
                                     </TooltipTrigger>
                                     <TooltipContent sideOffset={4}>
-                                        Target price range for products in the niche.
+                                        Target price range for products in the niche. 
                                     </TooltipContent>
                                 </Tooltip>
                             </div>
@@ -164,8 +249,8 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                 <Input
                                     type="number"
                                     min={0}
-                                    value={strategy.priceMin}
-                                    onChange={(e) => onParamChange("priceMin", parseFloat(e.target.value))}
+                                    value={draftStrategy.priceMin}
+                                    onChange={(e) => handleParamChange("priceMin", parseFloat(e.target.value))}
                                     aria-label="Min price"
                                     placeholder="Min"
                                 />
@@ -173,8 +258,8 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                 <Input
                                     type="number"
                                     min={0}
-                                    value={strategy.priceMax}
-                                    onChange={(e) => onParamChange("priceMax", parseFloat(e.target.value))}
+                                    value={draftStrategy.priceMax}
+                                    onChange={(e) => handleParamChange("priceMax", parseFloat(e.target.value))}
                                     aria-label="Max price"
                                     placeholder="Max"
                                 />
@@ -205,8 +290,8 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                     <Input
                                         type="number"
                                         min={0}
-                                        value={strategy.reviewsTop}
-                                        onChange={(e) => onParamChange("reviewsTop", parseFloat(e.target.value))}
+                                        value={draftStrategy.reviewsTop}
+                                        onChange={(e) => handleParamChange("reviewsTop", parseFloat(e.target.value))}
                                         aria-label="Top reviews"
                                         placeholder="Top"
                                     />
@@ -218,8 +303,8 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                     <Input
                                         type="number"
                                         min={0}
-                                        value={strategy.reviewsGood}
-                                        onChange={(e) => onParamChange("reviewsGood", parseFloat(e.target.value))}
+                                        value={draftStrategy.reviewsGood}
+                                        onChange={(e) => handleParamChange("reviewsGood", parseFloat(e.target.value))}
                                         aria-label="Good reviews"
                                         placeholder="Good"
                                     />
@@ -231,8 +316,8 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                     <Input
                                         type="number"
                                         min={0}
-                                        value={strategy.reviewsTense}
-                                        onChange={(e) => onParamChange("reviewsTense", parseFloat(e.target.value))}
+                                        value={draftStrategy.reviewsTense}
+                                        onChange={(e) => handleParamChange("reviewsTense", parseFloat(e.target.value))}
                                         aria-label="Tense reviews"
                                         placeholder="Tense"
                                     />
@@ -268,14 +353,14 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                             type="range"
                                             min={0}
                                             max={1}
-                                            step={0.01}
-                                            value={strategy.salesWeight}
-                                            onChange={(e) => onParamChange("salesWeight", parseFloat(e.target.value))}
+                                            step={0.10}
+                                            value={draftStrategy.salesWeight}
+                                            onChange={(e) => handleParamChange("salesWeight", parseFloat(e.target.value))}
                                             aria-label="Sales weight"
                                             className="w-full"
                                         />
                                         <span className="block text-xs text-muted-foreground mt-1">
-                                            Sales: <span className="font-semibold">{strategy.salesWeight}</span>
+                                            Sales: <span className="font-semibold">{draftStrategy.salesWeight}</span>
                                         </span>
                                     </div>
                                     <div className="flex-1 flex flex-col items-center">
@@ -283,14 +368,14 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                             type="range"
                                             min={0}
                                             max={1}
-                                            step={0.01}
-                                            value={strategy.ratingWeight}
-                                            onChange={(e) => onParamChange("ratingWeight", parseFloat(e.target.value))}
+                                            step={0.10}
+                                            value={draftStrategy.ratingWeight}
+                                            onChange={(e) => handleParamChange("ratingWeight", parseFloat(e.target.value))}
                                             aria-label="Rating weight"
                                             className="w-full"
                                         />
                                         <span className="block text-xs text-muted-foreground mt-1">
-                                            Rating: <span className="font-semibold">{strategy.ratingWeight}</span>
+                                            Rating: <span className="font-semibold">{draftStrategy.ratingWeight}</span>
                                         </span>
                                     </div>
                                     <div className="flex-1 flex flex-col items-center">
@@ -298,14 +383,14 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                             type="range"
                                             min={0}
                                             max={1}
-                                            step={0.01}
-                                            value={strategy.priceWeight}
-                                            onChange={(e) => onParamChange("priceWeight", parseFloat(e.target.value))}
+                                            step={0.10}
+                                            value={draftStrategy.priceWeight}
+                                            onChange={(e) => handleParamChange("priceWeight", parseFloat(e.target.value))}
                                             aria-label="Price weight"
                                             className="w-full"
                                         />
                                         <span className="block text-xs text-muted-foreground mt-1">
-                                            Price: <span className="font-semibold">{strategy.priceWeight}</span>
+                                            Price: <span className="font-semibold">{draftStrategy.priceWeight}</span>
                                         </span>
                                     </div>
                                     <div className="flex-1 flex flex-col items-center">
@@ -313,14 +398,14 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                             type="range"
                                             min={0}
                                             max={1}
-                                            step={0.01}
-                                            value={strategy.reviewsWeight}
-                                            onChange={(e) => onParamChange("reviewsWeight", parseFloat(e.target.value))}
+                                            step={0.10}
+                                            value={draftStrategy.reviewsWeight}
+                                            onChange={(e) => handleParamChange("reviewsWeight", parseFloat(e.target.value))}
                                             aria-label="Reviews weight"
                                             className="w-full"
                                         />
                                         <span className="block text-xs text-muted-foreground mt-1">
-                                            Reviews: <span className="font-semibold">{strategy.reviewsWeight}</span>
+                                            Reviews: <span className="font-semibold">{draftStrategy.reviewsWeight}</span>
                                         </span>
                                     </div>
                                 </div>
@@ -329,10 +414,10 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                         className={cn(
                                             "font-semibold",
                                             Math.abs(
-                                                strategy.salesWeight +
-                                                strategy.ratingWeight +
-                                                strategy.priceWeight +
-                                                strategy.reviewsWeight -
+                                                draftStrategy.salesWeight +
+                                                draftStrategy.ratingWeight +
+                                                draftStrategy.priceWeight +
+                                                draftStrategy.reviewsWeight -
                                                 1
                                             ) > 0.01
                                                 ? "text-red-500"
@@ -341,10 +426,10 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                                     >
                                         Total:{" "}
                                         {(
-                                            strategy.salesWeight +
-                                            strategy.ratingWeight +
-                                            strategy.priceWeight +
-                                            strategy.reviewsWeight
+                                            draftStrategy.salesWeight +
+                                            draftStrategy.ratingWeight +
+                                            draftStrategy.priceWeight +
+                                            draftStrategy.reviewsWeight
                                         ).toFixed(2)}
                                     </span>{" "}
                                     (should be 1)
@@ -353,13 +438,13 @@ export function StrategyEditor({ strategy, onSave, onIconChange, onParamChange, 
                         </div>
                         <div>
                             <Button
-                                onClick={() => onSave(strategy)}
+                                onClick={() => handleSaveStrategy(draftStrategy)}
                                 disabled={
-                                    !strategy.name ||
-                                    !strategy.icon ||
-                                    !strategy.color ||
-                                    !strategy.description ||
-                                    REQUIRED_PARAMS.some((p) => strategy[p] === undefined)
+                                    !draftStrategy.name ||
+                                    !draftStrategy.icon ||
+                                    !draftStrategy.color ||
+                                    !draftStrategy.description ||
+                                    REQUIRED_PARAMS.some((p) => draftStrategy[p] === undefined)
                                 }
                             >
                                 Save

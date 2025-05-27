@@ -5,6 +5,7 @@ export type Strategy = {
     icon: string;
     color: string;
     ratingOptimum: number;
+    salesVolumeOptimum: number;
     priceMin: number;
     priceMax: number;
     reviewsTop: number;
@@ -14,4 +15,5 @@ export type Strategy = {
     ratingWeight: number;
     priceWeight: number;
     reviewsWeight: number;
+    selected: boolean;
 };

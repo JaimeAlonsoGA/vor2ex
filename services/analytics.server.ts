@@ -89,3 +89,16 @@ export async function getAnalyticsDataByIds(ids: string[]): Promise<Tables<'anal
 
     return data;
 }
+
+export async function getAllAnalyticsData(): Promise<Tables<'analytics'>[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+        .from("analytics")
+        .select("*");
+
+    if (error) {
+        throw new Error(`Error fetching all analytics data: ${error.message}`);
+    }
+
+    return data;
+}

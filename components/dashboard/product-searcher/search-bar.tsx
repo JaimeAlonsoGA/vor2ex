@@ -22,20 +22,26 @@ export default function SearchBar({ onSearch, isLoading }: SearchBarProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full mx-auto gap-2">
-      <div className="relative flex-1 items-center">
-        <Search className="absolute left-2.5 top-2.5 h-3 w-3 text-muted-foreground" />
+      <div className="flex items-center gap-2 w-full md:w-80">
         <Input
-          type="text"
-          placeholder="Search products..."
+          type="search"
+          placeholder="Search keyword or category..."
           value={inputValue}
           disabled={isLoading}
-          onChange={(e) => setInputValue(e.target.value)}
-          className="pl-8 h-8"
+          onChange={e => setInputValue(e.target.value)}
+          className="w-full"
+          aria-label="Search opportunities"
         />
+        <Button
+          type="submit"
+          disabled={isLoading}
+          variant="outline"
+          className={`px-3 ${isLoading ? 'animate-pulse' : ''}`}
+          tabIndex={-1}
+        >
+          <Search className="w-4 h-4" />
+        </Button>
       </div>
-      <Button size={'sm'} type="submit" disabled={isLoading || !inputValue.trim()} variant={!inputValue.trim() ? 'secondary' : 'default'}>
-        <span className={`${isLoading ? 'animate-pulse' : ''}`}>{isLoading ? 'Searching...' : 'Search'}</span>
-      </Button>
     </form>
   );
 }

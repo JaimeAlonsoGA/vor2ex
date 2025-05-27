@@ -1,44 +1,49 @@
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { BarChart2, Package, Star, Tag, Users, CheckCircle2, Bookmark, ChartColumnIncreasing } from "lucide-react";
 import { NicheAnalytics } from "@/types/analytics/analytics";
-import { BarChart2, Package, Star, Tag, Users } from "lucide-react";
 import { Strategy } from "@/types/analytics/strategies";
+import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
+import { getIconComponent } from "@/components/helpers";
+import { cn } from "@/lib/utils";
+import { getBorderClass } from "@/lib/functions/strategies/utils";
+import { deleteUserAnalyticByKeyword } from "@/services/client/users-analytics.client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const TABLE_METRICS: {
     key: keyof NicheAnalytics;
     label: string;
     icon?: React.ReactNode;
     format?: (v: any) => string;
-    tooltip?: string;
 }[] = [
         {
             key: "avgAmazonRating",
-            label: "Avg Rating",
-            // icon: <Star className="w-4 h-4 text-yellow-400" />,
+            label: "Rating",
             format: (v: number) => v !== undefined ? v.toFixed(2) : "-",
         },
         {
             key: "avgAmazonPrice",
-            label: "Avg Price",
-            // icon: <Tag className="w-4 h-4 text-blue-300" />,
+            label: "Price",
             format: (v: number) => v !== undefined ? `$${v.toFixed(2)}` : "-",
         },
         {
-            key: "totalAmazonReviews",
+            key: "avgAmazonReviews",
             label: "Reviews",
-            // icon: <Users className="w-4 h-4 text-green-400" />,
             format: (v: number) => v?.toLocaleString() ?? "-",
         },
         {
             key: "totalAmazonSalesVolume",
             label: "Sales Volume",
-            // icon: <Package className="w-4 h-4 text-orange-400" />,
             format: (v: number) => v?.toLocaleString() ?? "-",
-        },
-        {
-            key: "uniqueAmazonBrands",
-            label: "Brands",
-            // icon: <BarChart2 className="w-4 h-4 text-purple-400" />,
         },
     ];
 
@@ -48,60 +53,163 @@ function formatValue(metric: typeof TABLE_METRICS[number], value: any) {
     return value ?? "-";
 }
 
-export function AnalyticsTable({ analytics, strategies }: { analytics: NicheAnalytics[], strategies?: Strategy[] }) {
-    const maxSales = Math.max(...analytics.map(a => a.totalAmazonSalesVolume ?? 0), 1);
+type AnalyticsTableProps = {
+    analytics: NicheAnalytics[];
+    strategies: Strategy[];
+    onSelectAnalytics: (niche: NicheAnalytics) => void;
+    selectedNiche?: NicheAnalytics;
+};
+
+// Lógica para determinar si un valor es afín a la estrategia usando el score gaussiano
+function isValueAlignedWithStrategy(
+    metricKey: string,
+    niche: NicheAnalytics,
+    strategy: Strategy
+): boolean {
+    const { ratingScore, priceScore, reviewsScore, salesScore } = getProfitScoreWithStrategy(niche, strategy);
+    switch (metricKey) {
+        case "avgAmazonRating":
+            return ratingScore >= 0.7;
+        case "avgAmazonPrice":
+            return priceScore >= 0.7;
+        case "avgAmazonReviews": {
+            return (niche.avgAmazonReviews ?? Infinity) < strategy.reviewsTop;
+        }
+        case "totalAmazonSalesVolume":
+            return salesScore >= 0.7;
+        default:
+            return false;
+    }
+}
+
+export function AnalyticsTable({
+    analytics,
+    strategies,
+    onSelectAnalytics,
+}: AnalyticsTableProps) {
+    const router = useRouter();
+
+    function handleUnsaveNiche(niche: NicheAnalytics) {
+        toast.promise(
+            deleteUserAnalyticByKeyword(niche.keyword).then(res => {
+                return res;
+            }),
+            {
+                loading: "Removing...",
+                success: "Niche forgotten",
+                error: "Error removing niche",
+            }
+        );
+        router.refresh();
+    }
 
     return (
         <section>
             <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                <BarChart2 className="w-5 h-5 text-blue-400" /> Compare Niches
+                <BarChart2 className="w-5 h-5 text-blue-400" /> All Niches Analytics
             </h2>
-            <ScrollArea className="w-full overflow-x-auto rounded-lg border bg-background">
-                <table className="min-w-full border-separate border-spacing-y-1">
-                    <thead>
-                        <tr>
-                            <th className="text-left text-xs font-semibold text-muted-foreground p-2">Keyword</th>
+            <div className="w-full overflow-x-auto rounded-lg border bg-background">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="text-left text-xs font-semibold text-muted-foreground">Keyword</TableHead>
                             {TABLE_METRICS.map((metric) => (
-                                <th key={metric.key} className="text-left text-xs font-semibold text-muted-foreground p-2">
+                                <TableHead key={metric.key} className="text-left text-xs font-semibold text-muted-foreground">
                                     <div className="flex items-center gap-1">
                                         {metric.icon}
                                         {metric.label}
                                     </div>
-                                </th>
+                                </TableHead>
                             ))}
-                            <th className="text-left text-xs font-semibold text-muted-foreground p-2">Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {analytics
-                            .map(a => {
-                                const { ratingScore, priceScore, reviewsScore, sales } = getProfitScore(a);
-                                const salesScore = Math.min(1, (sales ?? 0) / maxSales);
-                                const score = salesScore * 0.4 + ratingScore * 0.2 + priceScore * 0.2 + reviewsScore * 0.2;
-                                return { ...a, score };
-                            })
-                            .sort((a, b) => b.score - a.score)
-                            .map((niche) => (
-                                <tr key={niche.keyword} className="hover:bg-muted transition">
-                                    <td className="p-2">
-                                        <Badge className="bg-muted text-foreground px-2 py-1 text-xs font-semibold">
+                            {strategies.map((strategy) => (
+                                <TableHead key={strategy.id + "-score"} className="text-left text-xs font-semibold text-muted-foreground">
+                                    <div className={cn("flex p-1 border rounded-full justify-center items-center", getBorderClass(strategy.color))}>
+                                        {getIconComponent(strategy.icon, `w-3 h-3`)}
+                                    </div>
+                                </TableHead>
+                            ))}
+                            <TableHead colSpan={2}></TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {analytics.map((niche) => {
+                            const strategyResults = strategies.map(strategy => {
+                                const { ratingScore, priceScore, reviewsScore, salesScore } = getProfitScoreWithStrategy(niche, strategy);
+                                const score =
+                                    (strategy.salesWeight ?? 0.4) * salesScore +
+                                    (strategy.ratingWeight ?? 0.2) * ratingScore +
+                                    (strategy.priceWeight ?? 0.2) * priceScore +
+                                    (strategy.reviewsWeight ?? 0.2) * reviewsScore;
+                                return {
+                                    strategy,
+                                    score: Math.round(score * 100),
+                                };
+                            });
+
+                            return (
+                                <TableRow key={niche.keyword} className="hover:bg-muted transition">
+                                    <TableCell>
+                                        <Badge variant={"secondary"}>
                                             {niche.keyword}
                                         </Badge>
                                         {niche.topCategory && (
                                             <span className="ml-2 text-xs text-blue-400">{niche.topCategory}</span>
                                         )}
-                                    </td>
+                                    </TableCell>
                                     {TABLE_METRICS.map((metric) => (
-                                        <td key={metric.key} className="p-2 text-sm">
-                                            {formatValue(metric, niche[metric.key])}
-                                        </td>
+                                        <TableCell key={metric.key} className="text-sm text-foreground">
+                                            <span className="flex items-center gap-1">
+                                                {formatValue(metric, niche[metric.key])}
+                                                {strategies.map((strategy) => {
+                                                    const aligned = isValueAlignedWithStrategy(metric.key, niche, strategy);
+                                                    return aligned ? (
+                                                        <span key={strategy.id} title={`Near optimum for ${strategy.name}`}>
+                                                            {getIconComponent(strategy.icon, "w-4 h-4 text-muted-foreground")}
+                                                        </span>
+                                                    ) : null;
+                                                })}
+                                            </span>
+                                        </TableCell>
                                     ))}
-                                    <td className="p-2 text-sm font-bold text-green-500">{(niche.score * 100).toFixed(0)}</td>
-                                </tr>
-                            ))}
-                    </tbody>
-                </table>
-            </ScrollArea>
+                                    {strategyResults.map(({ strategy, score }) => (
+                                        <TableCell key={strategy.id + "-score"}>
+                                            <span
+                                                className={cn(
+                                                    "text-sm",
+                                                    {
+                                                        "font-bold text-green-500": score >= 70,
+                                                        "text-primary": score >= 40 && score < 70,
+                                                        "text-red-500": score < 40,
+                                                    }
+                                                )}>{score}</span>
+                                        </TableCell>
+                                    ))}
+                                    <TableCell className="gap-2 flex items-center">
+                                        <Button
+                                            size="sm"
+                                            variant="secondary"
+                                            onClick={() => onSelectAnalytics(niche)}
+                                            aria-label={`Show analytics for ${niche.keyword}`}
+                                        >
+                                            Analytics
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            className="hover:border-primary"
+                                            variant="outline"
+                                            onClick={() => handleUnsaveNiche(niche)}
+                                            aria-label={`Show analytics for ${niche.keyword}`}
+                                        >
+                                            <Bookmark className="ml-1 fill-muted-foreground text-muted-foreground" />
+                                            Unsave
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </div>
         </section>
-    )
+    );
 }

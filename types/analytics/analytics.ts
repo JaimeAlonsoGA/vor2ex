@@ -1,4 +1,5 @@
 export interface NicheAnalytics {
+    id?: string;
     keyword: string;
     searchedAt: string;
 

@@ -177,7 +177,7 @@ export default function Sidebar() {
                 {/* Collapsed Server Status */}
                 {isCollapsed && (
                     <div className="border-t p-2">
-                        <div className="flex flex-col items-center space-y-2">
+                        <div className="flex flex-col items-center space-y-2 mb-1">
                             <Server className="h-4 w-4 text-muted-foreground" />
                             <div className="flex flex-col space-y-1">
                                 <div className="h-2 w-2 rounded-full bg-green-500"></div>

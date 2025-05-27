@@ -8,6 +8,7 @@ export function strategyToDb(strategy: Strategy) {
         icon: strategy.icon,
         color: strategy.color,
         rating_optimum: strategy.ratingOptimum,
+        sales_volume_optimum: strategy.salesVolumeOptimum,
         price_min: strategy.priceMin,
         price_max: strategy.priceMax,
         reviews_top: strategy.reviewsTop,
@@ -17,6 +18,7 @@ export function strategyToDb(strategy: Strategy) {
         rating_weight: strategy.ratingWeight,
         price_weight: strategy.priceWeight,
         reviews_weight: strategy.reviewsWeight,
+        selected: strategy.selected,
     };
     if (strategy.id) {
         return {
@@ -37,6 +39,7 @@ export function dbToStrategy(db: Tables<'strategies'>): Strategy {
         icon: db.icon,
         color: db.color,
         ratingOptimum: db.rating_optimum,
+        salesVolumeOptimum: db.sales_volume_optimum,
         priceMin: db.price_min,
         priceMax: db.price_max,
         reviewsTop: db.reviews_top,
@@ -46,6 +49,7 @@ export function dbToStrategy(db: Tables<'strategies'>): Strategy {
         ratingWeight: db.rating_weight,
         priceWeight: db.price_weight,
         reviewsWeight: db.reviews_weight,
-        id: db.id ? db.id : undefined
+        id: db.id ? db.id : undefined,
+        selected: db.selected
     };
 }

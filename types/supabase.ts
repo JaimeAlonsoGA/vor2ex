@@ -220,7 +220,9 @@ export type Database = {
           reviews_tense: number
           reviews_top: number
           reviews_weight: number
+          sales_volume_optimum: number
           sales_weight: number
+          selected: boolean
           user_id: string
         }
         Insert: {
@@ -238,7 +240,9 @@ export type Database = {
           reviews_tense: number
           reviews_top: number
           reviews_weight: number
+          sales_volume_optimum?: number
           sales_weight: number
+          selected?: boolean
           user_id: string
         }
         Update: {
@@ -256,14 +260,16 @@ export type Database = {
           reviews_tense?: number
           reviews_top?: number
           reviews_weight?: number
+          sales_volume_optimum?: number
           sales_weight?: number
+          selected?: boolean
           user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "strategies_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
@@ -271,19 +277,25 @@ export type Database = {
       }
       users: {
         Row: {
+          amazon_marketplace: string
           auth_id: string
           id: string
-          name: string | null
+          language: string
+          name: string
         }
         Insert: {
+          amazon_marketplace?: string
           auth_id: string
           id?: string
-          name?: string | null
+          language?: string
+          name?: string
         }
         Update: {
+          amazon_marketplace?: string
           auth_id?: string
           id?: string
-          name?: string | null
+          language?: string
+          name?: string
         }
         Relationships: []
       }

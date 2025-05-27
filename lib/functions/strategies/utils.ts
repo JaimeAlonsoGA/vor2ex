@@ -12,3 +12,8 @@ export function getColorValue(color: string) {
 export function getBorderClass(color: string) {
     return COLOR_OPTIONS.find((c) => c.value === color)?.border || "border-blue-500";
 }
+
+
+export function getTextClass(color: string) {
+    return COLOR_OPTIONS.find((c) => c.value === color)?.text || "text-blue-500";
+}

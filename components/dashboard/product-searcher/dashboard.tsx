@@ -15,7 +15,7 @@ import { collectAlibabaSearchData } from '@/lib/functions/alibaba/collect-alibab
 import { collectAmazonSearchData } from '@/lib/functions/amazon/collect-scraper-data';
 import { StarRating } from './star-rating';
 import { getNicheAnalytics } from '@/lib/factories/analytics';
-import NicheQuickOverview from './analytics/quick-overview';
+import NicheQuickOverview from '../analytics/quick-overview';
 import { NicheAnalytics } from '@/types/analytics/analytics';
 import { insertAnalytics, saveAnalytics } from '@/services/client/analytics.client';
 import { Tables } from '@/types/supabase';
@@ -26,18 +26,14 @@ import { cn } from '@/lib/utils';
 import { ProductsTable } from './product-table';
 export const PAGE_SIZE = 10;
 
-type ViewMode = "table" | "cards"
 type SortField = "price" | "rating" | "reviews" | "name"
 type SortOrder = "asc" | "desc"
 
 export default function ProductSearcherDashboard({ userAnalytics }: { userAnalytics: Tables<'analytics'>['keyword'][] }) {
-  const [searchTerm, setSearchTerm] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [analytics, setAnalytics] = useState<NicheAnalytics>();
   const [isLoading, setIsLoading] = useState(false);
-  const [amazonPage, setAmazonPage] = useState(1);
-  const [alibabaPage, setAlibabaPage] = useState(1);
-  const [viewMode, setViewMode] = useState<ViewMode>("table")
+  const [saveNicheLoading, setSaveNicheLoading] = useState(false);
   const [sortField, setSortField] = useState<SortField>("price")
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc")
   const [removedProductIds, setRemovedProductIds] = useState<string[]>([]);
@@ -54,12 +50,8 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
     amazonCategory: "",
   });
 
-
   const handleSearch = async (term: string) => {
     if (!term.trim()) return;
-    setAmazonPage(1);
-    setAlibabaPage(1);
-    setSearchTerm(term);
     setIsLoading(true);
 
     try {
@@ -113,11 +105,13 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
   };
 
   const handleSaveNiche = async (keyword?: string) => {
+    setSaveNicheLoading(true);
     if (!keyword) return;
     if (userAnalyticsState.includes(keyword)) {
       toast.promise(
         deleteUserAnalyticByKeyword(keyword).then(res => {
           if (res.success) setUserAnalyticsState(prev => prev.filter(k => k !== keyword));
+          setSaveNicheLoading(false);
           return res;
         }),
         {
@@ -130,6 +124,7 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
       toast.promise(
         saveAnalytics(keyword).then(res => {
           if (res) setUserAnalyticsState(prev => [...prev, keyword]);
+          setSaveNicheLoading(false);
           return res;
         }),
         {
@@ -290,8 +285,7 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
         <div className="flex gap-2">
           <Button
             variant="outline"
-            disabled={!analytics || isLoading}
-            size="sm"
+            disabled={!analytics || isLoading || saveNicheLoading}
             className="flex items-center gap-2"
             onClick={() => handleSaveNiche(analytics?.keyword)}
             aria-label="Save niche"
@@ -313,7 +307,7 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
         <div className="flex gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline">
                 <SlidersHorizontal className="h-4 w-4 mr-2" />
                 Sort
               </Button>
@@ -401,7 +395,7 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline">
                 <Filter className="h-4 w-4 mr-2" />
                 Filter
               </Button>
@@ -514,36 +508,34 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button variant="outline" size="sm" onClick={exportToCSV}>
+          <Button variant="outline" onClick={exportToCSV}>
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
         </div>
       </div>
       <section className="w-full max-w-full pb-4">
-        <div className="flex flex-wrap gap-2 mb-4 justify-center">
+        <div className="flex flex-wrap gap-2 mb-2">
           <Button
             variant={selected === "amazon" ? "default" : "outline"}
-            size="sm"
             className={cn(
-              "rounded-full px-4 py-1 font-semibold transition",
+              "rounded-full font-semibold transition pl-1.5",
               selected === "amazon" && "shadow"
             )}
             onClick={() => setSelected("amazon")}
           >
-            <img src="/assets/amazon-icon.png" alt="Amazon logo" className="mr-2 h-6" />
+            <img src="/assets/amazon-icon.png" alt="Amazon logo" className="h-7" />
             Amazon
           </Button>
           <Button
             variant={selected === "alibaba" ? "default" : "outline"}
-            size="sm"
             className={cn(
-              "rounded-full px-4 py-1 font-semibold transition",
+              "rounded-full px-4 py-1 font-semibold transition pl-1.5",
               selected === "alibaba" && "shadow"
             )}
             onClick={() => setSelected("alibaba")}
           >
-            <img src="/assets/alibaba-icon.png" alt="Alibaba logo" className="mr-2 h-6" />
+            <img src="/assets/alibaba-icon.png" alt="Alibaba logo" className="h-7" />
             Alibaba
           </Button>
         </div>

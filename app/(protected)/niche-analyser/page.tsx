@@ -1,15 +1,18 @@
 import { NicheSearcherDashboard } from "@/components/dashboard/niche-analyser/dashboard";
 import AnalyticsFallback from "@/components/dashboard/niche-analyser/fallback";
-import { ModulesCard } from "@/components/modules-cards";
-import { collectAnalyticsData } from "@/lib/functions/analytics/collect-analytics-data";
-import { collectUserStrategiesData } from "@/lib/functions/analytics/collect-strategies-data";
+import { NoStrategiesActivatedFallback } from "@/components/dashboard/strategies/fallback";
+import { collectUserAnalyticsData } from "@/lib/functions/analytics/collect-analytics-data";
+import { collectUserStrategiesData } from "@/lib/functions/strategies/collect-strategies-data";
 import { Suspense } from "react";
 
 export default async function ProtectedPage() {
-    const userAnalytics = await collectAnalyticsData();
-    const userStrategies = await collectUserStrategiesData();
+    const userAnalytics = await collectUserAnalyticsData();
+    const userStrategies = (await collectUserStrategiesData()).filter((strategy) => strategy.selected);
     if (!userAnalytics || userAnalytics.length === 0) {
         return <AnalyticsFallback />;
+    }
+    if (!userStrategies || userStrategies.length === 0) {
+        return <NoStrategiesActivatedFallback />;
     }
     return (
         <Suspense fallback={<div className="text-center">Loading...</div>}>

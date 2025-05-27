@@ -72,3 +72,22 @@ export async function deleteStrategy(data: Strategy): Promise<{ success: boolean
     }
 
 }
+
+export async function toggleStrategySelection(strategyId: string, selected: boolean): Promise<void> {
+    const supabase = createClient();
+    const user = await getUserData();
+
+    if (!user) {
+        throw new Error("User not authenticated");
+    }
+
+    const { error } = await supabase
+        .from("strategies")
+        .update({ selected })
+        .eq("id", strategyId)
+        .eq("user_id", user.id);
+
+    if (error) {
+        throw new Error(`Error updating strategy selection: ${error.message}`);
+    }
+}
