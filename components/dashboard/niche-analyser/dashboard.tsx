@@ -9,7 +9,6 @@ import { AnalyticsTable } from "./analytics-table";
 import NicheQuickOverview from "../analytics/quick-overview";
 import { Button } from "@/components/ui/button";
 import NicheQuickOverviewSimple from "../analytics/complete-analytics";
-import { AnalyticsMetrics } from "./metrics";
 
 
 export function NicheSearcherDashboard({

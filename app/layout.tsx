@@ -3,11 +3,14 @@ import "./globals.css";
 import { Metadata } from "next";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Vor2ex - Ecommerce Intelligence Platform",
   description: "Advanced analytics and insights for Amazon FBA sellers",
+  icons: {
+    icon: "favicon.ico",
+    shortcut: "favicon.ico",
+  },
 }
 
 const inter = Inter({ subsets: ["latin"] })

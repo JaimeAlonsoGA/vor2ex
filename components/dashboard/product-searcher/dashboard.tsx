@@ -7,7 +7,7 @@ import { collectAmazonCatalogData, collectAmazonCatalogDataByAsin } from '@/lib/
 import { productFromAmazon } from '@/lib/factories/amazon-item';
 import { amazonSearchData } from '@/lib/amazonSearchData';
 import { AlibabaSearchData } from '@/lib/alibabaSearchData';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuPortal, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Bookmark, Download, Filter, SlidersHorizontal } from "lucide-react"
 import { Button } from '../../ui/button';
 import { Label } from "@/components/ui/label"

@@ -4,7 +4,7 @@ import { EMPTY_STRATEGY } from "@/lib/strategies";
 import { Suspense } from "react";
 
 interface PageProps {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }
 
 export default async function CreateStrategyPage({ params }: PageProps) {
