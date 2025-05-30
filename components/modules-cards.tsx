@@ -11,7 +11,7 @@ const modules = [
         desc: "Find profitable products across Amazon and Alibaba.",
         gradient: "from-gray-900 via-blue-950 to-gray-800",
         ring: "ring-blue-900/30",
-        to: "/product-searcher",
+        to: "/explorer",
     },
     {
         key: "opportunities",

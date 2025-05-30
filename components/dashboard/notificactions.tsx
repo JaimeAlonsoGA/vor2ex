@@ -9,8 +9,8 @@ import { getIconComponent } from "@/components/helpers";
 import { useRouter } from "next/navigation";
 import { Strategy } from "@/types/analytics/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
-import { NicheAnalytics } from "@/types/analytics/analytics";
-import { dbToAnalytics } from "@/lib/factories/analytics";
+import { Niche } from "@/types/analytics/analytics";
+import { dbToNiche } from "@/lib/factories/niche-item";
 
 type Notification = {
     id: string;
@@ -30,7 +30,7 @@ export function NotificationsDropdown({ activeStrategies }: NotificationsDropdow
     useTableListener({
         table: "analytics",
         onInsert: (newNiche) => {
-            const nicheData = dbToAnalytics(newNiche);
+            const nicheData = dbToNiche(newNiche);
             let bestScore = -Infinity;
             let bestStrategy = activeStrategies[0];
             for (const strategy of activeStrategies) {

@@ -1,11 +1,11 @@
 import { Tables } from "@/types/supabase";
 import { AlibabaFactoryResponse } from "../../types/alibaba/alibaba-factory";
 import { AmazonAPIFactoryResponse } from "../../types/amazon/amazon-factory";
-import { NicheAnalytics } from "../../types/analytics/analytics";
+import { Niche } from "../../types/analytics/analytics";
 import { Product } from "../../types/product";
 import { median } from "./utils";
 
-export function getNicheAnalytics(keyword: string, amazon: AmazonAPIFactoryResponse, alibaba: AlibabaFactoryResponse, products: Product[]): NicheAnalytics {
+export function getNiche(keyword: string, amazon: AmazonAPIFactoryResponse, alibaba: AlibabaFactoryResponse, products: Product[]): Niche {
     const now = new Date().toISOString();
 
     // Separar productos por fuente
@@ -129,7 +129,7 @@ export function getNicheAnalytics(keyword: string, amazon: AmazonAPIFactoryRespo
 }
 
 
-export function analyticsToDb(data: NicheAnalytics) {
+export function nicheToDb(data: Niche) {
     return {
         keyword: data.keyword,
         searched_at: data.searchedAt,
@@ -176,7 +176,7 @@ export function analyticsToDb(data: NicheAnalytics) {
     };
 }
 
-export function dbToAnalytics(data: Tables<'analytics'>): NicheAnalytics {
+export function dbToNiche(data: Tables<'analytics'>): Niche {
     return {
         id: data.id ?? undefined,
         keyword: data.keyword ?? "",

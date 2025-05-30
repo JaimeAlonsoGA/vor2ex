@@ -1,18 +1,14 @@
 import Header from "@/components/dashboard/ui/header";
 import Sidebar from "@/components/dashboard/ui/sidebar";
-import { getAuthUser } from "@/services/auth.server";
-import { getUserData } from "@/services/users.server";
+import { getUser } from "@/services/auth.server";
 import { redirect } from "next/navigation";
-
 export default async function Layout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const authenticated = await getAuthUser();
-    if (!authenticated) {
-        redirect("/sign-in");
-    }
+    const user = await getUser();
+    if (!user) redirect("/");
 
     return (
         <div className="flex min-h-screen bg-background">

@@ -1,20 +1,17 @@
 "use server"
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
+import { User } from "@supabase/supabase-js";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export { getAuthUser, signUpAction, signInAction, forgotPasswordAction, resetPasswordAction, signOutAction };
+export { getUser, signUpAction, signInAction, forgotPasswordAction, resetPasswordAction, signOutAction };
 
-async function getAuthUser() {
+async function getUser(): Promise<User> {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return null;
-  }
-  return user;
+  const { data } = await supabase.auth.getUser();
+  if (data?.user) return data.user;
+  throw new Error("User not authenticated");
 }
 
 const signUpAction = async (formData: FormData) => {

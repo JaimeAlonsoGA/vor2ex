@@ -1,4 +1,4 @@
-import { sendPasswordReset, updateUserProfile } from "@/services/client/users.client";
+import { sendPasswordReset, updateSettings } from "@/services/client/users.client";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { toast } from "sonner";
@@ -10,11 +10,11 @@ import { KeyRound, Loader2, Save } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { useRouter } from "next/navigation";
 
-export function UserForm({ userProfile, auth }: { userProfile: Tables<'users'>; auth: User }) {
+export function UserForm({ settings, user }: { settings: Tables<'settings'>; user: User }) {
     const [form, setForm] = useState({
-        name: userProfile.name,
-        amazon_marketplace: userProfile.amazon_marketplace,
-        language: userProfile.language,
+        name: settings.name,
+        amazon_marketplace: settings.amazon_marketplace,
+        language: settings.language,
     });
     const [loading, setLoading] = useState(false);
     const [resetLoading, setResetLoading] = useState(false);
@@ -32,7 +32,7 @@ export function UserForm({ userProfile, auth }: { userProfile: Tables<'users'>; 
         e.preventDefault();
         setLoading(true);
         toast.promise(
-            updateUserProfile({ ...form }).then(() => {
+            updateSettings({ ...form }).then(() => {
                 setLoading(false);
                 router.refresh();
             }),
@@ -47,7 +47,7 @@ export function UserForm({ userProfile, auth }: { userProfile: Tables<'users'>; 
     const handleResetPassword = async () => {
         setResetLoading(true);
         toast.promise(
-            sendPasswordReset(auth.email!).then(() => {
+            sendPasswordReset(user.email!).then(() => {
                 setResetLoading(false);
             }),
             {
@@ -69,7 +69,7 @@ export function UserForm({ userProfile, auth }: { userProfile: Tables<'users'>; 
                 <Input
                     id="email"
                     type="email"
-                    value={auth.email || ""}
+                    value={user.email || ""}
                     disabled
                     className="bg-muted cursor-not-allowed"
                 />

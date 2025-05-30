@@ -13,7 +13,7 @@ import { useState } from "react";
 import { getColorClass } from "@/lib/functions/strategies/utils";
 import { REQUIRED_PARAMS } from "../../../lib/strategies";
 import { COLOR_OPTIONS, ICON_OPTIONS } from "./strategies-options";
-import { deleteStrategy, insertOrUpdateStrategy } from "@/services/client/strategies.client";
+import { deleteStrategy, upsertStrategy } from "@/services/client/strategies.client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -44,7 +44,7 @@ export default function StrategyEditor({ strategy }: StrategyEditorProps) {
             return;
         }
         toast.promise(
-            insertOrUpdateStrategy(newStrategy).then((res) => {
+            upsertStrategy(newStrategy).then((res) => {
                 router.push("/strategies");
                 router.refresh();
                 return res;

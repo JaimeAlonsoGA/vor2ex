@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef } from "react";
-import { NicheAnalytics } from "@/types/analytics/analytics";
+import { Niche } from "@/types/analytics/analytics";
 import { Strategy } from "@/types/analytics/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
 import { getIconComponent } from "@/components/helpers";
@@ -12,24 +12,24 @@ import { Button } from "@/components/ui/button";
 import { Star, Tag, Users, Package, Search, Check, SquarePen, Bookmark, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getBorderClass } from "@/lib/functions/strategies/utils";
-import { collectAllAnalyticsData } from "@/lib/functions/analytics/collect-analytics-data";
+import { collectAllNichesData } from "@/lib/functions/niches/collect-niches-data";
 import { useTableListener } from "@/hooks/use-listener";
 import { toast } from "sonner";
-import { deleteUserAnalyticByKeyword } from "@/services/client/users-analytics.client";
-import { saveAnalytics } from "@/services/client/analytics.client";
+import { deleteUserNicheByKeyword } from "@/services/client/users-niches.client";
+import { saveNiche } from "@/services/client/niches.client";
 import NicheQuickOverviewSimple from "../analytics/complete-analytics";
 import { useRouter } from "next/navigation";
-import { dbToAnalytics } from "@/lib/factories/analytics";
+import { dbToNiche } from "@/lib/factories/niche-item";
 import { Tables } from "@/types/supabase";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type OpportunityCardProps = {
-    niche: NicheAnalytics;
+    niche: Niche;
     strategy: Strategy;
     score: number;
     isUserNiche: boolean
     loading?: boolean;
-    onSelectAnalytics: (niche: NicheAnalytics) => void;
+    onSelectAnalytics: (niche: Niche) => void;
     onSave: (keyword?: string) => void;
 };
 
@@ -108,14 +108,14 @@ export function OpportunityFinderDashboard({
     allNiches,
     strategies,
     userNiches
-}: { allNiches: NicheAnalytics[], strategies: Strategy[], userNiches: NicheAnalytics[] }) {
+}: { allNiches: Niche[], strategies: Strategy[], userNiches: Niche[] }) {
     const [search, setSearch] = useState("");
     const [minScore, setMinScore] = useState<number>(70);
     const [editing, setEditing] = useState<boolean>(false);
-    const [selectedAnalytics, setSelectedAnalytics] = useState<NicheAnalytics | undefined>(undefined);
+    const [selectedAnalytics, setSelectedAnalytics] = useState<Niche | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<NicheAnalytics[]>(allNiches);
-    const [updatedUserNiches, setUpdatedUserNiches] = useState<NicheAnalytics[]>(userNiches);
+    const [data, setData] = useState<Niche[]>(allNiches);
+    const [updatedUserNiches, setUpdatedUserNiches] = useState<Niche[]>(userNiches);
     const [orderBy, setOrderBy] = useState<"score" | "recent">("score");
 
     const handleSaveNiche = async (keyword?: string) => {
@@ -124,7 +124,7 @@ export function OpportunityFinderDashboard({
 
         if (updatedUserNiches.some(niche => niche.keyword === keyword)) {
             toast.promise(
-                deleteUserAnalyticByKeyword(keyword).then(res => {
+                deleteUserNicheByKeyword(keyword).then(res => {
                     setUpdatedUserNiches(prev => prev.filter(niche => niche.keyword !== keyword));
                     setLoading(false);
                     return res;
@@ -138,7 +138,7 @@ export function OpportunityFinderDashboard({
         } else {
             // Si no está guardado, añade el nicho
             toast.promise(
-                saveAnalytics(keyword).then(res => {
+                saveNiche(keyword).then(res => {
                     // Busca el nicho en data y lo añade a updatedUserNiches
                     const newNiche = data.find(niche => niche.keyword === keyword);
                     if (newNiche) {
@@ -156,7 +156,7 @@ export function OpportunityFinderDashboard({
         }
     };
 
-    function handleSelectAnalytics(niche?: NicheAnalytics) {
+    function handleSelectAnalytics(niche?: Niche) {
         if (!niche) {
             setSelectedAnalytics(undefined);
         } else {
@@ -165,7 +165,7 @@ export function OpportunityFinderDashboard({
     }
 
     const handleInsert = (newRow: Tables<'analytics'>) => {
-        const niche = dbToAnalytics(newRow);
+        const niche = dbToNiche(newRow);
         setData((prevData) => [niche, ...prevData]);
     };
 

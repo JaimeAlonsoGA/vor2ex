@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NicheAnalytics } from "@/types/analytics/analytics";
+import { Niche } from "@/types/analytics/analytics";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,7 @@ interface CardConfig {
 }
 
 interface NicheQuickOverviewProps {
-    analytics?: NicheAnalytics;
+    analytics?: Niche;
     isLoading: boolean;
 }
 
@@ -39,7 +39,7 @@ const DEFAULT_PINNED = [
 const AMAZON_COLOR = "text-forground border-blue-500";
 const ALIBABA_COLOR = "text-forground border-orange-500";
 
-const getCardsConfig = (analytics?: NicheAnalytics): CardConfig[] => [
+const getCardsConfig = (analytics?: Niche): CardConfig[] => [
     // Amazon
     {
         key: "amazon-total",

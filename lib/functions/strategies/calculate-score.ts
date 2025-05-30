@@ -1,4 +1,4 @@
-import { NicheAnalytics } from "@/types/analytics/analytics";
+import { Niche } from "@/types/analytics/analytics";
 import { Strategy } from "@/types/analytics/strategies";
 
 function gaussianScore(value: number, optimum: number, sigma: number = 0.3) {
@@ -11,7 +11,7 @@ function gaussianScore(value: number, optimum: number, sigma: number = 0.3) {
  * @param optimum Valor óptimo definido por la estrategia
  * @param sigma Tolerancia (cuanto mayor, más permisivo)
  */
-export function getProfitScoreWithStrategy(a: NicheAnalytics, strategy: Strategy) {
+export function getProfitScoreWithStrategy(a: Niche, strategy: Strategy) {
     // Rating: score gaussiano respecto al óptimo definido en la estrategia
     const rating = a.avgAmazonRating ?? 0;
     const ratingScore = gaussianScore(rating, strategy.ratingOptimum, 0.3);

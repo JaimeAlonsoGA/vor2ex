@@ -1,4 +1,4 @@
-import { NicheAnalytics } from "@/types/analytics/analytics";
+import { Niche } from "@/types/analytics/analytics";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -26,7 +26,7 @@ interface CardConfig {
 }
 
 interface NicheQuickOverviewSimpleProps {
-    analytics?: NicheAnalytics;
+    analytics?: Niche;
     isLoading: boolean;
     goBack: () => void;
     goBackMessage?: string;
@@ -35,7 +35,7 @@ interface NicheQuickOverviewSimpleProps {
 const AMAZON_COLOR = "text-forground border-blue-500";
 const ALIBABA_COLOR = "text-forground border-orange-500";
 
-const getCardsConfig = (analytics?: NicheAnalytics): CardConfig[] => [
+const getCardsConfig = (analytics?: Niche): CardConfig[] => [
     {
         key: "amazon-total",
         icon: <Box className="h-5 w-5 text-blue-500" />,

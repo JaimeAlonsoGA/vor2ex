@@ -9,7 +9,31 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      analytics: {
+      credentials: {
+        Row: {
+          amz_access_token: string | null
+          amz_expires_at: string
+          amz_refresh_token: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          amz_access_token?: string | null
+          amz_expires_at?: string
+          amz_refresh_token?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          amz_access_token?: string | null
+          amz_expires_at?: string
+          amz_refresh_token?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      niches: {
         Row: {
           amazon_choice_count: number | null
           avg_alibaba_min_order_quantity: number | null
@@ -147,62 +171,29 @@ export type Database = {
         }
         Relationships: []
       }
-      credentials: {
+      settings: {
         Row: {
-          amz_access_token: string | null
-          amz_expires_at: string
-          amz_refresh_token: string | null
+          amazon_marketplace: string
+          auth_id: string
           id: string
-          user_id: string | null
+          language: string
+          name: string
         }
         Insert: {
-          amz_access_token?: string | null
-          amz_expires_at?: string
-          amz_refresh_token?: string | null
+          amazon_marketplace?: string
+          auth_id: string
           id?: string
-          user_id?: string | null
+          language?: string
+          name?: string
         }
         Update: {
-          amz_access_token?: string | null
-          amz_expires_at?: string
-          amz_refresh_token?: string | null
+          amazon_marketplace?: string
+          auth_id?: string
           id?: string
-          user_id?: string | null
+          language?: string
+          name?: string
         }
         Relationships: []
-      }
-      saved_analytics: {
-        Row: {
-          analytic_id: string | null
-          id: string
-          user_id: string | null
-        }
-        Insert: {
-          analytic_id?: string | null
-          id?: string
-          user_id?: string | null
-        }
-        Update: {
-          analytic_id?: string | null
-          id?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "saved_analytics_analytic_id_fkey"
-            columns: ["analytic_id"]
-            isOneToOne: false
-            referencedRelation: "analytics"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "saved_analytics_user_id_fkey1"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       strategies: {
         Row: {
@@ -265,39 +256,33 @@ export type Database = {
           selected?: boolean
           user_id?: string
         }
+        Relationships: []
+      }
+      users_niches: {
+        Row: {
+          id: string
+          niche_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          niche_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          niche_id?: string | null
+          user_id?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "strategies_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "users_niches_niche_id_fkey"
+            columns: ["niche_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "niches"
             referencedColumns: ["id"]
           },
         ]
-      }
-      users: {
-        Row: {
-          amazon_marketplace: string
-          auth_id: string
-          id: string
-          language: string
-          name: string
-        }
-        Insert: {
-          amazon_marketplace?: string
-          auth_id: string
-          id?: string
-          language?: string
-          name?: string
-        }
-        Update: {
-          amazon_marketplace?: string
-          auth_id?: string
-          id?: string
-          language?: string
-          name?: string
-        }
-        Relationships: []
       }
     }
     Views: {

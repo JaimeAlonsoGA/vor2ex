@@ -1,16 +1,14 @@
 import { createClient } from "@/utils/supabase/client";
+import { getUser } from "../auth.server";
 
-export async function updateUserProfile(profileData: {
+export async function updateSettings(profileData: {
     name: string;
     amazon_marketplace: string;
     language: string;
 }) {
     const supabase = createClient();
-    // Obtén el usuario autenticado
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    if (userError || !user) throw userError || new Error("No authenticated user");
+    const user = await getUser();
 
-    // Sanea los datos antes de actualizar
     const cleanData = {
         name: profileData.name.trim(),
         amazon_marketplace: profileData.amazon_marketplace.trim(),
@@ -18,13 +16,14 @@ export async function updateUserProfile(profileData: {
     };
 
     const { error, data } = await supabase
-        .from("users")
+        .from("settings")
         .update(cleanData)
         .eq("auth_id", user.id)
         .select()
         .single();
 
-    if (error) throw error;
+    if (error) throw new Error("Error updating settings");
+
     return data;
 }
 

@@ -5,9 +5,9 @@ import config from "@/orm.config";
 
 export { fetchAmazonSearch }
 
-async function fetchAmazonSearch(keyword: string, page: number): Promise<AmazonSearchApiResponse | undefined> {
+async function fetchAmazonSearch(keyword: string, page: number): Promise<AmazonSearchApiResponse> {
     const auth = config.decodo.access_token;
-    if (!keyword) return;
+
     const response = await fetch(config.decodo.baseUrl, {
         method: "POST",
         body: JSON.stringify({
@@ -26,9 +26,7 @@ async function fetchAmazonSearch(keyword: string, page: number): Promise<AmazonS
         return undefined;
     });
 
-    if (response) {
-        return await response.json() as AmazonSearchApiResponse;
-    } else {
-        console.error("No response received from fetching Amazon search.");
-    }
+    if (!response) throw new Error("Error fetching scraper API");
+
+    return await response.json() as AmazonSearchApiResponse;
 }

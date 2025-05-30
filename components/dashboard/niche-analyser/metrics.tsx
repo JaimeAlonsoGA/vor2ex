@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { NicheAnalytics } from "@/types/analytics/analytics";
+import { Niche } from "@/types/analytics/analytics";
 import { Strategy } from "@/types/analytics/strategies";
 import { Badge } from "@/components/ui/badge";
 import { Package, Star, Tag, TrendingUp, Users, ChevronRight } from "lucide-react";
@@ -14,7 +14,7 @@ import { getIconComponent } from "@/components/helpers";
 export function AnalyticsMetrics({
     analytics,
     strategies,
-}: { analytics: NicheAnalytics[]; strategies: Strategy[] }) {
+}: { analytics: Niche[]; strategies: Strategy[] }) {
     if (!analytics?.length || !strategies?.length) return null;
 
     // Precompute max values for normalization
@@ -85,9 +85,9 @@ export function AnalyticsMetrics({
 type MetricCardProps = {
     title: string;
     icon: React.ReactNode;
-    analytics: NicheAnalytics[];
+    analytics: Niche[];
     strategies: Strategy[];
-    valueKey: keyof NicheAnalytics;
+    valueKey: keyof Niche;
     max: number;
     color: string;
     format: (v: any) => string;
@@ -128,9 +128,9 @@ function MetricCard({
 }
 
 type MetricBarProps = {
-    analytics: NicheAnalytics[];
+    analytics: Niche[];
     strategies: Strategy[];
-    valueKey: keyof NicheAnalytics;
+    valueKey: keyof Niche;
     max: number;
     color: string;
     format: (v: any) => string;

@@ -1,9 +1,9 @@
-import { parseSalesVolume } from "../functions/amazon/utils";
-import { AmazonSearchProduct } from "../../types/amazon/amazon-search";
-import { AmazonItem } from "../../types/amazon/sp-api/amazon-item";
-import { Product } from "../../types/product";
+import { parseSalesVolume } from "../../functions/amazon/utils";
+import { AmazonSearchProduct } from "../../../types/amazon/amazon-search";
+import { AmazonItem } from "../../../types/amazon/sp-api/amazon-item";
+import { Product } from "../../../types/product";
 
-export function productFromAmazon(
+export function amazonToProduct(
     item: AmazonSearchProduct,
     spApiItem?: AmazonItem
 ): Product {

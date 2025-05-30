@@ -1,22 +1,23 @@
-import { NicheSearcherDashboard } from "@/components/dashboard/niche-analyser/dashboard";
-import AnalyticsFallback from "@/components/dashboard/niche-analyser/fallback";
+import { SavedNichesDashboard } from "@/components/dashboard/niche-analyser/dashboard";
+import SavedNichesFallback from "@/components/dashboard/niche-analyser/fallback";
 import { NoStrategiesActivatedFallback } from "@/components/dashboard/strategies/fallback";
-import { collectUserAnalyticsData } from "@/lib/functions/analytics/collect-analytics-data";
+import { collectUserNichesData } from "@/lib/functions/niches/collect-niches-data";
 import { collectUserStrategiesData } from "@/lib/functions/strategies/collect-strategies-data";
 import { Suspense } from "react";
 
 export default async function ProtectedPage() {
-    const userAnalytics = await collectUserAnalyticsData();
-    const userStrategies = (await collectUserStrategiesData()).filter((strategy) => strategy.selected);
-    if (!userAnalytics || userAnalytics.length === 0) {
-        return <AnalyticsFallback />;
+    const niches = await collectUserNichesData();
+    const strategies = (await collectUserStrategiesData()).filter((strategy) => strategy.selected);
+
+    if (!niches || niches.length === 0) {
+        return <SavedNichesFallback />;
     }
-    if (!userStrategies || userStrategies.length === 0) {
+    if (!strategies || strategies.length === 0) {
         return <NoStrategiesActivatedFallback />;
     }
     return (
         <Suspense fallback={<div className="text-center">Loading...</div>}>
-            <NicheSearcherDashboard analytics={userAnalytics} strategies={userStrategies} />
+            <SavedNichesDashboard niches={niches} strategies={strategies} />
         </Suspense>
     );
 }

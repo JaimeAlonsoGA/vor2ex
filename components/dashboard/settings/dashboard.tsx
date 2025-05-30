@@ -8,15 +8,15 @@ import { UserForm } from "./user-form";
 import Link from "next/link";
 
 interface SettingsDashboardProps {
-    userProfile: Tables<'users'>;
-    auth: User;
+    settings: Tables<'settings'>;
+    user: User;
 }
 
-export function SettingsDashboard({ userProfile, auth }: SettingsDashboardProps) {
+export function SettingsDashboard({ settings, user }: SettingsDashboardProps) {
 
     return (
         <section className="space-y-6">
-            <UserForm userProfile={userProfile} auth={auth} />
+            <UserForm settings={settings} user={user} />
         </section>
     );
 }

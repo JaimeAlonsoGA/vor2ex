@@ -9,18 +9,18 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BarChart2, Package, Star, Tag, Users, CheckCircle2, Bookmark, ChartColumnIncreasing } from "lucide-react";
-import { NicheAnalytics } from "@/types/analytics/analytics";
+import { Niche } from "@/types/analytics/analytics";
 import { Strategy } from "@/types/analytics/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
 import { getIconComponent } from "@/components/helpers";
 import { cn } from "@/lib/utils";
 import { getBorderClass } from "@/lib/functions/strategies/utils";
-import { deleteUserAnalyticByKeyword } from "@/services/client/users-analytics.client";
+import { deleteUserNicheByKeyword } from "@/services/client/users-niches.client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 const TABLE_METRICS: {
-    key: keyof NicheAnalytics;
+    key: keyof Niche;
     label: string;
     icon?: React.ReactNode;
     format?: (v: any) => string;
@@ -54,16 +54,16 @@ function formatValue(metric: typeof TABLE_METRICS[number], value: any) {
 }
 
 type AnalyticsTableProps = {
-    analytics: NicheAnalytics[];
+    niches: Niche[];
     strategies: Strategy[];
-    onSelectAnalytics: (niche: NicheAnalytics) => void;
-    selectedNiche?: NicheAnalytics;
+    onSelectAnalytics: (niche: Niche) => void;
+    selectedNiche?: Niche;
 };
 
 // Lógica para determinar si un valor es afín a la estrategia usando el score gaussiano
 function isValueAlignedWithStrategy(
     metricKey: string,
-    niche: NicheAnalytics,
+    niche: Niche,
     strategy: Strategy
 ): boolean {
     const { ratingScore, priceScore, reviewsScore, salesScore } = getProfitScoreWithStrategy(niche, strategy);
@@ -82,16 +82,16 @@ function isValueAlignedWithStrategy(
     }
 }
 
-export function AnalyticsTable({
-    analytics,
+export function SavedNichestable({
+    niches,
     strategies,
     onSelectAnalytics,
 }: AnalyticsTableProps) {
     const router = useRouter();
 
-    function handleUnsaveNiche(niche: NicheAnalytics) {
+    function handleUnsaveNiche(niche: Niche) {
         toast.promise(
-            deleteUserAnalyticByKeyword(niche.keyword).then(res => {
+            deleteUserNicheByKeyword(niche.keyword).then(res => {
                 return res;
             }),
             {
@@ -132,7 +132,7 @@ export function AnalyticsTable({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {analytics.map((niche) => {
+                        {niches.map((niche) => {
                             const strategyResults = strategies.map(strategy => {
                                 const { ratingScore, priceScore, reviewsScore, salesScore } = getProfitScoreWithStrategy(niche, strategy);
                                 const score =

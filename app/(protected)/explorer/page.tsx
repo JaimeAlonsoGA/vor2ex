@@ -1,11 +1,11 @@
-import ProductSearcherDashboard from "@/components/dashboard/product-searcher/dashboard";
+import ProductSearcherDashboard from "@/components/dashboard/explorer/dashboard";
 import { validateAmazonTokens } from "@/lib/functions/amazon/validate-tokens";
-import { getUserAnalyticsKeyword } from "@/services/users-analytics.server";
+import { getUserNichesKeywords } from "@/services/users-niches.server";
 import { Suspense } from "react";
 
 export default async function ProtectedPage() {
   const amazonAccess = await validateAmazonTokens();
-  const userAnalytics = await getUserAnalyticsKeyword();
+  const userAnalytics = await getUserNichesKeywords();
 
   if (!amazonAccess.success) {
     return <div className="text-center">Couldn't connect with data providers</div>;

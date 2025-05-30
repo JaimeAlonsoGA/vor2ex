@@ -15,6 +15,13 @@ import {
     ChevronRight,
     Home,
     Server,
+    ChartPie,
+    Shapes,
+    Blend,
+    SquareSquare,
+    ChartColumn,
+    Component,
+    Rss,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -26,20 +33,20 @@ const menuItems = [
         badge: null,
     },
     {
-        title: "Product Searcher",
+        title: "Explorer",
         icon: Search,
         href: "/product-searcher",
         badge: null,
     },
     {
-        title: "Opportunity Finder",
-        icon: TrendingUp,
+        title: "Radar",
+        icon: Rss,
         href: "/opportunity-finder",
         badge: "New",
     },
     {
-        title: "Niche Analyser",
-        icon: BarChart3,
+        title: "Insights",
+        icon: Component,
         href: "/niche-analyser",
         badge: null,
     },
@@ -72,6 +79,7 @@ export default function Sidebar() {
     return (
         <div
             className={cn(
+                "hidden md:flex",
                 "fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] border-r bg-background transition-all duration-300",
                 isCollapsed ? "w-16" : "w-64",
             )}

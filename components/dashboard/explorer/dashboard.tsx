@@ -4,7 +4,7 @@ import { useState } from 'react';
 import SearchBar from './search-bar';
 import { Product } from '@/types/product';
 import { collectAmazonCatalogData, collectAmazonCatalogDataByAsin } from '@/lib/functions/amazon/collect-sp-api-data';
-import { productFromAmazon } from '@/lib/factories/amazon-item';
+import { amazonToProduct } from '@/lib/factories/amazon/amazon-item';
 import { amazonSearchData } from '@/lib/amazonSearchData';
 import { AlibabaSearchData } from '@/lib/alibabaSearchData';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuPortal, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -14,12 +14,12 @@ import { Label } from "@/components/ui/label"
 import { collectAlibabaSearchData } from '@/lib/functions/alibaba/collect-alibaba-data';
 import { collectAmazonSearchData } from '@/lib/functions/amazon/collect-scraper-data';
 import { StarRating } from './star-rating';
-import { getNicheAnalytics } from '@/lib/factories/analytics';
+import { getNiche } from '@/lib/factories/niche-item';
 import NicheQuickOverview from '../analytics/quick-overview';
-import { NicheAnalytics } from '@/types/analytics/analytics';
-import { insertAnalytics, saveAnalytics } from '@/services/client/analytics.client';
+import { Niche } from '@/types/analytics/analytics';
+import { upsertNiche } from '@/services/client/niches.client';
 import { Tables } from '@/types/supabase';
-import { deleteUserAnalyticByKeyword } from '@/services/client/users-analytics.client';
+import { deleteUserNicheByKeyword, saveNiche } from '@/services/client/users-niches.client';
 import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
@@ -29,15 +29,15 @@ export const PAGE_SIZE = 10;
 type SortField = "price" | "rating" | "reviews" | "name"
 type SortOrder = "asc" | "desc"
 
-export default function ProductSearcherDashboard({ userAnalytics }: { userAnalytics: Tables<'analytics'>['keyword'][] }) {
+export default function ProductSearcherDashboard({ userAnalytics }: { userAnalytics: Tables<'niches'>['keyword'][] }) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [analytics, setAnalytics] = useState<NicheAnalytics>();
+  const [analytics, setAnalytics] = useState<Niche>();
   const [isLoading, setIsLoading] = useState(false);
   const [saveNicheLoading, setSaveNicheLoading] = useState(false);
   const [sortField, setSortField] = useState<SortField>("price")
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc")
   const [removedProductIds, setRemovedProductIds] = useState<string[]>([]);
-  const [userAnalyticsState, setUserAnalyticsState] = useState<Tables<'analytics'>['keyword'][]>(userAnalytics);
+  const [userAnalyticsState, setUserAnalyticsState] = useState<Tables<'niches'>['keyword'][]>(userAnalytics);
   const [selected, setSelected] = useState<"amazon" | "alibaba">(
     products.length > 0 && products[0].source === "alibaba" ? "alibaba" : "amazon"
   );
@@ -61,7 +61,7 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
 
       const [scraperData, apiData, alibabaApiData] = await Promise.all([scraperPromise, amazonApiPromise, alibabaApiPromise]);
       setProducts([...alibabaApiData.products]);
-      const refinedScrapedData = scraperData.items.map(item => productFromAmazon(item));
+      const refinedScrapedData = scraperData.items.map(item => amazonToProduct(item));
       const sponsoredProducts = refinedScrapedData.filter(item => item.isSponsored);
 
       const sponsoredProductsPromise = sponsoredProducts.map(item =>
@@ -83,16 +83,16 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
 
       const mergedProducts = scraperData.items.map(item =>
         apiByAsin.has(item.asin)
-          ? productFromAmazon(item, apiByAsin.get(item.asin))
-          : productFromAmazon(item)
+          ? amazonToProduct(item, apiByAsin.get(item.asin))
+          : amazonToProduct(item)
       );
       setProducts(prev => [...prev, ...mergedProducts]);
 
       // Analytics
       const allProducts = [...alibabaApiData.products, ...mergedProducts];
-      const analytics = getNicheAnalytics(term, apiData, alibabaApiData, allProducts);
+      const analytics = getNiche(term, apiData, alibabaApiData, allProducts);
       setAnalytics(analytics);
-      insertAnalytics(analytics);
+      upsertNiche(analytics);
     } catch (error) {
       console.error(error);
     } finally {
@@ -109,7 +109,7 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
     if (!keyword) return;
     if (userAnalyticsState.includes(keyword)) {
       toast.promise(
-        deleteUserAnalyticByKeyword(keyword).then(res => {
+        deleteUserNicheByKeyword(keyword).then(res => {
           if (res.success) setUserAnalyticsState(prev => prev.filter(k => k !== keyword));
           setSaveNicheLoading(false);
           return res;
@@ -122,7 +122,7 @@ export default function ProductSearcherDashboard({ userAnalytics }: { userAnalyt
       );
     } else {
       toast.promise(
-        saveAnalytics(keyword).then(res => {
+        saveNiche(keyword).then(res => {
           if (res) setUserAnalyticsState(prev => [...prev, keyword]);
           setSaveNicheLoading(false);
           return res;

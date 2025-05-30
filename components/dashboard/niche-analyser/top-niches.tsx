@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { NicheAnalytics } from "@/types/analytics/analytics";
+import { Niche } from "@/types/analytics/analytics";
 import { Strategy } from "@/types/analytics/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
 import { getIconComponent } from "@/components/helpers";
@@ -14,21 +14,21 @@ import { getBorderClass } from "@/lib/functions/strategies/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface TopNichesAnalyticsProps {
-    analytics: NicheAnalytics[];
+    analytics: Niche[];
     strategies: Strategy[];
-    onSelectAnalytics: (niche: NicheAnalytics) => void;
-    selectedNiche?: NicheAnalytics;
+    onSelectAnalytics: (niche: Niche) => void;
+    selectedNiche?: Niche;
 }
 
 type TopNiche = {
-    niche: NicheAnalytics;
+    niche: Niche;
     strategy: Strategy;
     score: number;
     isNearOptimum: boolean;
 };
 
 function isNearOptimum(
-    niche: NicheAnalytics,
+    niche: Niche,
     strategy: Strategy,
     threshold = 0.7 // Score gaussiano mínimo para considerar "cerca del óptimo"
 ) {
@@ -42,7 +42,7 @@ function isNearOptimum(
 }
 
 function getTopNiches(
-    analytics: NicheAnalytics[],
+    analytics: Niche[],
     strategies: Strategy[],
     minScore = 70
 ): TopNiche[] {

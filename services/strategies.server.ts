@@ -1,23 +1,17 @@
 import { Tables } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
-import { getUserData } from "./users.server";
+import { getUser } from "./auth.server";
 
-export async function getUserStrategies(): Promise<Tables<'strategies'>[]> {
+export async function getStrategies(): Promise<Tables<'strategies'>[]> {
     const supabase = await createClient();
-    const user = await getUserData();
-
-    if (!user) {
-        throw new Error("User not authenticated");
-    }
+    const user = await getUser();
 
     const { data, error } = await supabase
         .from("strategies")
         .select("*")
         .eq("user_id", user.id);
 
-    if (error) {
-        throw new Error(`Error fetching user strategies: ${error.message}`);
-    }
+    if (error) throw new Error("Error fetching strategies");
 
-    return data;
+    return data ?? [];
 }
