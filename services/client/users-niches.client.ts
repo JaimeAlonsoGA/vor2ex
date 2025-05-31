@@ -30,7 +30,7 @@ export async function saveNiche(keyword: string): Promise<Tables<"users_niches">
 
     const { data, error } = await supabase
         .from("users_niches")
-        .insert({ analytic_id: niche, user_id: user.id })
+        .insert({ niche_id: niche, user_id: user.id })
         .select()
         .single();
 

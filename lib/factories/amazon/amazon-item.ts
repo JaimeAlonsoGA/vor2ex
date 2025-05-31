@@ -5,7 +5,8 @@ import { Product } from "../../../types/product";
 
 export function amazonToProduct(
     item: AmazonSearchProduct,
-    spApiItem?: AmazonItem
+    domain: string,
+    spApiItem?: AmazonItem,
 ): Product {
     // SP-API helpers
     const summary = spApiItem?.summaries?.[0];
@@ -44,7 +45,7 @@ export function amazonToProduct(
         price: item.price ?? lowestPrice?.ListingPrice?.Amount,
         currency: item.currency ?? lowestPrice?.ListingPrice?.CurrencyCode,
         imageUrl: imageUrl,
-        url: `https://amazon.es${url}`,
+        url: `https://amazon.${domain}${url}`,
         rating: item.rating,
         reviews: item.reviews_count,
         createdAt: summary?.releaseDate,

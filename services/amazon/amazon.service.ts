@@ -5,7 +5,7 @@ import config from "@/orm.config";
 
 export { fetchAmazonSearch }
 
-async function fetchAmazonSearch(keyword: string, page: number): Promise<AmazonSearchApiResponse> {
+async function fetchAmazonSearch(keyword: string, domain: string, page: number): Promise<AmazonSearchApiResponse> {
     const auth = config.decodo.access_token;
 
     const response = await fetch(config.decodo.baseUrl, {
@@ -15,7 +15,7 @@ async function fetchAmazonSearch(keyword: string, page: number): Promise<AmazonS
             "query": keyword,
             "page_from": page.toString(),
             "parse": true,
-            "domain": "es",
+            "domain": domain,
         }),
         headers: {
             "Content-Type": "application/json",

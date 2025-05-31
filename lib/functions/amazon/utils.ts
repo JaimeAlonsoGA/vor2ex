@@ -1,3 +1,5 @@
+import { AMAZON_DOMAINS } from "@/lib/endpoints";
+
 export function parseSalesVolume(salesVolumeRaw?: string, locale: string = "es"): number | undefined {
     if (!salesVolumeRaw) return undefined;
     const normalized = salesVolumeRaw.trim().toLowerCase();
@@ -45,20 +47,11 @@ export function formatDate(dateStr?: string) {
     });
 }
 
-export function estimateMonthlySales(rank?: number): number | undefined {
-    if (!rank || rank <= 0) return undefined;
-
-    // Parámetros ajustados para simular la curva realista de ventas vs BSR
-    // Puedes ajustar estos valores según la categoría si tienes ese dato
-    const a = 120000; // Escala máxima de ventas para BSR=1
-    const b = 1.7;    // Exponente para ajustar la caída de ventas
-
-    // Fórmula logarítmica ajustada: ventas = a / (rank ^ b)
-    const estimated = a / Math.pow(rank, b);
-
-    // Limita el rango para evitar valores extremos
-    if (estimated > 5000) return 5000;
-    if (estimated < 1) return 0;
-
-    return Math.round(estimated);
+export function getAmazonRegionFromDomain(domain: string): string | undefined {
+    for (const [region, countries] of Object.entries(AMAZON_DOMAINS)) {
+        if (Object.values(countries).includes(domain)) {
+            return region;
+        }
+    }
+    return undefined;
 }

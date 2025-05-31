@@ -176,7 +176,7 @@ export function nicheToDb(data: Niche) {
     };
 }
 
-export function dbToNiche(data: Tables<'analytics'>): Niche {
+export function dbToNiche(data: Tables<'niches'>): Niche {
     return {
         id: data.id ?? undefined,
         keyword: data.keyword ?? "",

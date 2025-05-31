@@ -15,7 +15,7 @@ async function getCredentials(): Promise<Tables<'credentials'>> {
     .select("*")
     .eq("user_id", user.id)
     .single();
-  if (error) throw new Error("Error fetching credentials");
+  if (error) throw new Error("Error fetching credentials", error);
 
   return data ?? [];
 }
@@ -60,6 +60,29 @@ async function updateAmazonCredentials(token: AmazonToken) {
 
   if (error) {
     return new Response("Error saving credentials", { status: 500 });
+  }
+
+  return new Response(JSON.stringify({ success: true }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+export async function clearAmazonCredentials() {
+  const supabase = await createClient();
+  const user = await getUser();
+
+  const { error } = await supabase
+    .from("credentials")
+    .update({
+      amz_access_token: null,
+      amz_refresh_token: null,
+      amz_expires_at: null,
+    })
+    .eq("user_id", user.id);
+
+  if (error) {
+    return new Response("Error clearing Amazon credentials", { status: 500 });
   }
 
   return new Response(JSON.stringify({ success: true }), {

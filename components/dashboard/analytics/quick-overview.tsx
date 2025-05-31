@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react";
 import { Niche } from "@/types/analytics/analytics";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,7 +26,7 @@ interface CardConfig {
 }
 
 interface NicheQuickOverviewProps {
-    analytics?: Niche;
+    niche?: Niche;
     isLoading: boolean;
 }
 
@@ -265,8 +266,8 @@ function CardBody({ value, subtitle }: { value: string | number; subtitle?: stri
     );
 }
 
-export function NicheQuickOverview({ analytics, isLoading }: NicheQuickOverviewProps) {
-    const cardsConfig = getCardsConfig(analytics);
+export function NicheQuickOverview({ niche, isLoading }: NicheQuickOverviewProps) {
+    const cardsConfig = getCardsConfig(niche);
     const [pinned, setPinned] = useState<string[]>(DEFAULT_PINNED);
     const [order, setOrder] = useState<string[]>(cardsConfig.map(card => card.key).filter(k => !DEFAULT_PINNED.includes(k)));
     const [dragged, setDragged] = useState<string | null>(null);

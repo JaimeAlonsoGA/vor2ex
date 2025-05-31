@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "../auth.server";
+import { clearAmazonCredentials } from "../credentials.server";
 
 export async function updateSettings(profileData: {
     name: string;
@@ -23,6 +24,19 @@ export async function updateSettings(profileData: {
         .single();
 
     if (error) throw new Error("Error updating settings");
+
+    const { error: credentialsError } = await supabase
+        .from("credentials")
+        .update({
+            amz_access_token: null,
+            amz_refresh_token: null,
+            amz_expires_at: null,
+        })
+        .eq("user_id", user.id);
+
+    if (credentialsError) throw new Error("Error clearing Amazon credentials");
+
+    console.log("Settings updated successfully:", cleanData);
 
     return data;
 }

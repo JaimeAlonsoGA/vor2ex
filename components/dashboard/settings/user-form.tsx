@@ -9,6 +9,7 @@ import { Button } from "../../ui/button";
 import { KeyRound, Loader2, Save } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { useRouter } from "next/navigation";
+import { AMAZON_DOMAINS } from "@/lib/endpoints";
 
 export function UserForm({ settings, user }: { settings: Tables<'settings'>; user: User }) {
     const [form, setForm] = useState({
@@ -98,6 +99,7 @@ export function UserForm({ settings, user }: { settings: Tables<'settings'>; use
                     <SelectContent>
                         <SelectItem value="Spanish">Spanish</SelectItem>
                         <SelectItem value="English">English</SelectItem>
+                        <SelectItem value="German">German</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
@@ -110,9 +112,34 @@ export function UserForm({ settings, user }: { settings: Tables<'settings'>; use
                     <SelectTrigger id="amazon_marketplace" className="w-full">
                         <SelectValue placeholder="Select marketplace" />
                     </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="us">United States (us)</SelectItem>
-                        <SelectItem value="eu">Europe (eu)</SelectItem>
+                    <SelectContent className="gap-2">
+                        <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">Europe</div>
+                        {Object.entries(AMAZON_DOMAINS["Europe"]).map(([country, domain]) => (
+                            <SelectItem key={domain} value={domain}>
+                                <span className="flex items-center gap-2">
+                                    {/* <span className="font-medium">🇪🇺</span> */}
+                                    <span>{country} <span className="text-muted-foreground text-xs ml-1">(.{domain})</span></span>
+                                </span>
+                            </SelectItem>
+                        ))}
+                        <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">North America</div>
+                        {Object.entries(AMAZON_DOMAINS["North America"]).map(([country, domain]) => (
+                            <SelectItem key={domain} value={domain}>
+                                <span className="flex items-center gap-2">
+                                    {/* <span className="font-medium">us</span> */}
+                                    <span>{country} <span className="text-muted-foreground text-xs ml-1">(.{domain})</span></span>
+                                </span>
+                            </SelectItem>
+                        ))}
+                        <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">Far East</div>
+                        {Object.entries(AMAZON_DOMAINS["Far East"]).map(([country, domain]) => (
+                            <SelectItem key={domain} value={domain} disabled>
+                                <span className="flex items-center gap-2">
+                                    {/* <span className="font-medium">far-east</span> */}
+                                    <span>{country} <span className="text-muted-foreground text-xs ml-1">(.{domain})</span></span>
+                                </span>
+                            </SelectItem>
+                        ))}
                     </SelectContent>
                 </Select>
             </div>

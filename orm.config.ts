@@ -3,10 +3,8 @@ const config = {
     clientId: process.env.AMAZON_CLIENT_ID,
     clientSecret: process.env.AMAZON_CLIENT_SECRET,
     redirectUri: process.env.AMAZON_REDIRECT_URI,
-    refreshToken: process.env.AMAZON_REFRESH_TOKEN,
-    marketplaceId_spain: process.env.AMAZON_SPAIN_MARKETPLACE_ID!,
-    endpoint_eu: process.env.AMAZON_EU_ENDPOINT!,
-    endpoint_na: process.env.AMAZON_NA_ENDPOINT!,
+    refreshTokenEU: process.env.AMAZON_REFRESH_TOKEN_EU_WEST,
+    refreshTokenUS: process.env.AMAZON_REFRESH_TOKEN_US_EAST,
   },
   alibaba: {
     clientSecret: process.env.ALIBABA_SECRET_ID!,

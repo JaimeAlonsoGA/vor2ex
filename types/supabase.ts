@@ -12,24 +12,24 @@ export type Database = {
       credentials: {
         Row: {
           amz_access_token: string | null
-          amz_expires_at: string
+          amz_expires_at: string | null
           amz_refresh_token: string | null
           id: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           amz_access_token?: string | null
-          amz_expires_at?: string
+          amz_expires_at?: string | null
           amz_refresh_token?: string | null
           id?: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           amz_access_token?: string | null
-          amz_expires_at?: string
+          amz_expires_at?: string | null
           amz_refresh_token?: string | null
           id?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }

@@ -4,6 +4,7 @@ import { Tables } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
 
 export async function getNicheIdByKeyword(keyword: string): Promise<Tables<'niches'>['id']> {
+    if (!keyword) throw new Error("No keyword to search niche for");
     const supabase = await createClient();
 
     const { data, error } = await supabase

@@ -3,8 +3,8 @@ import { fetchAmazonSearch } from "@/services/amazon/amazon.service";
 
 export { collectAmazonSearchData };
 
-async function collectAmazonSearchData(keyword: string, page?: number): Promise<AmazonScraperResponse> {
-    const response = await fetchAmazonSearch(keyword, page || 1);
+async function collectAmazonSearchData(keyword: string, domain: string, page?: number): Promise<AmazonScraperResponse> {
+    const response = await fetchAmazonSearch(keyword, domain, page || 1);
     if (!response) {
         return { page: 0, url: "", items: [] };
     }

@@ -35,7 +35,7 @@ const menuItems = [
     {
         title: "Explorer",
         icon: Search,
-        href: "/product-searcher",
+        href: "/explorer",
         badge: null,
     },
     {

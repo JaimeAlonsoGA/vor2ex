@@ -15,19 +15,19 @@ async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function collectAmazonCatalogDataAndOffers(keyword: string, pagination?: 'next' | 'previous', paginationToken?: string): Promise<AmazonAPIFactoryResponse> {
+async function collectAmazonCatalogDataAndOffers(keyword: string, endpoint: string, marketplace: string, pagination?: 'next' | 'previous', paginationToken?: string): Promise<AmazonAPIFactoryResponse> {
   await validateAmazonTokens();
 
   let catalog: AmazonResponse;
   let catalogItems: AmazonItem[] = [];
   if (pagination === 'next') {
-    catalog = await fetchNextAmazonCatalogPage(paginationToken!, keyword);
+    catalog = await fetchNextAmazonCatalogPage(paginationToken!, keyword, endpoint, marketplace);
   }
   if (pagination === 'previous') {
-    catalog = await fetchPreviousAmazonCatalogPage(paginationToken!, keyword);
+    catalog = await fetchPreviousAmazonCatalogPage(paginationToken!, keyword, endpoint, marketplace);
   }
   else {
-    catalog = await searchCatalogItems(keyword);
+    catalog = await searchCatalogItems(keyword, endpoint, marketplace);
   }
   if (catalog.items) {
     const itemsWithOffers = await Promise.all(
@@ -90,16 +90,18 @@ async function collectAmazonCatalogDataAndOffersByAsin(asin: string): Promise<Am
 }
 async function collectAmazonCatalogData(
   keyword: string,
+  endpoint: string,
+  marketplace: string,
   pagination?: 'next' | 'previous',
-  paginationToken?: string
+  paginationToken?: string,
 ): Promise<AmazonAPIFactoryResponse> {
   let catalog: AmazonResponse;
   if (pagination === 'next') {
-    catalog = await fetchNextAmazonCatalogPage(paginationToken!, keyword);
+    catalog = await fetchNextAmazonCatalogPage(paginationToken!, keyword, endpoint, marketplace);
   } else if (pagination === 'previous') {
-    catalog = await fetchPreviousAmazonCatalogPage(paginationToken!, keyword);
+    catalog = await fetchPreviousAmazonCatalogPage(paginationToken!, keyword, endpoint, marketplace);
   } else {
-    catalog = await searchCatalogItems(keyword);
+    catalog = await searchCatalogItems(keyword, endpoint, marketplace);
   }
   return {
     items: catalog.items ?? [],

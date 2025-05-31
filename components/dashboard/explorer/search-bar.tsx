@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,27 +8,28 @@ import { Input } from '@/components/ui/input';
 interface SearchBarProps {
   onSearch: (term: string) => void;
   isLoading: boolean;
+  keyword: string;
+  onChange: Dispatch<SetStateAction<string>>
 }
 
-export default function SearchBar({ onSearch, isLoading }: SearchBarProps) {
-  const [inputValue, setInputValue] = useState('');
+export default function SearchBar({ onSearch, isLoading, keyword, onChange }: SearchBarProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputValue.trim()) {
-      onSearch(inputValue.trim());
+    if (keyword.trim()) {
+      onSearch(keyword.trim());
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full mx-auto gap-2">
+    <form onSubmit={handleSubmit} className="flex gap-2">
       <div className="flex items-center gap-2 w-full md:w-80">
         <Input
           type="search"
           placeholder="Search keyword or category..."
-          value={inputValue}
+          value={keyword}
           disabled={isLoading}
-          onChange={e => setInputValue(e.target.value)}
+          onChange={e => onChange(e.target.value)}
           className="w-full"
           aria-label="Search opportunities"
         />
