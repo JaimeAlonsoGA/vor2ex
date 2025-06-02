@@ -1,9 +1,9 @@
-import ProductSection from "@/components/dashboard/explorer/produts-section";
+import ProductSection from "@/components/dashboard/explorer/products-section";
 import { getUserNichesKeywords } from "@/services/users-niches.server";
 import { collectAmazonProductsAction } from "@/lib/actions/amazon-actions";
 import { collectAlibabaProductsAction } from "@/lib/actions/alibaba-actions";
 import SearchBar from "@/components/dashboard/explorer/search-bar";
-import SaveNicheButton from "@/components/dashboard/explorer/save-niche-button";
+import SaveNicheButton from "@/components/dashboard/save-niche-button";
 import { getSettings } from "@/services/settings.server";
 import { amazonToConnection } from "@/lib/factories/amazon/amzon-connection";
 import { Suspense } from "react";
@@ -22,28 +22,32 @@ export default async function ExplorerPage({ searchParams }: { searchParams: Pro
   const connection = rawConnection ? JSON.parse(rawConnection) as AmazonConnection : await getSettings().then(settings => amazonToConnection(settings.amazon_marketplace));
 
   const amazonProductsPromise = keyword ? collectAmazonProductsAction(keyword, connection) : Promise.resolve({} as AmazonProductsFactoryResponse);
-  const alibabaProductsPromise = keyword ? collectAlibabaProductsAction(keyword) : Promise.resolve({} as AlibabaProductsFactoryResponse);
+  const alibabaProductsPromise = keyword ? collectAlibabaProductsAction(keyword, connection) : Promise.resolve({} as AlibabaProductsFactoryResponse);
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <SearchBar />
         <SaveNicheButton
+          variant="long"
+          key={keyword}
           savedNiches={savedNiches}
           term={keyword}
+          initialPromise={amazonProductsPromise}
         />
       </div>
-      <Suspense fallback={<div className="text-sm text-muted-foreground">Loading Analytics...</div>}>
-        <OverviewSection
-          term={keyword}
-          marketplace={connection.domain}
+      <Suspense fallback={<div className="text-sm text-muted-foreground">Loading Products...</div>}>
+        <ProductSection
+          key={keyword}
           amazonProductsPromise={amazonProductsPromise}
           alibabaProductsPromise={alibabaProductsPromise}
         />
       </Suspense>
-      <Suspense fallback={<div className="text-sm text-muted-foreground">Loading...</div>}>
-        <ProductSection
+      <Suspense fallback={<div className="text-sm text-muted-foreground">Loading Analytics...</div>}>
+        <OverviewSection
           key={keyword}
+          term={keyword}
+          marketplace={connection.domain}
           amazonProductsPromise={amazonProductsPromise}
           alibabaProductsPromise={alibabaProductsPromise}
         />

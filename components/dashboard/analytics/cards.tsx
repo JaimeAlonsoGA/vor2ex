@@ -1,11 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import {
-    TrendingUp, Star, Users, Calendar, Tag, ChevronDown, ChevronUp,
-    Award, Box, ShieldCheck, GripVertical, Flame, Percent, Truck, Megaphone, Layers, BadgeCheck
+    TrendingUp, Star, Users, Calendar, Tag, Award, Box, ShieldCheck, Flame, Percent, Truck, Megaphone, Layers, BadgeCheck
 } from "lucide-react";
 import { formatDate } from "@/lib/functions/amazon/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Niche } from "@/types/niche";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export const CARD_HEIGHT = "h-40";
 export const CARD_WIDTH = "w-full";
@@ -252,6 +253,34 @@ export function CardBody({ value, subtitle }: { value: string | number; subtitle
             {subtitle && (
                 <div className="text-xs text-muted-foreground mt-1">{subtitle}</div>
             )}
+        </div>
+    );
+}
+
+export function renderCard(card: CardConfig, section: "pinned" | "other") {
+    return (
+        <div
+            key={card.key}
+            className={cn(
+                "transition-shadow duration-300",
+                "relative"
+            )}
+            style={{
+                transition: "box-shadow 0.2s, transform 0.2s",
+            }}
+        >
+            <Card className={cn(CARD_HEIGHT, CARD_WIDTH, "flex flex-col justify-between")}>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-base font-medium flex items-center gap-2">
+                        {card.icon}
+                        {card.title}
+                    </CardTitle>
+                    {card.badge}
+                </CardHeader>
+                <CardContent className="flex-1 flex flex-col justify-center h-full">
+                    <CardBody value={card.value} subtitle={card.subtitle} />
+                </CardContent>
+            </Card>
         </div>
     );
 }

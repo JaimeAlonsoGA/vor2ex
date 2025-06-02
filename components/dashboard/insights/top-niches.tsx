@@ -1,24 +1,17 @@
-import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Niche } from "@/types/niche";
 import { Strategy } from "@/types/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
 import { getIconComponent } from "@/components/helpers";
-import { Check, HelpCircle, SquarePen, Trophy } from "lucide-react";
-import OverviewSection from "../analytics/overview";
+import { Component, HelpCircle, Trophy } from "lucide-react";
 import { getBorderClass } from "@/lib/functions/strategies/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import Link from "next/link";
 
-interface TopNichesAnalyticsProps {
-    analytics: Niche[];
-    strategies: Strategy[];
-    onSelectAnalytics: (niche: Niche) => void;
-    selectedNiche?: Niche;
-}
+const MIN_SCORE = 70;
 
 type TopNiche = {
     niche: Niche;
@@ -44,7 +37,6 @@ function isNearOptimum(
 function getTopNiches(
     analytics: Niche[],
     strategies: Strategy[],
-    minScore = 70
 ): TopNiche[] {
     // Para cada nicho, calcula el mejor score y la estrategia que lo produce
     const scored: TopNiche[] = analytics.map((niche) => {
@@ -72,20 +64,20 @@ function getTopNiches(
 
     // Filtra por score mínimo y ordena por score descendente
     return scored
-        .filter(n => n.score >= minScore)
+        .filter(n => n.score >= MIN_SCORE)
         .sort((a, b) => b.score - a.score);
+}
+
+interface TopNichesAnalyticsProps {
+    analytics: Niche[];
+    strategies: Strategy[];
 }
 
 export function TopNichesAnalytics({
     analytics,
     strategies,
-    onSelectAnalytics,
-    selectedNiche,
 }: TopNichesAnalyticsProps) {
-    const [minScore, setMinScore] = useState<number>(70);
-    const [editing, setEditing] = useState<boolean>(false);
-
-    const topNiches = getTopNiches(analytics, strategies, minScore);
+    const topNiches = getTopNiches(analytics, strategies);
 
     return (
         <section className="space-y-4">
@@ -117,7 +109,7 @@ export function TopNichesAnalytics({
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {topNiches.length === 0 && (
                     <div className="col-span-full text-center text-muted-foreground py-8">
-                        No niches found with {minScore} or more score.
+                        No niches found with {MIN_SCORE} or more score.
                     </div>
                 )}
                 {topNiches.map(({ niche, strategy, score, isNearOptimum }) => (
@@ -170,14 +162,11 @@ export function TopNichesAnalytics({
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button
-                                variant={selectedNiche?.keyword === niche.keyword ? "default" : "outline"}
-                                className="w-full mt-2"
-                                onClick={() => onSelectAnalytics(niche)}
-                                aria-expanded={selectedNiche?.keyword === niche.keyword}
-                                aria-controls={`quick-overview-${niche.keyword}`}
-                            >
-                                {selectedNiche?.keyword === niche.keyword ? "Hide analytics" : "View analytics"}
+                            <Button>
+                                <Link href={`/insights/${niche.id}`} className="flex items-center gap-2">
+                                    <Component className="w-4 h-4 mr-2" />
+                                    View Details
+                                </Link>
                             </Button>
                         </CardFooter>
                     </Card>

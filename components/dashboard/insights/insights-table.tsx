@@ -7,17 +7,16 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { BarChart2, Package, Star, Tag, Users, CheckCircle2, Bookmark, ChartColumnIncreasing } from "lucide-react";
+import { BarChart2, Component, Search } from "lucide-react";
 import { Niche } from "@/types/niche";
 import { Strategy } from "@/types/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
 import { getIconComponent } from "@/components/helpers";
 import { cn } from "@/lib/utils";
 import { getBorderClass } from "@/lib/functions/strategies/utils";
-import { deleteUserNicheByKeyword } from "@/services/client/users-niches.client";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import SaveNicheButton from "../save-niche-button";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const TABLE_METRICS: {
     key: keyof Niche;
@@ -53,14 +52,6 @@ function formatValue(metric: typeof TABLE_METRICS[number], value: any) {
     return value ?? "-";
 }
 
-type AnalyticsTableProps = {
-    niches: Niche[];
-    strategies: Strategy[];
-    onSelectAnalytics: (niche: Niche) => void;
-    selectedNiche?: Niche;
-};
-
-// Lógica para determinar si un valor es afín a la estrategia usando el score gaussiano
 function isValueAlignedWithStrategy(
     metricKey: string,
     niche: Niche,
@@ -82,27 +73,15 @@ function isValueAlignedWithStrategy(
     }
 }
 
+interface AnalyticsTableProps {
+    niches: Niche[];
+    strategies: Strategy[];
+};
+
 export function SavedNichestable({
     niches,
     strategies,
-    onSelectAnalytics,
 }: AnalyticsTableProps) {
-    const router = useRouter();
-
-    function handleUnsaveNiche(niche: Niche) {
-        toast.promise(
-            deleteUserNicheByKeyword(niche.keyword).then(res => {
-                return res;
-            }),
-            {
-                loading: "Removing...",
-                success: "Niche forgotten",
-                error: "Error removing niche",
-            }
-        );
-        router.refresh();
-    }
-
     return (
         <section>
             <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
@@ -172,7 +151,7 @@ export function SavedNichestable({
                                         </TableCell>
                                     ))}
                                     {strategyResults.map(({ strategy, score }) => (
-                                        <TableCell key={strategy.id + "-score"}>
+                                        <TableCell key={strategy.id + "-score"} className="text-center align-middle">
                                             <span
                                                 className={cn(
                                                     "text-sm",
@@ -185,24 +164,17 @@ export function SavedNichestable({
                                         </TableCell>
                                     ))}
                                     <TableCell className="gap-2 flex items-center">
-                                        <Button
-                                            size="sm"
-                                            variant="secondary"
-                                            onClick={() => onSelectAnalytics(niche)}
-                                            aria-label={`Show analytics for ${niche.keyword}`}
-                                        >
-                                            Analytics
+                                        <Button variant={"outline"}>
+                                            <Link href={`/insights/${niche.id}`}>
+                                                <Component className="w-4 h-4" />
+                                            </Link>
                                         </Button>
-                                        <Button
-                                            size="sm"
-                                            className="hover:border-primary"
-                                            variant="outline"
-                                            onClick={() => handleUnsaveNiche(niche)}
-                                            aria-label={`Show analytics for ${niche.keyword}`}
-                                        >
-                                            <Bookmark className="ml-1 fill-muted-foreground text-muted-foreground" />
-                                            Unsave
+                                        <Button variant={"outline"}>
+                                            <Link href={`/explorer?keyword=${niche.keyword}`}>
+                                                <Search className="w-4 h-4" />
+                                            </Link>
                                         </Button>
+                                        <SaveNicheButton variant="short" term={niche.keyword} savedNiches={niches.map(n => n.keyword)} />
                                     </TableCell>
                                 </TableRow>
                             );

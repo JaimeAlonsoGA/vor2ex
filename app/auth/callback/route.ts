@@ -19,13 +19,11 @@ export async function GET(request: Request) {
       return NextResponse.redirect(`${origin}/error`);
     }
 
-    const { data: newUser, error: insertError } = await supabase
-      .from('users')
+    const { error: insertError } = await supabase
+      .from('settings')
       .insert([
         { auth_id: user.user.id, name: user.user.email }
       ])
-      .select()
-      .single();
     if (insertError) {
       console.error('Error inserting user data:', insertError);
       return NextResponse.redirect(`${origin}/error`);
@@ -33,7 +31,7 @@ export async function GET(request: Request) {
       console.log('User data inserted successfully:', user.user.id);
       const { error: strategiesError } = await supabase
         .from('strategies')
-        .insert({ user_id: newUser.id, ...defaultUserStrategy });
+        .insert({ user_id: user.user.id, ...defaultUserStrategy });
 
       if (strategiesError) {
         console.error('Error inserting strategies:', strategiesError);

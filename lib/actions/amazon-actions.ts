@@ -3,9 +3,11 @@ import { amazonToProduct } from "../factories/amazon/amazon-item";
 import { getAmazonCatalog, getAmazonNextPageData, getAmazonProductDetails, getAmazonProductsData } from "../functions/amazon/get-amazon-data";
 import { AmazonConnection } from "@/types/amazon/amazon-connection";
 import { validateAmazonTokens } from "./validate-tokens";
+import { upsertNiche } from "@/services/client/niches.client";
+import { getNiche } from "../factories/niche-item";
 
 export async function collectAmazonProductsAction(term: string, connection: AmazonConnection): Promise<AmazonProductsFactoryResponse> {
-    validateAmazonTokens();
+    await validateAmazonTokens();
     // Lanza todas las promesas en paralelo para Amazon
     const [amazonApiData, scraperData] = await Promise.all([
         getAmazonCatalog(term, connection.endpoint, connection.marketplace),
@@ -65,6 +67,10 @@ export async function collectAmazonProductsAction(term: string, connection: Amaz
             : amazonToProduct(item, connection.domain)
     );
 
-    return { ...amazonApiData, products: mergedProducts };
+    const amazonProductsFactory = { products: mergedProducts, pagination: amazonApiData.pagination, numberOfResults: amazonApiData.numberOfResults } as AmazonProductsFactoryResponse;
+    const niche = getNiche(term, connection.domain, amazonProductsFactory);
+    upsertNiche(niche, connection.domain).catch(console.error);
+
+    return amazonProductsFactory;
 }
 

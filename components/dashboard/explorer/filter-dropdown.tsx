@@ -2,7 +2,7 @@
 
 import {
     DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
-    DropdownMenuPortal, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger,
+    DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../../ui/button";
@@ -10,20 +10,37 @@ import { Filter } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from "@/components/ui/label";
 import { StarRating } from './star-rating';
+import { Dispatch, SetStateAction, useState } from "react";
+import { DEFAULT_FILTERS } from "@/lib/functions/explorer/filters-and-sort";
+import { cn } from "@/lib/utils";
 
 interface Props {
-    filters: any;
-    setFilters: (filters: any) => void;
-    amazonCategories: string[];
+    categories: string[];
+    setFilters: Dispatch<SetStateAction<{
+        verifiedOnly: boolean;
+        guaranteedOnly: boolean;
+        minRating: number;
+        maxRating: number;
+        maxMOQ: string;
+        category: string;
+    }>>
+    filters: {
+        verifiedOnly: boolean;
+        guaranteedOnly: boolean;
+        minRating: number;
+        maxRating: number;
+        maxMOQ: string;
+        category: string;
+    }
 }
 
-export default function FilterDropdown({ filters, setFilters, amazonCategories }: Props) {
+export default function FilterDropdown({ categories, setFilters, filters }: Props) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filter
+                    <Filter className="h-4 w-4" />
+                    Filters
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-64">
@@ -63,7 +80,33 @@ export default function FilterDropdown({ filters, setFilters, amazonCategories }
                     </DropdownMenuSub>
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>
-                            Max MOQ (Alibaba)
+                            Category
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                                <div className="px-2 py-2">
+                                    <Select
+                                        value={filters.category || "all"}
+                                        onValueChange={value => setFilters({ ...filters, category: value === "all" ? "" : value })}
+                                    >
+                                        <SelectTrigger className="w-full rounded border-gray-300 px-2 py-1 text-sm" id="amazon-category">
+                                            <SelectValue placeholder="All" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="all">All</SelectItem>
+                                            {categories?.map(cat => (
+                                                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            Max MOQ
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
@@ -77,31 +120,6 @@ export default function FilterDropdown({ filters, setFilters, amazonCategories }
                                         value={filters.maxMOQ}
                                         onChange={e => setFilters({ ...filters, maxMOQ: e.target.value })}
                                     />
-                                </div>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
-                            Category (Amazon)
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                                <div className="px-2 py-2">
-                                    <Select
-                                        value={filters.amazonCategory || "all"}
-                                        onValueChange={value => setFilters({ ...filters, amazonCategory: value === "all" ? "" : value })}
-                                    >
-                                        <SelectTrigger className="w-full rounded border-gray-300 px-2 py-1 text-sm" id="amazon-category">
-                                            <SelectValue placeholder="All" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="all">All</SelectItem>
-                                            {amazonCategories.map(cat => (
-                                                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
                                 </div>
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
@@ -129,6 +147,14 @@ export default function FilterDropdown({ filters, setFilters, amazonCategories }
                             />
                             <Label htmlFor="guaranteed-only" className="w-full cursor-pointer">Guaranteed only (Alibaba)</Label>
                         </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                        <Button
+                            onClick={() => setFilters(DEFAULT_FILTERS)}
+                            variant="outline">
+                            Reset filters
+                        </Button>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
             </DropdownMenuContent>

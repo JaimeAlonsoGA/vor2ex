@@ -6,37 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CARD_HEIGHT, CARD_WIDTH, CardBody, CardConfig, DEFAULT_PINNED, getCardsConfig } from "./cards";
+import { CARD_HEIGHT, CARD_WIDTH, CardBody, CardConfig, DEFAULT_PINNED, getCardsConfig, renderCard } from "./cards";
 import { AmazonProductsFactoryResponse } from "@/types/amazon/amazon-factory";
 import { AlibabaProductsFactoryResponse } from "@/types/alibaba/alibaba-factory";
 import { getNiche } from "@/lib/factories/niche-item";
-
-function renderCard(card: CardConfig, section: "pinned" | "other") {
-    return (
-        <div
-            className={cn(
-                "transition-shadow duration-300",
-                "relative"
-            )}
-            style={{
-                transition: "box-shadow 0.2s, transform 0.2s",
-            }}
-        >
-            <Card className={cn(CARD_HEIGHT, CARD_WIDTH, "flex flex-col justify-between")}>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-base font-medium flex items-center gap-2">
-                        {card.icon}
-                        {card.title}
-                    </CardTitle>
-                    {card.badge}
-                </CardHeader>
-                <CardContent className="flex-1 flex flex-col justify-center h-full">
-                    <CardBody value={card.value} subtitle={card.subtitle} />
-                </CardContent>
-            </Card>
-        </div>
-    );
-}
 
 interface OverviewSectionProps {
     term?: string;

@@ -10,7 +10,7 @@ interface Props {
 
 export default function SourceSelector({ selected, setSelected }: Props) {
     return (
-        <div className="flex flex-wrap gap-2 mb-2 mx-auto">
+        <div className="flex flex-wrap gap-2 mb-2">
             <Button
                 variant={selected === "amazon" ? "default" : "outline"}
                 className={cn(

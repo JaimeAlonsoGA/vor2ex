@@ -16,7 +16,6 @@ import {
     Server,
     Menu,
 } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 const menuItems = [
     {
@@ -32,15 +31,15 @@ const menuItems = [
         badge: null,
     },
     {
-        title: "Opportunity Finder",
+        title: "Radar",
         icon: TrendingUp,
-        href: "/opportunity-finder",
+        href: "/radar",
         badge: "New",
     },
     {
-        title: "Niche Analyser",
+        title: "Niche Insights",
         icon: BarChart3,
-        href: "/niche-analyser",
+        href: "/insights",
         badge: null,
     },
     {

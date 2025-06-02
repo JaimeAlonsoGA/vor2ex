@@ -41,13 +41,13 @@ const menuItems = [
     {
         title: "Radar",
         icon: Rss,
-        href: "/opportunity-finder",
+        href: "/radar",
         badge: "New",
     },
     {
         title: "Insights",
         icon: Component,
-        href: "/niche-analyser",
+        href: "/insights",
         badge: null,
     },
     {

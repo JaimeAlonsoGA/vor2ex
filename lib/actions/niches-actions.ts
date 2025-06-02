@@ -36,7 +36,7 @@ export async function getNichesAction(): Promise<Niche[]> {
 
     let connection;
     if (rawConnection) {
-        connection = amazonToConnection(rawConnection);
+        connection = JSON.parse(rawConnection); 
     } else {
         const settings = await getSettings();
         connection = amazonToConnection(settings.amazon_marketplace);

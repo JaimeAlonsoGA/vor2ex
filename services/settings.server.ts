@@ -8,8 +8,6 @@ export async function getSettings(): Promise<Tables<'settings'>> {
     const supabase = await createClient();
     const user = await getUser();
 
-    console.log("Fetching settings for user:", user.id);
-
     const { data, error } = await supabase
         .from("settings")
         .select("*")

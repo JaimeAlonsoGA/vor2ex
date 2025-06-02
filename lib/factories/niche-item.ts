@@ -20,7 +20,7 @@ export function getNiche(
 
     const amazonPrices = amazonProducts?.products
         .map(p => p.price)
-        .filter((v): v is number => v !== undefined && v !== null);
+        .filter((v): v is number => v !== undefined && v !== null && v !== 0 && !isNaN(v));
 
     const amazonRatings = amazonProducts?.products
         .map(p => p.rating)
@@ -182,7 +182,7 @@ export function nicheToDb(data: Niche) {
         keyword: data.keyword,
         searched_at: data.searchedAt,
         amazon_marketplace: data.marketplace,
-        total_amazon_products: data.totalAmazonProducts,
+        total_amazon_products: data.totalAmazonProducts ?? null,
         min_amazon_price: data.minAmazonPrice ?? null,
         max_amazon_price: data.maxAmazonPrice ?? null,
         avg_amazon_price: data.avgAmazonPrice ?? null,
@@ -198,7 +198,7 @@ export function nicheToDb(data: Niche) {
         avg_amazon_sales_volume: data.avgAmazonSalesVolume ?? null,
         total_amazon_offer_count: data.totalAmazonOfferCount ?? null,
         prime_count: data.primeCount ?? null,
-        unique_amazon_brands: data.uniqueAmazonBrands,
+        unique_amazon_brands: data.uniqueAmazonBrands ?? null,
         top_amazon_brand: data.topAmazonBrand ?? null,
         min_amazon_ranking: data.minAmazonRanking ?? null,
         max_amazon_ranking: data.maxAmazonRanking ?? null,
@@ -214,7 +214,7 @@ export function nicheToDb(data: Niche) {
         min_alibaba_price: data.minAlibabaPrice ?? null,
         max_alibaba_price: data.maxAlibabaPrice ?? null,
         avg_alibaba_price: data.avgAlibabaPrice ?? null,
-        unique_alibaba_suppliers: data.uniqueAlibabaSuppliers,
+        unique_alibaba_suppliers: data.uniqueAlibabaSuppliers ?? null,
         min_alibaba_min_order_quantity: data.minAlibabaMinOrderQuantity ?? null,
         max_alibaba_min_order_quantity: data.maxAlibabaMinOrderQuantity ?? null,
         avg_alibaba_min_order_quantity: data.avgAlibabaMinOrderQuantity ?? null,
@@ -274,4 +274,29 @@ export function dbToNiche(data: Tables<'niches'>): Niche {
         maxAlibabaMinOrderQuantity: data.max_alibaba_min_order_quantity ?? undefined,
         avgAlibabaMinOrderQuantity: data.avg_alibaba_min_order_quantity ?? undefined,
     }
+}
+
+export function upsertLocalNiche(
+    existingNiche: Niche,
+    keyword: string,
+    marketplace: string,
+    alibabaProducts: AlibabaProductsFactoryResponse
+): Niche {
+    const alibabaNiche = getNiche(keyword, marketplace, undefined, alibabaProducts);
+
+    return {
+        ...existingNiche,
+
+        totalAlibabaProducts: alibabaNiche.totalAlibabaProducts,
+        avgAlibabaRating: alibabaNiche.avgAlibabaRating,
+        minAlibabaPrice: alibabaNiche.minAlibabaPrice,
+        maxAlibabaPrice: alibabaNiche.maxAlibabaPrice,
+        avgAlibabaPrice: alibabaNiche.avgAlibabaPrice,
+        uniqueAlibabaSuppliers: alibabaNiche.uniqueAlibabaSuppliers,
+        minAlibabaMinOrderQuantity: alibabaNiche.minAlibabaMinOrderQuantity,
+        maxAlibabaMinOrderQuantity: alibabaNiche.maxAlibabaMinOrderQuantity,
+        avgAlibabaMinOrderQuantity: alibabaNiche.avgAlibabaMinOrderQuantity,
+        totalAlibabaVerifiedSuppliers: alibabaNiche.totalAlibabaVerifiedSuppliers,
+        totalAlibabaGuaranteedSuppliers: alibabaNiche.totalAlibabaGuaranteedSuppliers,
+    };
 }

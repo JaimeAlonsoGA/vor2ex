@@ -1,5 +1,14 @@
 import { Product } from "@/types/product";
 
+export const DEFAULT_FILTERS = {
+    verifiedOnly: false,
+    guaranteedOnly: false,
+    minRating: 0,
+    maxRating: 5,
+    maxMOQ: "",
+    category: "",
+}
+
 export function getFiltersAndSort(searchParams: Record<string, string | string[] | undefined>, categories: string[]) {
     return {
         filters: {
@@ -8,7 +17,7 @@ export function getFiltersAndSort(searchParams: Record<string, string | string[]
             minRating: Number(searchParams.minRating) || 0,
             maxRating: Number(searchParams.maxRating) || 5,
             maxMOQ: searchParams.maxMOQ || '',
-            amazonCategory: searchParams.amazonCategory || '',
+            category: searchParams.category || '',
             categories,
         },
         sortField: (searchParams.sortField as string) || 'price',
@@ -16,7 +25,7 @@ export function getFiltersAndSort(searchParams: Record<string, string | string[]
     };
 }
 
-export function getAmazonFiltered(products: Product[], filters: any, sortField: string, sortOrder: "asc" | "desc"): Product[] {
+export function getAmazonFiltered(products: Product[], filters: any): Product[] {
     if (!products || products.length === 0) return [];
     return products.filter((product) => product.source === "amazon")
         .filter((product, index, arr) =>
@@ -25,29 +34,10 @@ export function getAmazonFiltered(products: Product[], filters: any, sortField: 
                 : true
         )
         .filter((product) => product.rating && product.rating >= filters.minRating)
-        .filter((product) => !filters.amazonCategory || product.category === filters.amazonCategory)
-        .sort((a, b) => {
-            if (sortField === "price") {
-                return sortOrder === "asc"
-                    ? (a.price || 0) - (b.price || 0)
-                    : (b.price || 0) - (a.price || 0);
-            } else if (sortField === "rating") {
-                return sortOrder === "asc"
-                    ? (a.rating || 0) - (b.rating || 0)
-                    : (b.rating || 0) - (a.rating || 0);
-            } else if (sortField === "reviews") {
-                return sortOrder === "asc"
-                    ? (a.reviews || 0) - (b.reviews || 0)
-                    : (b.reviews || 0) - (a.reviews || 0);
-            } else {
-                return sortOrder === "asc"
-                    ? a.name.localeCompare(b.name)
-                    : b.name.localeCompare(a.name);
-            }
-        })
+        .filter((product) => !filters.category || product.category === filters.category);
 }
 
-export function getAlibabaFiltered(products: Product[], filters: any, sortField: string, sortOrder: "asc" | "desc"): Product[] {
+export function getAlibabaFiltered(products: Product[], filters: any): Product[] {
     if (!products || products.length === 0) return [];
     return products.filter((product) => product.source === "alibaba")
         .filter((product) => {
@@ -59,24 +49,5 @@ export function getAlibabaFiltered(products: Product[], filters: any, sortField:
                 if (!isNaN(moq) && moq > Number(filters.maxMOQ)) return false
             }
             return true
-        })
-        .sort((a, b) => {
-            if (sortField === "price") {
-                return sortOrder === "asc"
-                    ? (a.price || 0) - (b.price || 0)
-                    : (b.price || 0) - (a.price || 0);
-            } else if (sortField === "rating") {
-                return sortOrder === "asc"
-                    ? (a.rating || 0) - (b.rating || 0)
-                    : (b.rating || 0) - (a.rating || 0);
-            } else if (sortField === "reviews") {
-                return sortOrder === "asc"
-                    ? (a.reviews || 0) - (b.reviews || 0)
-                    : (b.reviews || 0) - (a.reviews || 0);
-            } else {
-                return sortOrder === "asc"
-                    ? a.name.localeCompare(b.name)
-                    : b.name.localeCompare(a.name);
-            }
         })
 }

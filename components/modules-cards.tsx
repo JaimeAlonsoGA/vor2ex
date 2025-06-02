@@ -1,4 +1,4 @@
-import { BarChart3, Package, TrendingUp, Wrench } from "lucide-react";
+import { BarChart3, Component, Package, Rss, Search, TrendingUp, Wrench } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -6,38 +6,38 @@ import Link from "next/link";
 const modules = [
     {
         key: "products",
-        icon: <Package className="h-7 w-7 text-blue-400 group-hover:text-blue-300 transition-transform" />,
-        title: "Product Searcher",
+        icon: <Search className="h-7 w-7 text-blue-400 group-hover:text-blue-300 transition-transform" />,
+        title: "Product Explorer",
         desc: "Find profitable products across Amazon and Alibaba.",
-        gradient: "from-gray-900 via-blue-950 to-gray-800",
-        ring: "ring-blue-900/30",
+        gradient: "from-gray-800 via-blue-900 to-gray-700",
+        ring: "ring-blue-800/30",
         to: "/explorer",
     },
     {
         key: "opportunities",
-        icon: <TrendingUp className="h-7 w-7 text-green-400 group-hover:text-green-300 transition-transform" />,
-        title: "Opportunity Finder",
+        icon: <Rss className="h-7 w-7 text-green-400 group-hover:text-green-300 transition-transform" />,
+        title: "Opportunity Radar",
         desc: "Discover untapped market opportunities.",
-        gradient: "from-gray-900 via-green-950 to-gray-800",
-        ring: "ring-green-900/30",
-        to: "/oportunity-finder",
+        gradient: "from-gray-800 via-green-800 to-gray-700",
+        ring: "ring-green-800/30",
+        to: "/radar",
     },
     {
         key: "analytics",
-        icon: <BarChart3 className="h-7 w-7 text-yellow-400 group-hover:text-yellow-300 transition-transform" />,
-        title: "Analytics Dashboard",
+        icon: <Component className="h-7 w-7 text-yellow-400 group-hover:text-yellow-300 transition-transform" />,
+        title: "Niche Insights",
         desc: "Track and analyze your market performance.",
-        gradient: "from-gray-900 via-yellow-950 to-gray-800",
-        ring: "ring-yellow-900/30",
-        to: "/niche-analyser",
+        gradient: "from-gray-800 via-yellow-800 to-gray-700",
+        ring: "ring-yellow-800/30",
+        to: "/insights",
     },
     {
         key: "tools",
         icon: <Wrench className="h-7 w-7 text-indigo-400 group-hover:text-indigo-300 transition-transform" />,
         title: "Tools",
         desc: "Essential utilities to boost your workflow.",
-        gradient: "from-gray-900 via-purple-950 to-gray-800",
-        ring: "ring-purple-900/30",
+        gradient: "from-gray-800 via-purple-800 to-gray-800",
+        ring: "ring-purple-800/30",
         to: "/tools",
     },
 ];
@@ -68,7 +68,7 @@ export function ModulesCard({
                     <Link key={m.key} href={m.to}>
                         <Card
                             key={m.key}
-                            className={cn(
+                            className={cn("min-h-[150px] relative p-6",
                                 "group relative overflow-hidden cursor-pointer border-none shadow-lg hover:scale-[1.015] transition-transform duration-200 bg-gradient-to-br",
                                 m.gradient,
                                 m.ring,
@@ -83,7 +83,7 @@ export function ModulesCard({
                                     <span className="rounded-full bg-white/5 p-2">{m.icon}</span>
                                     <span className="text-lg font-semibold">{m.title}</span>
                                 </CardTitle>
-                                <CardDescription className="text-gray-300 mt-2 text-sm font-medium drop-shadow">
+                                <CardDescription className="text-gray-300 mt-2 text-sm md:text-xs xl:text-sm font-medium drop-shadow">
                                     {m.desc}
                                 </CardDescription>
                             </CardHeader>

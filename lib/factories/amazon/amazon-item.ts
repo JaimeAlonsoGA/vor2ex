@@ -3,6 +3,7 @@ import { parseSalesVolume } from "../../functions/amazon/utils";
 import { AmazonSearchProduct } from "../../../types/amazon/amazon-search";
 import { AmazonItem } from "../../../types/amazon/sp-api/amazon-item";
 import { Product } from "../../../types/product";
+import { Niche } from "@/types/niche";
 
 export function amazonToProduct(
     item: AmazonSearchProduct,
@@ -82,5 +83,45 @@ export function amazonToProduct(
         guaranteed: undefined,
         description: undefined,
         section: undefined,
+    };
+}
+
+export function extractAmazonFields(niche: Niche): Partial<Niche> {
+    return {
+        // Claves comunes
+        keyword: niche.keyword,
+        searchedAt: niche.searchedAt,
+        marketplace: niche.marketplace,
+
+        // Amazon statistics
+        totalAmazonProducts: niche.totalAmazonProducts,
+        minAmazonPrice: niche.minAmazonPrice,
+        maxAmazonPrice: niche.maxAmazonPrice,
+        avgAmazonPrice: niche.avgAmazonPrice,
+        totalAmazonSponsored: niche.totalAmazonSponsored,
+        minAmazonRating: niche.minAmazonRating,
+        maxAmazonRating: niche.maxAmazonRating,
+        avgAmazonRating: niche.avgAmazonRating,
+        minAmazonReviews: niche.minAmazonReviews,
+        maxAmazonReviews: niche.maxAmazonReviews,
+        avgAmazonReviews: niche.avgAmazonReviews,
+        totalAmazonReviews: niche.totalAmazonReviews,
+        totalAmazonSalesVolume: niche.totalAmazonSalesVolume,
+        avgAmazonSalesVolume: niche.avgAmazonSalesVolume,
+        totalAmazonOfferCount: niche.totalAmazonOfferCount,
+        primeCount: niche.primeCount,
+        uniqueAmazonBrands: niche.uniqueAmazonBrands,
+        uniqueCategories: niche.uniqueCategories,
+        topCategory: niche.topCategory,
+        topAmazonBrand: niche.topAmazonBrand,
+        minAmazonRanking: niche.minAmazonRanking,
+        maxAmazonRanking: niche.maxAmazonRanking,
+        avgAmazonRanking: niche.avgAmazonRanking,
+        avgAmazonBuyBoxPrice: niche.avgAmazonBuyBoxPrice,
+        bestSellerCount: niche.bestSellerCount,
+        amazonChoiceCount: niche.amazonChoiceCount,
+        oldestAmazonDate: niche.oldestAmazonDate,
+        newestAmazonDate: niche.newestAmazonDate,
+        avgAmazonDate: niche.avgAmazonDate,
     };
 }

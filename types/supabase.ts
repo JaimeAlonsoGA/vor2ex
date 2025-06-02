@@ -68,16 +68,16 @@ export type Database = {
           searched_at: string
           top_amazon_brand: string | null
           top_category: string | null
-          total_alibaba_products: number
+          total_alibaba_products: number | null
           total_amazon_offer_count: number | null
-          total_amazon_products: number
+          total_amazon_products: number | null
           total_amazon_reviews: number | null
           total_amazon_sales_volume: number | null
           total_amazon_sponsored: number | null
           total_guaranteed_suppliers: number | null
           total_verified_suppliers: number | null
-          unique_alibaba_suppliers: number
-          unique_amazon_brands: number
+          unique_alibaba_suppliers: number | null
+          unique_amazon_brands: number | null
           unique_categories: number | null
         }
         Insert: {
@@ -114,16 +114,16 @@ export type Database = {
           searched_at: string
           top_amazon_brand?: string | null
           top_category?: string | null
-          total_alibaba_products: number
+          total_alibaba_products?: number | null
           total_amazon_offer_count?: number | null
-          total_amazon_products: number
+          total_amazon_products?: number | null
           total_amazon_reviews?: number | null
           total_amazon_sales_volume?: number | null
           total_amazon_sponsored?: number | null
           total_guaranteed_suppliers?: number | null
           total_verified_suppliers?: number | null
-          unique_alibaba_suppliers: number
-          unique_amazon_brands: number
+          unique_alibaba_suppliers?: number | null
+          unique_amazon_brands?: number | null
           unique_categories?: number | null
         }
         Update: {
@@ -160,16 +160,16 @@ export type Database = {
           searched_at?: string
           top_amazon_brand?: string | null
           top_category?: string | null
-          total_alibaba_products?: number
+          total_alibaba_products?: number | null
           total_amazon_offer_count?: number | null
-          total_amazon_products?: number
+          total_amazon_products?: number | null
           total_amazon_reviews?: number | null
           total_amazon_sales_volume?: number | null
           total_amazon_sponsored?: number | null
           total_guaranteed_suppliers?: number | null
           total_verified_suppliers?: number | null
-          unique_alibaba_suppliers?: number
-          unique_amazon_brands?: number
+          unique_alibaba_suppliers?: number | null
+          unique_amazon_brands?: number | null
           unique_categories?: number | null
         }
         Relationships: []

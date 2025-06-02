@@ -51,7 +51,7 @@ export function StarRating({
                                 ? `${starValue} estrellas o menos`
                                 : `${starValue} estrellas o más`
                         }
-                        className="focus:outline-none px-1"
+                        className="focus:outline-none px-1 cursor-pointer"
                         onClick={() => onChange?.(starValue)}
                         tabIndex={0}
                         role="radio"

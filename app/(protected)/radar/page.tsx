@@ -1,4 +1,4 @@
-import { OpportunityFinderDashboard } from "@/components/dashboard/oportunity-finder/dashboard";
+import { OpportunityFinderDashboard } from "@/components/dashboard/radar/dashboard";
 import { NoStrategiesActivatedFallback } from "@/components/dashboard/strategies/fallback";
 import { getNichesAction, getUserNichesAction } from "@/lib/actions/niches-actions";
 import { getStrategiesAction } from "@/lib/actions/strategies-actions";

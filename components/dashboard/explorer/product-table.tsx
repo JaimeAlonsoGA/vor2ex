@@ -1,14 +1,17 @@
-import { Flame, Star, StarHalf, TrendingUp, Rocket, Trash2, Check, Shield, Megaphone } from "lucide-react";
+'use client';
+
+import { useState, useMemo } from "react";
+import { Flame, TrendingUp, Rocket, Trash2, Check, Shield, Megaphone, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Product } from "@/types/product";
 import { Skeleton } from "@/components/ui/skeleton";
+import { renderStars } from "../render-start";
 
 interface ProductTableProps {
   products: Product[];
-  onRemove?: (id: string) => void;
   type: "amazon" | "alibaba";
   isLoading?: boolean;
 }
@@ -25,54 +28,70 @@ function TableSkeletonRow({ columns }: { columns: { key: string; label: string }
 
 const TABLE_COLUMNS = {
   amazon: [
-    { key: "image", label: "Image" },
-    { key: "name", label: "Name" },
-    { key: "brand", label: "Brand" },
-    { key: "category", label: "Category" },
-    { key: "ranking", label: "Ranking" },
-    { key: "price", label: "Price" },
-    { key: "rating", label: "Rating" },
-    { key: "reviews", label: "Reviews" },
-    { key: "salesVolume", label: "Sales" },
-    { key: "asin", label: "ASIN" },
-    { key: "sponsored", label: "Sponsored" },
-    { key: "createdAt", label: "Created" },
+    { key: "image", label: "Image", sortable: false },
+    { key: "name", label: "Name", sortable: false },
+    { key: "brand", label: "Brand", sortable: true },
+    { key: "category", label: "Category", sortable: true },
+    { key: "ranking", label: "Ranking", sortable: true },
+    { key: "price", label: "Price", sortable: true },
+    { key: "rating", label: "Rating", sortable: true },
+    { key: "reviews", label: "Reviews", sortable: true },
+    { key: "salesVolume", label: "Sales", sortable: true },
+    { key: "asin", label: "ASIN", sortable: false },
+    { key: "sponsored", label: "Sponsored", sortable: true },
+    { key: "createdAt", label: "Created", sortable: true },
   ],
   alibaba: [
-    { key: "image", label: "Image" },
-    { key: "name", label: "Name" },
-    { key: "supplier", label: "Supplier" },
-    { key: "verified", label: "Verified" },
-    { key: "moq", label: "MOQ" },
-    { key: "price", label: "Price" },
-    { key: "rating", label: "Rating" },
-    { key: "reviews", label: "Reviews" },
-    { key: "years", label: "Years" },
-    { key: "guaranteed", label: "Guarantee" },
+    { key: "image", label: "Image", sortable: false },
+    { key: "name", label: "Name", sortable: false },
+    { key: "supplier", label: "Supplier", sortable: true },
+    { key: "verified", label: "Verified", sortable: true },
+    { key: "moq", label: "MOQ", sortable: true },
+    { key: "price", label: "Price", sortable: true },
+    { key: "rating", label: "Rating", sortable: true },
+    { key: "reviews", label: "Reviews", sortable: true },
+    { key: "years", label: "Years", sortable: true },
+    { key: "guaranteed", label: "Guarantee", sortable: true },
   ],
 };
 
-function renderStars(rating?: number) {
-  if (!rating) rating = 0;
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 >= 0.5;
-  return (
-    <div className="flex items-center">
-      {[...Array(5)].map((_, i) => {
-        if (i < fullStars) {
-          return <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />;
-        }
-        if (i === fullStars && hasHalfStar) {
-          return <StarHalf key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />;
-        }
-        return <Star key={i} className="h-4 w-4 text-gray-300 dark:text-gray-600" />;
-      })}
-      <span className="ml-1 text-sm text-muted-foreground">{rating.toFixed(1)}</span>
-    </div>
-  );
+type SortDirection = "asc" | "desc";
+type SortState = { column: string; direction: SortDirection };
+
+function getDefaultSort(type: "amazon" | "alibaba"): SortState {
+  if (type === "amazon") return { column: "ranking", direction: "asc" };
+  return { column: "price", direction: "asc" };
 }
 
-export function ProductsTable({ products, onRemove, type, isLoading }: ProductTableProps) {
+function getCellValue(product: Product, key: string) {
+  // Helper to get value for sorting
+  switch (key) {
+    case "price":
+      return typeof product.price === "number" ? product.price : 0;
+    case "ranking":
+      return typeof product.ranking === "number" ? product.ranking : Number.MAX_SAFE_INTEGER;
+    case "rating":
+      return typeof product.rating === "number" ? product.rating : 0;
+    case "reviews":
+      return typeof product.reviews === "number" ? product.reviews : 0;
+    case "salesVolume":
+      return typeof product.salesVolume === "number" ? product.salesVolume : 0;
+    case "createdAt":
+      return product.createdAt ? new Date(product.createdAt).getTime() : 0;
+    case "years":
+      return typeof product.years === "number" ? product.years : 0;
+    case "moq":
+      return typeof product.minOrder === "number" ? product.minOrder : 0;
+    case "verified":
+    case "guaranteed":
+    case "sponsored":
+      return !!(product as any)[key];
+    default:
+      return (product as any)[key]?.toString().toLowerCase?.() ?? "";
+  }
+}
+
+export function ProductsTable({ products, type, isLoading }: ProductTableProps) {
   // Amazon highlights
   const maxRankingByCategory: Record<string, number> = {};
   const maxReviewsByCategory: Record<string, number> = {};
@@ -99,17 +118,86 @@ export function ProductsTable({ products, onRemove, type, isLoading }: ProductTa
 
   const columns = TABLE_COLUMNS[type];
 
+  const [sort, setSort] = useState<SortState>(getDefaultSort(type));
+
+  const sortedProducts = useMemo(() => {
+    if (!sort.column) return products;
+    const sorted = [...products].sort((a, b) => {
+      const aValue = getCellValue(a, sort.column);
+      const bValue = getCellValue(b, sort.column);
+
+      if (typeof aValue === "boolean" && typeof bValue === "boolean") {
+        if (sort.direction === "asc") return (aValue === bValue) ? 0 : aValue ? -1 : 1;
+        return (aValue === bValue) ? 0 : aValue ? 1 : -1;
+      }
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return sort.direction === "asc" ? aValue - bValue : bValue - aValue;
+      }
+      return sort.direction === "asc"
+        ? String(aValue).localeCompare(String(bValue))
+        : String(bValue).localeCompare(String(aValue));
+    });
+    return sorted;
+  }, [products, sort]);
+
+  function renderSortIcon(colKey: string) {
+    if (sort.column !== colKey) return <ArrowUpDown className="inline h-3 w-3 text-muted-foreground ml-1" />;
+    return sort.direction === "asc" ? (
+      <ArrowUp className="inline h-3 w-3 text-blue-500 ml-1" />
+    ) : (
+      <ArrowDown className="inline h-3 w-3 text-blue-500 ml-1" />
+    );
+  }
+
+  function handleSort(colKey: string) {
+    setSort((prev) => {
+      if (prev.column === colKey) {
+        return { column: colKey, direction: prev.direction === "asc" ? "desc" : "asc" };
+      }
+      return { column: colKey, direction: "asc" };
+    });
+  }
+
   return (
     <div className="overflow-scroll max-h-[500px] scrollbar-x-none scrollbar-y-none">
       <Table className="w-full">
         <TableHeader>
           <TableRow>
             {columns.map((col) => (
-              <TableHead key={col.key} className={col.key === "image" ? "w-[70px]" : ""}>
-                {col.label}
+              <TableHead
+                key={col.key}
+                className={`
+                  select-none
+                  ${col.key === "image" ? "w-[70px] sticky left-0 z-20 bg-background" : ""}
+                  ${col.sortable ? "cursor-pointer hover:bg-muted transition" : ""}
+                  sticky top-0 z-10 bg-background
+                `}
+                onClick={col.sortable ? () => handleSort(col.key) : undefined}
+                aria-sort={
+                  sort.column === col.key
+                    ? sort.direction === "asc"
+                      ? "ascending"
+                      : "descending"
+                    : "none"
+                }
+                tabIndex={col.sortable ? 0 : -1}
+                role={col.sortable ? "button" : undefined}
+                onKeyDown={
+                  col.sortable
+                    ? (e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleSort(col.key);
+                      }
+                    }
+                    : undefined
+                }
+              >
+                <span className="flex items-center">
+                  {col.label}
+                  {col.sortable && renderSortIcon(col.key)}
+                </span>
               </TableHead>
             ))}
-            <TableHead />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -117,20 +205,23 @@ export function ProductsTable({ products, onRemove, type, isLoading }: ProductTa
             ? Array.from({ length: 1 }).map((_, i) => (
               <TableSkeletonRow columns={columns} key={i} />
             ))
-            : products.length === 0 ? (
+            : sortedProducts.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className="text-center">
                   <span className="text-muted-foreground">No products found</span>
                 </TableCell>
               </TableRow>
             ) : (
-              products.map((product) => (
+              sortedProducts.map((product) => (
                 <TableRow key={product.id} className="h-20 hover:bg-muted/40 transition">
                   {columns.map((col) => {
                     switch (col.key) {
                       case "image":
                         return (
-                          <TableCell key="image" className="align-middle h-20">
+                          <TableCell key="image"
+                            className="align-middle h-20 sticky left-0 z-10 bg-background"
+
+                          >
                             <div className="w-14 h-14 relative rounded-lg overflow-hidden border bg-background">
                               <Image
                                 src={product.imageUrl ?? "https://placehold.co/600x600?text=Vor2ex"}
@@ -305,21 +396,9 @@ export function ProductsTable({ products, onRemove, type, isLoading }: ProductTa
                         return null;
                     }
                   })}
-                  <TableCell className="align-middle h-20 text-right">
-                    {onRemove && (
-                      <Button
-                        variant="outline"
-                        title="Remove product"
-                        onClick={() => onRemove(product.id)}
-                        className="border border-red-500"
-                      >
-                        <Trash2 className="h-4 w-4 text-red-500" />
-                        <span className="sr-only">Remove</span>
-                      </Button>
-                    )}
-                  </TableCell>
                 </TableRow>
-              )))}
+              ))
+            )}
         </TableBody>
       </Table>
     </div>
