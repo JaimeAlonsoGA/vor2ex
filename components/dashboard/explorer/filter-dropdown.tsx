@@ -133,7 +133,7 @@ export default function FilterDropdown({ categories, setFilters, filters }: Prop
                                 onChange={(e) => setFilters({ ...filters, verifiedOnly: e.target.checked })}
                                 className="rounded border-gray-300"
                             />
-                            <Label htmlFor="verified-only" className="w-full cursor-pointer">Verified only (Alibaba)</Label>
+                            <Label htmlFor="verified-only" className="w-full cursor-pointer">Verified only</Label>
                         </div>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -145,7 +145,7 @@ export default function FilterDropdown({ categories, setFilters, filters }: Prop
                                 onChange={(e) => setFilters({ ...filters, guaranteedOnly: e.target.checked })}
                                 className="rounded border-gray-300"
                             />
-                            <Label htmlFor="guaranteed-only" className="w-full cursor-pointer">Guaranteed only (Alibaba)</Label>
+                            <Label htmlFor="guaranteed-only" className="w-full cursor-pointer">Guaranteed only</Label>
                         </div>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />

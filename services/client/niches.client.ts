@@ -1,3 +1,5 @@
+"use client"
+
 import { Niche } from "@/types/niche";
 import { nicheToDb } from "@/lib/factories/niche-item";
 import { createClient } from "@/utils/supabase/client";

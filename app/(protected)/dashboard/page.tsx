@@ -1,4 +1,4 @@
-import { Note } from "@/components/note";
+import Note from "@/components/note";
 import Image from "next/image";
 import { Suspense } from "react";
 

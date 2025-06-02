@@ -1,10 +1,11 @@
 "use client";
+
 import { ArrowUpRight, InfoIcon, Check } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-export function Note({
+export default function Note({
     note,
     to,
     toMessage,

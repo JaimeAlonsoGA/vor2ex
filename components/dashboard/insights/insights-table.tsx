@@ -17,6 +17,7 @@ import { getBorderClass } from "@/lib/functions/strategies/utils";
 import SaveNicheButton from "../save-niche-button";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import GoTo from "../ui/go-to";
 
 const TABLE_METRICS: {
     key: keyof Niche;
@@ -164,16 +165,8 @@ export function SavedNichestable({
                                         </TableCell>
                                     ))}
                                     <TableCell className="gap-2 flex items-center">
-                                        <Button variant={"outline"}>
-                                            <Link href={`/insights/${niche.id}`}>
-                                                <Component className="w-4 h-4" />
-                                            </Link>
-                                        </Button>
-                                        <Button variant={"outline"}>
-                                            <Link href={`/explorer?keyword=${niche.keyword}`}>
-                                                <Search className="w-4 h-4" />
-                                            </Link>
-                                        </Button>
+                                        <GoTo route={`/insights/${niche.id}`} Icon={Component} />
+                                        <GoTo route={`/explorer?keyword=${niche.keyword}`} Icon={Search} />
                                         <SaveNicheButton variant="short" term={niche.keyword} savedNiches={niches.map(n => n.keyword)} />
                                     </TableCell>
                                 </TableRow>

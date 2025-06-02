@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { Bell } from "lucide-react";
 import Image from "next/image";
 
 export default async function LandingPage() {

@@ -12,8 +12,8 @@ import { AlibabaProductsFactoryResponse } from "@/types/alibaba/alibaba-factory"
 import { cookies } from "next/headers";
 import { AmazonConnection } from "@/types/amazon/amazon-connection";
 import OverviewSection from "@/components/dashboard/analytics/overview";
-import { Note } from "@/components/note";
 import { alibabaTFC, amazonTFC } from "@/utils/tfcData";
+import Note from "@/components/note";
 
 export default async function ExplorerPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const keyword = (await searchParams).keyword as string | undefined;

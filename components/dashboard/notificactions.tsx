@@ -9,7 +9,6 @@ import { getIconComponent } from "@/components/helpers";
 import { useRouter } from "next/navigation";
 import { Strategy } from "@/types/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
-import { Niche } from "@/types/niche";
 import { dbToNiche } from "@/lib/factories/niche-item";
 
 type Notification = {
@@ -28,7 +27,7 @@ export function NotificationsDropdown({ activeStrategies }: NotificationsDropdow
     const router = useRouter();
 
     useTableListener({
-        table: "analytics",
+        table: "niches",
         onInsert: (newNiche) => {
             const nicheData = dbToNiche(newNiche);
             let bestScore = -Infinity;
@@ -63,7 +62,7 @@ export function NotificationsDropdown({ activeStrategies }: NotificationsDropdow
     const handleClear = useCallback(() => setNotifications([]), []);
 
     const handleGo = useCallback(() => {
-        router.push("/opportunity-finder");
+        router.push("/radar");
         setNotifications([]);
     }, [router]);
 

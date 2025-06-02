@@ -1,14 +1,14 @@
-import { OpportunityFinderDashboard } from "@/components/dashboard/radar/dashboard";
+import RadarDashboard from "@/components/dashboard/radar/dashboard";
 import { NoStrategiesActivatedFallback } from "@/components/dashboard/strategies/fallback";
-import { Note } from "@/components/note";
+import Note from "@/components/note";
 import { getNichesAction, getUserNichesAction } from "@/lib/actions/niches-actions";
 import { getStrategiesAction } from "@/lib/actions/strategies-actions";
 import { Suspense } from "react";
 
 export default async function ProtectedPage() {
-    const niches = await getNichesAction();
     const savedNiches = await getUserNichesAction();
     const strategies = await getStrategiesAction();
+    const niches = await getNichesAction();
 
     if (!niches || niches.length === 0) {
         return <div className="text-center">Couldn't connect with data providers</div>;
@@ -25,11 +25,13 @@ export default async function ProtectedPage() {
                 to="/help"
                 toMessage="Creating effective strategies"
             />
-            <OpportunityFinderDashboard
-                niches={niches}
-                strategies={strategies}
-                userNiches={savedNiches}
-            />
+            <Suspense >
+                <RadarDashboard
+                    niches={niches}
+                    strategies={strategies}
+                    userNiches={savedNiches}
+                />
+            </Suspense>
         </section>
     );
 }

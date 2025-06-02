@@ -1,6 +1,5 @@
 import { getIconComponent } from "@/components/helpers";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getBorderClass } from "@/lib/functions/strategies/utils";
 import { cn } from "@/lib/utils";
@@ -8,17 +7,17 @@ import { Niche } from "@/types/niche";
 import { Strategy } from "@/types/strategies";
 import { Component, Package, Star, Tag, Users } from "lucide-react";
 import SaveNicheButton from "../save-niche-button";
+import GoTo from "../ui/go-to";
 
 type OpportunityCardProps = {
     niche: Niche;
     strategy: Strategy;
     score: number;
     userNiches: Niche[];
-    onSelectAnalytics: (niche: Niche) => void;
 };
 
 
-export default function OpportunityCard({ niche, strategy, score, onSelectAnalytics, userNiches }: OpportunityCardProps) {
+export default function OpportunityCard({ niche, strategy, score, userNiches }: OpportunityCardProps) {
     return (
         <Card
             className={cn(
@@ -66,19 +65,10 @@ export default function OpportunityCard({ niche, strategy, score, onSelectAnalyt
                 </span>
                 <span className="text-xs text-muted-foreground">Score</span>
             </div>
-            <Button
-                size="sm"
-                variant="outline"
-                onClick={() => onSelectAnalytics(niche)}
-                aria-label={`Show analytics for ${niche.keyword}`}
-            >
-                <Component className="w-4 h-4" />
-                Analytics
-            </Button>
+            <GoTo route={`/insights/${niche.id}`} Icon={Component} routeName="Analytics" />
             <SaveNicheButton
                 term={niche.keyword}
                 savedNiches={userNiches.map(n => n.keyword)}
-                initialPromise={Promise.resolve()}
                 variant="long"
             />
         </Card>

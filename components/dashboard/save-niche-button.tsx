@@ -34,7 +34,7 @@ export default function SaveNicheButton({ term, savedNiches, initialPromise, var
         ): Promise<SaveNicheState> => {
             if (!action.term) return prev;
             if (action.type === 'save') {
-                await toast.promise(
+                toast.promise(
                     saveNiche(action.term),
                     {
                         loading: "Saving...",
@@ -44,7 +44,7 @@ export default function SaveNicheButton({ term, savedNiches, initialPromise, var
                 );
                 return { saved: true, action: 'save' };
             } else {
-                await toast.promise(
+                toast.promise(
                     deleteUserNicheByKeyword(action.term),
                     {
                         loading: "Removing...",

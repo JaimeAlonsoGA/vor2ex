@@ -1,3 +1,4 @@
+"use server"
 import { Tables } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
 import { getUser } from "./auth.server";

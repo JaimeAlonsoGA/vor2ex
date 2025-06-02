@@ -1,9 +1,7 @@
 import { getCardsConfig, renderCard } from "@/components/dashboard/analytics/cards";
-import { Button } from "@/components/ui/button";
+import GoBack from "@/components/dashboard/ui/go-back";
 import { dbToNiche } from "@/lib/factories/niche-item";
 import { getNicheById } from "@/services/niches.server";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 
 interface NichePageProps {
     params: Promise<{ id: string }>;
@@ -11,15 +9,14 @@ interface NichePageProps {
 
 export default async function NichePage({ params }: NichePageProps) {
     const id = await params;
+    if (!id || !id.id) {
+        return <div className="text-center">Niche not found</div>;
+    }
     const niche = dbToNiche((await getNicheById(id.id)));
     return (
         <section className="space-y-4">
             <div className="flex items-center gap-4">
-                <Button variant="outline">
-                    <Link href={`/insights`} className="flex items-center">
-                        <ArrowLeft className="h-4 w-4" />
-                    </Link>
-                </Button>
+                <GoBack routeName="Insights" />
                 <span className="text-lg font-semibold">
                     <span className="text-primary">{niche.keyword}</span>
                 </span>

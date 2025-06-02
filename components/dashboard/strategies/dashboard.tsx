@@ -1,4 +1,4 @@
-import { Note } from "@/components/note";
+import Note from "@/components/note";
 import { Button } from "@/components/ui/button";
 import { DraftingCompass, Plus, SquarePen } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
