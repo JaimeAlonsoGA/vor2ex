@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { toggleStrategySelection } from "@/services/client/strategies.client";
-import { Strategy } from "@/types/analytics/strategies";
+import { Strategy } from "@/types/strategies";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 import { toast } from "sonner";

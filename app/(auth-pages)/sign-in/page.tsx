@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
 import { SubmitButton } from "@/components/submit-button"
 import { FormMessage, Message } from "@/components/form-message";
-import { signInAction } from "@/services/auth.server"
+import { signInAction } from "@/lib/actions/auth-actions"
 
 export default async function Login(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;

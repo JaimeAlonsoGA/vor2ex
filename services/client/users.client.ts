@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "../auth.server";
-import { clearAmazonCredentials } from "../credentials.server";
 
 export async function updateSettings(profileData: {
     name: string;

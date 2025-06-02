@@ -10,8 +10,8 @@ import { getAmazonRegionFromDomain } from "@/lib/functions/amazon/utils";
 export {
   fetchAmazon,
   fetchAccessToken,
-  searchCatalogItems,
-  getCatalogItem,
+  fetchCatalogItems,
+  fetchCatalogItem,
   getItemOffers,
 };
 
@@ -70,27 +70,27 @@ async function fetchAccessToken(domain: string, token?: string) {
   });
 }
 
-async function searchCatalogItems(keywords: string, endpoint: string, marketplace: string) {
+async function fetchCatalogItems(keywords: string, endpoint: string, marketplace: string) {
   const query = `${endpoint}/catalog/2022-04-01/items?marketplaceIds=${marketplace}&keywords=${keywords}&includedData=salesRanks,productTypes,identifiers,summaries,images&pageSize=20`;
   return await fetchAmazon({ method: "GET", query });
 }
 
-async function getCatalogItem(asin: string, endpoint?: string, marketplace?: string) {
-  const query = `${endpoint}/catalog/2022-04-01/items/${asin}?marketplaceIds=${marketplace}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
-  return await fetchAmazon({ method: "GET", query });
-}
-
 export async function fetchNextAmazonCatalogPage(pageToken: string, keywords: string, endpoint: string, marketplace: string) {
-  const query = `${endpoint}/catalog/2022-04-01/items?marketplaceIds=${marketplace}&keywords=${encodeURIComponent(keywords)}&pageToken=${encodeURIComponent(pageToken)}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
+  const query = `${endpoint}/catalog/2022-04-01/items?marketplaceIds=${marketplace}&keywords=${encodeURIComponent(keywords)}&pageToken=${encodeURIComponent(pageToken)}&includedData=salesRanks,productTypes,identifiers,summaries,images&pageSize=20`;
   return await fetchAmazon({ method: "GET", query });
 }
 
 export async function fetchPreviousAmazonCatalogPage(pageToken: string, keywords: string, endpoint: string, marketplace: string) {
-  const query = `${endpoint}/catalog/2022-04-01/items?marketplaceIds=${marketplace}&keywords=${encodeURIComponent(keywords)}&pageToken=${encodeURIComponent(pageToken)}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
+  const query = `${endpoint}/catalog/2022-04-01/items?marketplaceIds=${marketplace}&keywords=${encodeURIComponent(keywords)}&pageToken=${encodeURIComponent(pageToken)}&includedData=salesRanks,productTypes,identifiers,summaries,images&pageSize=20`;
   return await fetchAmazon({ method: "GET", query });
 }
 
-async function getItemOffers(asin: string, endpoint?: string, marketplace?: string): Promise<AmazonOfferResponse> {
+async function fetchCatalogItem(asin: string, endpoint: string, marketplace: string) {
+  const query = `${endpoint}/catalog/2022-04-01/items/${asin}?marketplaceIds=${marketplace}&includedData=salesRanks,productTypes,identifiers,summaries,images`;
+  return await fetchAmazon({ method: "GET", query });
+}
+
+async function getItemOffers(asin: string, endpoint: string, marketplace: string): Promise<AmazonOfferResponse> {
   const query = `${endpoint}/products/pricing/v0/items/${asin}/offers?MarketplaceId=${marketplace}&ItemCondition=New`;
   return await fetchAmazon({ method: "GET", query });
 }

@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Strategy } from "@/types/analytics/strategies";
+import { Strategy } from "@/types/strategies";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -139,6 +139,7 @@ export default function StrategyEditor({ strategy }: StrategyEditorProps) {
                             <div className="flex gap-2 mt-1 flex-wrap">
                                 {COLOR_OPTIONS.map((color) => (
                                     <Button
+                                        key={color.value}
                                         className={cn("h-3 w-4 hover:bg-color-none",
                                             getColorClass(color.value),
                                             draftStrategy.color === color.value
@@ -241,7 +242,7 @@ export default function StrategyEditor({ strategy }: StrategyEditorProps) {
                                         </button>
                                     </TooltipTrigger>
                                     <TooltipContent sideOffset={4}>
-                                        Target price range for products in the niche. 
+                                        Target price range for products in the niche.
                                     </TooltipContent>
                                 </Tooltip>
                             </div>

@@ -4,12 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Niche } from "@/types/analytics/analytics";
-import { Strategy } from "@/types/analytics/strategies";
+import { Niche } from "@/types/niche";
+import { Strategy } from "@/types/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
 import { getIconComponent } from "@/components/helpers";
 import { Check, HelpCircle, SquarePen, Trophy } from "lucide-react";
-import NicheQuickOverview from "../analytics/quick-overview";
+import OverviewSection from "../analytics/overview";
 import { getBorderClass } from "@/lib/functions/strategies/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 

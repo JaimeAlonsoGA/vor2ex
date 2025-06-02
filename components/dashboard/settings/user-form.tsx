@@ -1,67 +1,26 @@
-import { sendPasswordReset, updateSettings } from "@/services/client/users.client";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
-import { toast } from "sonner";
-import { useState } from "react";
 import { Tables } from "@/types/supabase";
 import { User } from "@supabase/supabase-js";
-import { Button } from "../../ui/button";
-import { KeyRound, Loader2, Save } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
-import { useRouter } from "next/navigation";
+import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "../../ui/select";
 import { AMAZON_DOMAINS } from "@/lib/endpoints";
+import { flags } from "@/lib/flags";
+import Image from "next/image";
+import { updateUserSettingsAction } from "@/app/(protected)/settings/actions";
+import ResetPassword from "./reset-password";
+import SaveFormButton from "./save-form";
 
-export function UserForm({ settings, user }: { settings: Tables<'settings'>; user: User }) {
-    const [form, setForm] = useState({
-        name: settings.name,
-        amazon_marketplace: settings.amazon_marketplace,
-        language: settings.language,
-    });
-    const [loading, setLoading] = useState(false);
-    const [resetLoading, setResetLoading] = useState(false);
-    const router = useRouter();
+interface UserFormProps {
+    settings: Promise<Tables<'settings'>>;
+    user: Promise<User>;
+}
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
-
-    const handleSelect = (name: string, value: string) => {
-        setForm(prev => ({ ...prev, [name]: value }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        toast.promise(
-            updateSettings({ ...form }).then(() => {
-                setLoading(false);
-                router.refresh();
-            }),
-            {
-                loading: "Saving changes...",
-                success: "Profile updated",
-                error: "Error updating profile",
-            }
-        );
-    };
-
-    const handleResetPassword = async () => {
-        setResetLoading(true);
-        toast.promise(
-            sendPasswordReset(user.email!).then(() => {
-                setResetLoading(false);
-            }),
-            {
-                loading: "Sending reset email...",
-                success: "Reset email sent",
-                error: "Error sending reset email",
-            }
-        );
-    };
-
+export async function UserForm({ settings, user }: UserFormProps) {
+    const settingsData = await settings as Tables<'settings'>;
+    const userData = await user as User;
     return (
         <form
-            onSubmit={handleSubmit}
+            action={updateUserSettingsAction}
             className="max-w-md mx-auto justify-center bg-background rounded-xl shadow-lg p-6 space-y-6 border border-border"
             aria-label="User settings form"
         >
@@ -70,7 +29,7 @@ export function UserForm({ settings, user }: { settings: Tables<'settings'>; use
                 <Input
                     id="email"
                     type="email"
-                    value={user.email || ""}
+                    value={userData.email || ""}
                     disabled
                     className="bg-muted cursor-not-allowed"
                 />
@@ -81,8 +40,7 @@ export function UserForm({ settings, user }: { settings: Tables<'settings'>; use
                     id="name"
                     name="name"
                     type="text"
-                    value={form.name}
-                    onChange={handleChange}
+                    defaultValue={settingsData.name}
                     required
                     autoComplete="name"
                 />
@@ -90,8 +48,8 @@ export function UserForm({ settings, user }: { settings: Tables<'settings'>; use
             <div className="space-y-2">
                 <Label htmlFor="language">Language</Label>
                 <Select
-                    value={form.language.slice(0, 1).toUpperCase() + form.language.slice(1)}
-                    onValueChange={value => handleSelect("language", value)}
+                    name="language"
+                    defaultValue={settingsData.language.charAt(0).toUpperCase() + settingsData.language.slice(1).toLowerCase() || "English"}
                 >
                     <SelectTrigger id="language" className="w-full">
                         <SelectValue placeholder="Select language" />
@@ -106,37 +64,69 @@ export function UserForm({ settings, user }: { settings: Tables<'settings'>; use
             <div className="space-y-2">
                 <Label htmlFor="amazon_marketplace">Marketplace</Label>
                 <Select
-                    value={form.amazon_marketplace}
-                    onValueChange={value => handleSelect("amazon_marketplace", value)}
+                    name="amazon_marketplace"
+                    defaultValue={settingsData.amazon_marketplace}
                 >
                     <SelectTrigger id="amazon_marketplace" className="w-full">
                         <SelectValue placeholder="Select marketplace" />
                     </SelectTrigger>
                     <SelectContent className="gap-2">
-                        <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">Europe</div>
-                        {Object.entries(AMAZON_DOMAINS["Europe"]).map(([country, domain]) => (
-                            <SelectItem key={domain} value={domain}>
-                                <span className="flex items-center gap-2">
-                                    {/* <span className="font-medium">🇪🇺</span> */}
-                                    <span>{country} <span className="text-muted-foreground text-xs ml-1">(.{domain})</span></span>
-                                </span>
-                            </SelectItem>
-                        ))}
                         <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">North America</div>
                         {Object.entries(AMAZON_DOMAINS["North America"]).map(([country, domain]) => (
                             <SelectItem key={domain} value={domain}>
                                 <span className="flex items-center gap-2">
-                                    {/* <span className="font-medium">us</span> */}
-                                    <span>{country} <span className="text-muted-foreground text-xs ml-1">(.{domain})</span></span>
+                                    <Image
+                                        src={flags[country as keyof typeof flags]}
+                                        alt={`${country} flag`}
+                                        className="w-4 h-3"
+                                        loading="lazy"
+                                        width={16}
+                                        height={12}
+                                    />
+                                    <span>
+                                        {country}
+                                        <span className="text-muted-foreground text-xs ml-1">(.{domain})</span>
+                                    </span>
                                 </span>
                             </SelectItem>
                         ))}
+                        <SelectSeparator />
+                        <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">Europe</div>
+                        {Object.entries(AMAZON_DOMAINS["Europe"]).map(([country, domain]) => (
+                            <SelectItem key={domain} value={domain}>
+                                <span className="flex items-center gap-2">
+                                    <Image
+                                        src={flags[country as keyof typeof flags]}
+                                        alt={`${country} flag`}
+                                        className="w-4 h-3"
+                                        loading="lazy"
+                                        width={16}
+                                        height={12}
+                                    />
+                                    <span>
+                                        {country}
+                                        <span className="text-muted-foreground text-xs ml-1">(.{domain})</span>
+                                    </span>
+                                </span>
+                            </SelectItem>
+                        ))}
+                        <SelectSeparator />
                         <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">Far East</div>
                         {Object.entries(AMAZON_DOMAINS["Far East"]).map(([country, domain]) => (
                             <SelectItem key={domain} value={domain} disabled>
                                 <span className="flex items-center gap-2">
-                                    {/* <span className="font-medium">far-east</span> */}
-                                    <span>{country} <span className="text-muted-foreground text-xs ml-1">(.{domain})</span></span>
+                                    <Image
+                                        src={flags[country as keyof typeof flags]}
+                                        alt={`${country} flag`}
+                                        className="w-4 h-3"
+                                        loading="lazy"
+                                        width={16}
+                                        height={12}
+                                    />
+                                    <span>
+                                        {country}
+                                        <span className="text-muted-foreground text-xs ml-1">(.{domain})</span>
+                                    </span>
                                 </span>
                             </SelectItem>
                         ))}
@@ -144,34 +134,8 @@ export function UserForm({ settings, user }: { settings: Tables<'settings'>; use
                 </Select>
             </div>
             <div className="flex flex-col gap-2 pt-2">
-                <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={loading}
-                    aria-disabled={loading}
-                >
-                    {loading ? (
-                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    ) : (
-                        <Save className="w-4 h-4 mr-2" />
-                    )}
-                    Save changes
-                </Button>
-                <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full"
-                    onClick={handleResetPassword}
-                    disabled={resetLoading}
-                    aria-disabled={resetLoading}
-                >
-                    {resetLoading ? (
-                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    ) : (
-                        <KeyRound className="w-4 h-4 mr-2" />
-                    )}
-                    Reset password
-                </Button>
+                <SaveFormButton />
+                <ResetPassword email={userData.email!} />
             </div>
         </form>
     );

@@ -24,11 +24,12 @@ export async function getNicheIdByKeyword(keyword: string): Promise<Tables<'nich
     return data.id;
 }
 
-export async function getAllNicheData(): Promise<Tables<'niches'>[]> {
+export async function getNichesData(marketplace: string): Promise<Tables<'niches'>[]> {
     const supabase = await createClient();
     const { data, error } = await supabase
         .from("niches")
-        .select("*");
+        .select("*")
+        .eq("amazon_marketplace", marketplace);
 
     if (error) {
         throw new Error(`Error fetching all analytics data: ${error.message}`);

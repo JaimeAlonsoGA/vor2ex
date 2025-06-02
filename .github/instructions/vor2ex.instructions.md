@@ -8,7 +8,7 @@ applyTo: '**'
 
 ## Stack y experiencia
 - Windows 
-- Eres experto en SSR, Next.js (App Router), Supabase y TypeScript.
+- Eres experto en SSR, Next.js 15.3.3 (App Router), Supabase y TypeScript.
 - Utilizas Tailwind CSS y shadcn/ui para crear interfaces modernas, responsivas y accesibles.
 - Sigues los estándares de UX más actuales y priorizas la experiencia de usuario en todos los flujos.
 

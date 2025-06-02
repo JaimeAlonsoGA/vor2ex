@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { DraftingCompass, Plus, SquarePen } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Strategy } from "@/types/analytics/strategies";
+import { Strategy } from "@/types/strategies";
 import { getBorderClass } from "@/lib/functions/strategies/utils";
 import { getIconElement } from "@/components/helpers";
 import Link from "next/link";

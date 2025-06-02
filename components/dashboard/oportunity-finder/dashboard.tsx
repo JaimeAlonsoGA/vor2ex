@@ -1,24 +1,21 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
-import { Niche } from "@/types/analytics/analytics";
-import { Strategy } from "@/types/analytics/strategies";
+import { useState } from "react";
+import { Niche } from "@/types/niche";
+import { Strategy } from "@/types/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
 import { getIconComponent } from "@/components/helpers";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Star, Tag, Users, Package, Search, Check, SquarePen, Bookmark, ChevronDown } from "lucide-react";
+import { Star, Tag, Users, Package, Search, Check, SquarePen, Bookmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getBorderClass } from "@/lib/functions/strategies/utils";
-import { collectAllNichesData } from "@/lib/functions/niches/collect-niches-data";
 import { useTableListener } from "@/hooks/use-listener";
 import { toast } from "sonner";
-import { deleteUserNicheByKeyword } from "@/services/client/users-niches.client";
-import { saveNiche } from "@/services/client/niches.client";
+import { deleteUserNicheByKeyword, saveNiche } from "@/services/client/users-niches.client";
 import NicheQuickOverviewSimple from "../analytics/complete-analytics";
-import { useRouter } from "next/navigation";
 import { dbToNiche } from "@/lib/factories/niche-item";
 import { Tables } from "@/types/supabase";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -105,16 +102,16 @@ function OpportunityCard({ niche, strategy, score, onSelectAnalytics, isUserNich
 }
 
 export function OpportunityFinderDashboard({
-    allNiches,
+    niches,
     strategies,
     userNiches
-}: { allNiches: Niche[], strategies: Strategy[], userNiches: Niche[] }) {
+}: { niches: Niche[], strategies: Strategy[], userNiches: Niche[] }) {
     const [search, setSearch] = useState("");
     const [minScore, setMinScore] = useState<number>(70);
     const [editing, setEditing] = useState<boolean>(false);
     const [selectedAnalytics, setSelectedAnalytics] = useState<Niche | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<Niche[]>(allNiches);
+    const [data, setData] = useState<Niche[]>(niches);
     const [updatedUserNiches, setUpdatedUserNiches] = useState<Niche[]>(userNiches);
     const [orderBy, setOrderBy] = useState<"score" | "recent">("score");
 
@@ -164,13 +161,13 @@ export function OpportunityFinderDashboard({
         }
     }
 
-    const handleInsert = (newRow: Tables<'analytics'>) => {
+    const handleInsert = (newRow: Tables<'niches'>) => {
         const niche = dbToNiche(newRow);
         setData((prevData) => [niche, ...prevData]);
     };
 
     useTableListener({
-        table: "analytics",
+        table: "niches",
         onInsert: handleInsert,
     });
 
@@ -238,7 +235,7 @@ export function OpportunityFinderDashboard({
                                 <Select value={orderBy} onValueChange={v => setOrderBy(v as "score" | "recent")}>
                                     <SelectTrigger className="">
                                         <SelectValue>
-                                           {orderBy === "score" ? "Score" : "Most Recent"}
+                                            {orderBy === "score" ? "Score" : "Most Recent"}
                                         </SelectValue>
                                     </SelectTrigger>
                                     <SelectContent>

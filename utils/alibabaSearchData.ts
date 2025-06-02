@@ -1,8 +1,8 @@
-import { AlibabaFactoryResponse } from "../types/alibaba/alibaba-factory";
+import { AlibabaProductsFactoryResponse } from "../types/alibaba/alibaba-factory";
 import { AlibabaSearchProduct } from "../types/alibaba/alibaba-search";
 import { Product } from "../types/product";
 
-export const AlibabaSearchData: AlibabaFactoryResponse = {
+export const AlibabaSearchData: AlibabaProductsFactoryResponse = {
     "products": [
         {
             "id": "https://www.alibaba.com/product-detail/Customized-Adhesive-Package-BOPP-Tape-Custom_1601104207091.html",
@@ -873,5 +873,5 @@ export const AlibabaSearchData: AlibabaFactoryResponse = {
             "section": "mainBoothModel"
         }
     ],
-    totalProducts: undefined
+    totalProducts: 0,
 }

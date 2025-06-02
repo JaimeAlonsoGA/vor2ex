@@ -1,10 +1,10 @@
 "use client";
 
-import { Niche } from "@/types/analytics/analytics";
+import { Niche } from "@/types/niche";
 import React, { useState } from "react";
 import { Note } from "@/components/note";
 import { TopNichesAnalytics } from "./top-niches";
-import { Strategy } from "@/types/analytics/strategies";
+import { Strategy } from "@/types/strategies";
 import { SavedNichestable } from "./analytics-table";
 import NicheQuickOverviewSimple from "../analytics/complete-analytics";
 

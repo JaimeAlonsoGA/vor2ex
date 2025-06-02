@@ -7,9 +7,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { useTableListener } from "@/hooks/use-listener";
 import { getIconComponent } from "@/components/helpers";
 import { useRouter } from "next/navigation";
-import { Strategy } from "@/types/analytics/strategies";
+import { Strategy } from "@/types/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
-import { Niche } from "@/types/analytics/analytics";
+import { Niche } from "@/types/niche";
 import { dbToNiche } from "@/lib/factories/niche-item";
 
 type Notification = {

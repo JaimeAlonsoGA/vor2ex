@@ -1,5 +1,5 @@
 import { strategyToDb } from "@/lib/factories/strategy-item";
-import { Strategy } from "@/types/analytics/strategies";
+import { Strategy } from "@/types/strategies";
 
 export const REQUIRED_PARAMS: (keyof Strategy)[] = [
     "ratingOptimum",

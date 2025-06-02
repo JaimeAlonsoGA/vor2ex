@@ -36,6 +36,7 @@ export type Database = {
       niches: {
         Row: {
           amazon_choice_count: number | null
+          amazon_marketplace: string
           avg_alibaba_min_order_quantity: number | null
           avg_alibaba_price: number | null
           avg_alibaba_rating: number | null
@@ -81,6 +82,7 @@ export type Database = {
         }
         Insert: {
           amazon_choice_count?: number | null
+          amazon_marketplace?: string
           avg_alibaba_min_order_quantity?: number | null
           avg_alibaba_price?: number | null
           avg_alibaba_rating?: number | null
@@ -126,6 +128,7 @@ export type Database = {
         }
         Update: {
           amazon_choice_count?: number | null
+          amazon_marketplace?: string
           avg_alibaba_min_order_quantity?: number | null
           avg_alibaba_price?: number | null
           avg_alibaba_rating?: number | null

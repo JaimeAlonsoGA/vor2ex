@@ -4,14 +4,15 @@ import { createClient } from "@/utils/supabase/server";
 import { Tables } from "@/types/supabase";
 import { getUser } from "./auth.server";
 
-export async function getUserNichesData(): Promise<Tables<'niches'>[]> {
+export async function getUserNichesData(marketplace: string): Promise<Tables<'niches'>[]> {
     const supabase = await createClient();
     const user = await getUser();
 
     const { data, error } = await supabase
         .from("users_niches")
         .select("niches: niche_id (*)")
-        .eq("user_id", user.id);
+        .eq("user_id", user.id)
+        .eq("niches.amazon_marketplace", marketplace);
 
     if (error) {
         throw new Error("Error fetching user niches");

@@ -1,5 +1,5 @@
 import StrategyEditor from "@/components/dashboard/strategies/strategy-editor";
-import { collectUserStrategiesData } from "@/lib/functions/strategies/collect-strategies-data";
+import { getStrategiesAction } from "@/lib/actions/strategies-actions";
 import { EMPTY_STRATEGY } from "@/lib/strategies";
 import { Suspense } from "react";
 
@@ -9,7 +9,7 @@ interface PageProps {
 
 export default async function CreateStrategyPage({ params }: PageProps) {
     const { id } = await params;
-    const userStrategies = await collectUserStrategiesData();
+    const userStrategies = await getStrategiesAction();
     const strategy = id === "create"
         ? EMPTY_STRATEGY
         : userStrategies.find((s) => s.id === id) ?? EMPTY_STRATEGY;

@@ -1,3 +1,4 @@
+
 import { parseSalesVolume } from "../../functions/amazon/utils";
 import { AmazonSearchProduct } from "../../../types/amazon/amazon-search";
 import { AmazonItem } from "../../../types/amazon/sp-api/amazon-item";
@@ -34,7 +35,7 @@ export function amazonToProduct(
 
     const imageUrl = item.is_sponsored ? image?.link : item.url_image ?? image?.link;
 
-    const url = item.is_sponsored ? `/dp/${spApiItem?.asin}` : item.url ?? `/dp/${spApiItem?.asin}`;
+    const url = item.is_sponsored ? `/dp/${item?.asin}` : item.url ?? `/dp/${item?.asin}`;
 
     return {
         // Comunes

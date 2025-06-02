@@ -1,10 +1,10 @@
 import StrategiesDashboard from "@/components/dashboard/strategies/dashboard"
 import { NoStrategiesCreatedFallback } from "@/components/dashboard/strategies/fallback";
-import { collectUserStrategiesData } from "@/lib/functions/strategies/collect-strategies-data";
+import { getStrategiesAction } from "@/lib/actions/strategies-actions";
 import { Suspense } from "react"
 
 export default async function ProtectedPage() {
-    const userStrategies = await collectUserStrategiesData();
+    const userStrategies = await getStrategiesAction();
     if (!userStrategies || userStrategies.length === 0) {
         return <NoStrategiesCreatedFallback />;
     }

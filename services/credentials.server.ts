@@ -6,7 +6,7 @@ import { getUser } from "./auth.server";
 
 export { getCredentials, createAmazonCredentials, updateAmazonCredentials };
 
-async function getCredentials(): Promise<Tables<'credentials'>> {
+async function getCredentials(): Promise<Tables<'credentials'> | undefined> {
   const supabase = await createClient();
   const user = await getUser();
 
@@ -15,9 +15,8 @@ async function getCredentials(): Promise<Tables<'credentials'>> {
     .select("*")
     .eq("user_id", user.id)
     .single();
-  if (error) throw new Error("Error fetching credentials", error);
 
-  return data ?? [];
+  return data ?? undefined;
 }
 
 async function createAmazonCredentials(token: AmazonToken) {

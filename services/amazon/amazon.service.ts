@@ -14,6 +14,7 @@ async function fetchAmazonSearch(keyword: string, domain: string, page: number):
             "target": "amazon_search",
             "query": keyword,
             "page_from": page.toString(),
+            "device_type": "desktop_chrome",
             "parse": true,
             "domain": domain,
         }),

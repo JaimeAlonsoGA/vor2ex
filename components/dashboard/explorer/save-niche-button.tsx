@@ -1,40 +1,75 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Bookmark } from 'lucide-react';
-import { upsertNiche } from '@/services/client/niches.client';
-import { Niche } from '@/types/analytics/analytics';
+import { Niche } from '@/types/niche';
 import { Product } from '@/types/product';
+import { toast } from 'sonner';
+import { useActionState } from 'react';
+import { deleteUserNicheByKeyword, saveNiche } from '@/services/client/users-niches.client';
 
 interface SaveNicheButtonProps {
-    niche?: Niche;
-    products: Product[];
-    isSaved: boolean;
-    onSaveNiche: (keyword: string) => void;
-    onRemoveNiche: (keyword: string) => void;
-    isLoading: boolean;
-    isNicheLoading: boolean;
+    savedNiches: string[];
+    term?: string;
 }
 
-export default function SaveNicheButton({ niche, isSaved, onSaveNiche, onRemoveNiche, isLoading, isNicheLoading, products }: SaveNicheButtonProps) {
+export default function SaveNicheButton({ term, savedNiches }: SaveNicheButtonProps) {
+    const isSaved = term ? savedNiches.includes(term) : false;
+
+    const [saveState, saveAction, isSaving] = useActionState(
+        async (_prev: unknown, term: string) => {
+            return toast.promise(
+                saveNiche(term).then(res => {
+                    return res;
+                }),
+                {
+                    loading: "Saving...",
+                    success: "Niche saved",
+                    error: "Error saving niche",
+                }
+            );
+        },
+        null
+    );
+
+    const [forgetState, forgetAction, isForgetting] = useActionState(
+        async (_prev: unknown, term: string) => {
+            return toast.promise(
+                deleteUserNicheByKeyword(term).then(res => {
+                    return res;
+                }),
+                {
+                    loading: "Removing...",
+                    success: "Niche forgotten",
+                    error: "Error removing niche",
+                }
+            );
+        },
+        null
+    );
+
     return (
         <Button
             variant="outline"
-            disabled={!niche || isLoading || isNicheLoading || !products}
+            disabled={!term || isSaving || isForgetting}
             className="flex items-center gap-2"
-            onClick={() => isSaved ? onRemoveNiche(niche?.keyword!) : onSaveNiche(niche?.keyword!)}
-            aria-label="Save niche"
+            onClick={() =>
+                term && (
+                    isSaved
+                        ? forgetAction(term)
+                        : saveAction(term)
+                )
+            } aria-label="Save niche"
         >
             {isSaved ? (
                 <>
                     <Bookmark className="h-4 w-4 fill-primary text-primary" />
-                    <span>Forget niche</span>
+                    <span>{isForgetting ? "Removing..." : "Forget niche"}</span>
                 </>
             ) : (
                 <>
                     <Bookmark className="h-4 w-4" />
-                    <span>Save niche</span>
+                    <span>{isSaving ? "Saving..." : "Save niche"}</span>
                 </>
             )}
         </Button>

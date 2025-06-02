@@ -1,4 +1,4 @@
-import { Strategy } from "@/types/analytics/strategies";
+import { Strategy } from "@/types/strategies";
 import { Tables } from "@/types/supabase";
 
 export function strategyToDb(strategy: Strategy) {

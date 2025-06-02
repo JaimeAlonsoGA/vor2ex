@@ -2,9 +2,10 @@ export interface Niche {
     id?: string;
     keyword: string;
     searchedAt: string;
+    marketplace: string;
 
     // Amazon statistics
-    totalAmazonProducts: number;
+    totalAmazonProducts?: number;
     minAmazonPrice?: number;
     maxAmazonPrice?: number;
     avgAmazonPrice?: number;
@@ -20,7 +21,7 @@ export interface Niche {
     avgAmazonSalesVolume?: number;
     totalAmazonOfferCount?: number;
     primeCount?: number;
-    uniqueAmazonBrands: number;
+    uniqueAmazonBrands?: number;
     uniqueCategories?: number;
     topCategory?: string;
     topAmazonBrand?: string;
@@ -36,12 +37,12 @@ export interface Niche {
     avgAmazonDate?: string;
 
     // Alibaba statistics
-    totalAlibabaProducts: number;
+    totalAlibabaProducts?: number;
     avgAlibabaRating?: number;
     minAlibabaPrice?: number;
     maxAlibabaPrice?: number;
     avgAlibabaPrice?: number;
-    uniqueAlibabaSuppliers: number;
+    uniqueAlibabaSuppliers?: number;
     totalAlibabaVerifiedSuppliers?: number;
     totalAlibabaGuaranteedSuppliers?: number;
     minAlibabaMinOrderQuantity?: number;

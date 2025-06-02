@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Niche } from "@/types/analytics/analytics";
-import { Strategy } from "@/types/analytics/strategies";
+import { Niche } from "@/types/niche";
+import { Strategy } from "@/types/strategies";
 import { Badge } from "@/components/ui/badge";
 import { Package, Star, Tag, TrendingUp, Users, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";

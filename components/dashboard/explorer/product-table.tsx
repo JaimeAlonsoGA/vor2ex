@@ -133,7 +133,7 @@ export function ProductsTable({ products, onRemove, type, isLoading }: ProductTa
                           <TableCell key="image" className="align-middle h-20">
                             <div className="w-14 h-14 relative rounded-lg overflow-hidden border bg-background">
                               <Image
-                                src={product.imageUrl || "/placeholder.svg?height=64&width=64"}
+                                src={product.imageUrl ?? "https://placehold.co/600x600?text=Vor2ex"}
                                 alt={product.name}
                                 fill
                                 className="object-contain"

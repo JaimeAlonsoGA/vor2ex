@@ -1,20 +1,21 @@
 import Link from "next/link";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
-import { getUser, signOutAction } from "@/services/auth.server";
+import { getUser } from "@/services/auth.server";
 import { ThemeSwitcher } from "../../theme-switcher";
 import { ChevronDown, CreditCard, DraftingCompass, LogOut, Megaphone, Settings } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getSettings } from "@/services/settings.server";
 import { NotificationsDropdown } from "../notificactions";
-import { collectUserStrategiesData } from "@/lib/functions/strategies/collect-strategies-data";
+import { getStrategiesAction } from "@/lib/actions/strategies-actions";
 import MobileSidebar from "./mobile-sidebar";
+import { signOutAction } from "@/lib/actions/auth-actions";
+import { User } from "@supabase/supabase-js";
 
-export default async function Header() {
-  const user = await getUser();
+export default async function Header({ user }: { user: User }) {
   const settings = await getSettings();
-  const strategies = await collectUserStrategiesData();
+  const strategies = await getStrategiesAction();
   const activeStrategies = strategies.filter(strategy => strategy.selected);
 
   if (!user || !settings) return null;
@@ -23,7 +24,7 @@ export default async function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 border-b bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60">
       <div className="flex h-16 items-center justify-between px-6">
         <div className="hidden md:flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2">
             <Link href="/dashboard" className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded-lg bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center">
                 <span className="text-white font-bold text-sm">V2</span>
@@ -38,7 +39,7 @@ export default async function Header() {
 
         <MobileSidebar />
 
-        <div className="flex items-center space-x-2 md:space-x-4">
+        <div className="flex items-center space-x-2">
           <ThemeSwitcher />
 
           <NotificationsDropdown activeStrategies={activeStrategies} />

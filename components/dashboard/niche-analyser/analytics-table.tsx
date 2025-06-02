@@ -9,8 +9,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BarChart2, Package, Star, Tag, Users, CheckCircle2, Bookmark, ChartColumnIncreasing } from "lucide-react";
-import { Niche } from "@/types/analytics/analytics";
-import { Strategy } from "@/types/analytics/strategies";
+import { Niche } from "@/types/niche";
+import { Strategy } from "@/types/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
 import { getIconComponent } from "@/components/helpers";
 import { cn } from "@/lib/utils";

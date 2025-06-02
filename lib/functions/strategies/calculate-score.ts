@@ -1,5 +1,5 @@
-import { Niche } from "@/types/analytics/analytics";
-import { Strategy } from "@/types/analytics/strategies";
+import { Niche } from "@/types/niche";
+import { Strategy } from "@/types/strategies";
 
 function gaussianScore(value: number, optimum: number, sigma: number = 0.3) {
     return Math.exp(-0.5 * Math.pow((value - optimum) / sigma, 2));

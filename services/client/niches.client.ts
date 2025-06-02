@@ -1,14 +1,14 @@
-import { Niche } from "@/types/analytics/analytics";
+import { Niche } from "@/types/niche";
 import { nicheToDb } from "@/lib/factories/niche-item";
 import { createClient } from "@/utils/supabase/client";
 
-export async function upsertNiche(data: Niche): Promise<{ success: boolean; message: string }> {
+export async function upsertNiche(data: Niche, marketplace: string): Promise<{ success: boolean; message: string }> {
     const dbData = nicheToDb(data);
     const supabase = createClient();
 
     const { error } = await supabase
         .from("niches")
-        .upsert(dbData, { onConflict: "keyword" });
+        .upsert({ ...dbData, amazon_marketplace: marketplace }, { onConflict: "keyword" });
 
     if (error) {
         console.error("Error upserting niches data:", error);

@@ -1,5 +1,5 @@
 import { strategyToDb } from "@/lib/factories/strategy-item";
-import { Strategy } from "@/types/analytics/strategies";
+import { Strategy } from "@/types/strategies";
 import { createClient } from "@/utils/supabase/client";
 import { getSettings } from "../settings.server";
 import { Tables } from "@/types/supabase";

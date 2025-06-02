@@ -1,13 +1,13 @@
 import { SavedNichesDashboard } from "@/components/dashboard/niche-analyser/dashboard";
 import SavedNichesFallback from "@/components/dashboard/niche-analyser/fallback";
 import { NoStrategiesActivatedFallback } from "@/components/dashboard/strategies/fallback";
-import { collectUserNichesData } from "@/lib/functions/niches/collect-niches-data";
-import { collectUserStrategiesData } from "@/lib/functions/strategies/collect-strategies-data";
+import { getUserNichesAction } from "@/lib/actions/niches-actions";
+import { getStrategiesAction } from "@/lib/actions/strategies-actions";
 import { Suspense } from "react";
 
 export default async function ProtectedPage() {
-    const niches = await collectUserNichesData();
-    const strategies = (await collectUserStrategiesData()).filter((strategy) => strategy.selected);
+    const niches = await getUserNichesAction();
+    const strategies = (await getStrategiesAction()).filter((strategy) => strategy.selected);
 
     if (!niches || niches.length === 0) {
         return <SavedNichesFallback />;

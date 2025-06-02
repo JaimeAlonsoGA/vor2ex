@@ -1,6 +1,6 @@
 import { Product } from "../product";
 
-interface AlibabaAPIResponse {
+export interface AlibabaAPIResponse {
     minOrderQuantity?: number;
     shippingTime?: string;
     packagingDesc?: string;
@@ -20,7 +20,7 @@ interface AlibabaAPIResponse {
     ];
 }
 
-export interface AlibabaFactoryResponse {
-    totalProducts?: number,
+export interface AlibabaProductsFactoryResponse {
+    totalProducts: number,
     products: Product[]
 }
