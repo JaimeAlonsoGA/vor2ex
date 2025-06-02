@@ -12,6 +12,8 @@ import { AlibabaProductsFactoryResponse } from "@/types/alibaba/alibaba-factory"
 import { cookies } from "next/headers";
 import { AmazonConnection } from "@/types/amazon/amazon-connection";
 import OverviewSection from "@/components/dashboard/analytics/overview";
+import { Note } from "@/components/note";
+import { alibabaTFC, amazonTFC } from "@/utils/tfcData";
 
 export default async function ExplorerPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const keyword = (await searchParams).keyword as string | undefined;
@@ -21,11 +23,19 @@ export default async function ExplorerPage({ searchParams }: { searchParams: Pro
   const rawConnection = cookieStore.get("amazon_connection")?.value;
   const connection = rawConnection ? JSON.parse(rawConnection) as AmazonConnection : await getSettings().then(settings => amazonToConnection(settings.amazon_marketplace));
 
-  const amazonProductsPromise = keyword ? collectAmazonProductsAction(keyword, connection) : Promise.resolve({} as AmazonProductsFactoryResponse);
-  const alibabaProductsPromise = keyword ? collectAlibabaProductsAction(keyword, connection) : Promise.resolve({} as AlibabaProductsFactoryResponse);
+  // const amazonProductsPromise = keyword ? collectAmazonProductsAction(keyword, connection) : Promise.resolve({} as AmazonProductsFactoryResponse);
+  // const alibabaProductsPromise = keyword ? collectAlibabaProductsAction(keyword, connection) : Promise.resolve({} as AlibabaProductsFactoryResponse);
+
+  const amazonProductsPromise = keyword ? amazonTFC : Promise.resolve({} as AmazonProductsFactoryResponse);
+  const alibabaProductsPromise = keyword ? alibabaTFC : Promise.resolve({} as AlibabaProductsFactoryResponse);
 
   return (
     <div className="space-y-6">
+      <Note
+        note="Search for products across Amazon and Alibaba to find profitable niches. Use the search bar to enter keywords and explore the results, then save your favorite niches for later analysis."
+        to="/help"
+        toMessage="Learn how to use the Explorer"
+      />
       <div className="flex items-center justify-between">
         <SearchBar />
         <SaveNicheButton

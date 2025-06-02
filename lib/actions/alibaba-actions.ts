@@ -19,5 +19,8 @@ export async function collectAlibabaProductsAction(term: string, connection: Ama
     }
 
     await upsertNiche(niche, connection.domain);
+    
+    console.log(`Alibaba`, alibabaApiData);
+
     return alibabaApiData;
 }

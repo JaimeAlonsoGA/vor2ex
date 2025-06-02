@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Bookmark } from 'lucide-react';
 import { toast } from 'sonner';
-import { use, useActionState, useState } from 'react';
+import { startTransition, use, useActionState } from 'react';
 import { deleteUserNicheByKeyword, saveNiche } from '@/services/client/users-niches.client';
 import { cn } from '@/lib/utils';
 
@@ -20,49 +20,39 @@ type SaveNicheState = {
 };
 
 export default function SaveNicheButton({ term, savedNiches, initialPromise, variant }: SaveNicheButtonProps) {
-    initialPromise ? use(initialPromise) : null;
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    if (initialPromise) use(initialPromise);
+
     const initialState: SaveNicheState = {
         saved: savedNiches.includes(term ?? ""),
         action: null,
     };
 
-    const [state, dispatch] = useActionState(
+    const [state, dispatch, isPending] = useActionState(
         async (
             prev: SaveNicheState,
             action: { type: 'save' | 'forget'; term: string }
         ): Promise<SaveNicheState> => {
             if (!action.term) return prev;
-            setIsLoading(true);
-            let response;
             if (action.type === 'save') {
-                toast.promise(
-                    response = saveNiche(action.term).then(() => {
-                        setIsLoading(false);
-                    }),
+                await toast.promise(
+                    saveNiche(action.term),
                     {
                         loading: "Saving...",
                         success: "Niche saved",
                         error: "Error saving niche",
                     }
                 );
-                if (!response) {
-                    return prev;
-                } else return { saved: true, action: 'save' };
+                return { saved: true, action: 'save' };
             } else {
-                toast.promise(
-                    response = deleteUserNicheByKeyword(action.term).then(() => {
-                        setIsLoading(false);
-                    }),
+                await toast.promise(
+                    deleteUserNicheByKeyword(action.term),
                     {
                         loading: "Removing...",
                         success: "Niche forgotten",
                         error: "Error removing niche",
                     }
                 );
-                if (!response) {
-                    return prev;
-                } else return { saved: false, action: 'forget' };
+                return { saved: false, action: 'forget' };
             }
         },
         initialState
@@ -71,24 +61,36 @@ export default function SaveNicheButton({ term, savedNiches, initialPromise, var
     return (
         <Button
             variant="outline"
-            disabled={!term || isLoading}
-            className={cn("flex items-center gap-2 transition-colors duration-300",
-                state.saved ? "bg-linear-to-br from-blue-600 to-purple-600" : "")}
+            disabled={!term || isPending}
+            className={cn(
+                "flex items-center gap-2 transition-colors duration-300",
+                state.saved ? "bg-linear-to-br from-blue-600 to-purple-600" : ""
+            )}
             onClick={() => {
                 if (!term) return;
-                dispatch({ type: state.saved ? 'forget' : 'save', term });
+                startTransition(() => {
+                    dispatch({ type: state.saved ? 'forget' : 'save', term });
+                });
             }}
             aria-label={state.saved ? "Forget niche" : "Save niche"}
         >
             {state.saved ? (
                 <>
                     <Bookmark className="h-4 w-4 fill-white text-white" />
-                    {variant === "long" && <span className='text-white'>{isLoading && state.action === 'forget' ? "Removing..." : "Niche saved"}</span>}
+                    {variant === "long" && (
+                        <span className="text-white">
+                            {isPending && state.action === 'forget' ? "Removing..." : "Niche saved"}
+                        </span>
+                    )}
                 </>
             ) : (
                 <>
                     <Bookmark className="h-4 w-4" />
-                    {variant === "long" && <span>{isLoading && state.action === 'save' ? "Saving..." : "Save niche"}</span>}
+                    {variant === "long" && (
+                        <span>
+                            {isPending && state.action === 'save' ? "Saving..." : "Save niche"}
+                        </span>
+                    )}
                 </>
             )}
         </Button>

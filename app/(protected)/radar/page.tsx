@@ -1,5 +1,6 @@
 import { OpportunityFinderDashboard } from "@/components/dashboard/radar/dashboard";
 import { NoStrategiesActivatedFallback } from "@/components/dashboard/strategies/fallback";
+import { Note } from "@/components/note";
 import { getNichesAction, getUserNichesAction } from "@/lib/actions/niches-actions";
 import { getStrategiesAction } from "@/lib/actions/strategies-actions";
 import { Suspense } from "react";
@@ -18,12 +19,17 @@ export default async function ProtectedPage() {
     }
 
     return (
-        <Suspense fallback={<div className="text-center">Loading...</div>}>
+        <section>
+            <Note
+                note="Discover new opportunities provided by Vor2ex by defining strategies that fit your business model. Learn more about how to create effective strategies."
+                to="/help"
+                toMessage="Creating effective strategies"
+            />
             <OpportunityFinderDashboard
                 niches={niches}
                 strategies={strategies}
                 userNiches={savedNiches}
             />
-        </Suspense>
+        </section>
     );
 }

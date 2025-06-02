@@ -71,6 +71,8 @@ export async function collectAmazonProductsAction(term: string, connection: Amaz
     const niche = getNiche(term, connection.domain, amazonProductsFactory);
     upsertNiche(niche, connection.domain).catch(console.error);
 
+    console.log(`Amazon`, amazonProductsFactory);
+
     return amazonProductsFactory;
 }
 

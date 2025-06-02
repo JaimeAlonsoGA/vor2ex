@@ -4,102 +4,15 @@ import { useState } from "react";
 import { Niche } from "@/types/niche";
 import { Strategy } from "@/types/strategies";
 import { getProfitScoreWithStrategy } from "@/lib/functions/strategies/calculate-score";
-import { getIconComponent } from "@/components/helpers";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Star, Tag, Users, Package, Search, Check, SquarePen, Bookmark } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { getBorderClass } from "@/lib/functions/strategies/utils";
+import { Search, Check, SquarePen, Bookmark, Component } from "lucide-react";
 import { useTableListener } from "@/hooks/use-listener";
-import { toast } from "sonner";
-import { deleteUserNicheByKeyword, saveNiche } from "@/services/client/users-niches.client";
 import NicheQuickOverviewSimple from "../analytics/complete-analytics";
 import { dbToNiche } from "@/lib/factories/niche-item";
 import { Tables } from "@/types/supabase";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-type OpportunityCardProps = {
-    niche: Niche;
-    strategy: Strategy;
-    score: number;
-    isUserNiche: boolean
-    loading?: boolean;
-    onSelectAnalytics: (niche: Niche) => void;
-    onSave: (keyword?: string) => void;
-};
-
-function OpportunityCard({ niche, strategy, score, onSelectAnalytics, isUserNiche, loading, onSave }: OpportunityCardProps) {
-    return (
-        <Card
-            className={cn(
-                "hover:bg-muted/20 flex flex-row items-center gap-4 p-6 transition-all duration-500",
-            )}
-        >
-            <div className="flex flex-col items-center justify-center gap-2">
-                <div className={cn("border", getBorderClass(strategy.color), "p-2 rounded-full")}>
-                    {getIconComponent(strategy.icon, "w-6 h-6 text-primary")}
-                </div>
-                <Badge variant="outline">{strategy.name}</Badge>
-            </div>
-            <div className="flex-1 flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                    <span className="font-semibold text-lg">{niche.keyword}</span>
-                    {niche.topCategory && (
-                        <span className="text-xs text-blue-500">{niche.topCategory}</span>
-                    )}
-                </div>
-                <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mt-1">
-                    <span className="flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-400" />
-                        {niche.avgAmazonRating?.toFixed(2) ?? "-"}
-                    </span>
-                    <span className="flex items-center gap-1">
-                        <Tag className="w-4 h-4 text-blue-400" />
-                        {niche.avgAmazonPrice !== undefined ? `$${niche.avgAmazonPrice.toFixed(2)}` : "-"}
-                    </span>
-                    <span className="flex items-center gap-1">
-                        <Users className="w-4 h-4 text-green-400" />
-                        {niche.avgAmazonReviews?.toLocaleString() ?? "-"}
-                    </span>
-                    <span className="flex items-center gap-1">
-                        <Package className="w-4 h-4 text-orange-400" />
-                        {niche.totalAmazonSalesVolume?.toLocaleString() ?? "-"}
-                    </span>
-                </div>
-            </div>
-            <div className="flex flex-col items-end min-w-[70px]">
-                <span className={cn(
-                    "font-bold text-lg",
-                    score >= 70 ? "text-green-600" : score >= 40 ? "text-yellow-500" : "text-red-500"
-                )}>
-                    {score}
-                </span>
-                <span className="text-xs text-muted-foreground">Score</span>
-            </div>
-            <Button
-                size="sm"
-                variant="secondary"
-                onClick={() => onSelectAnalytics(niche)}
-                aria-label={`Show analytics for ${niche.keyword}`}
-            >
-                Analytics
-            </Button>
-            <Button
-                size="sm"
-                className="hover:border-primary"
-                variant="outline"
-                disabled={loading}
-                onClick={() => onSave(niche.keyword)}
-                aria-label={`Show analytics for ${niche.keyword}`}
-            >
-                <Bookmark className={`ml-1 ${isUserNiche ? "fill-muted-foreground" : "fill-none"} text-muted-foreground`} />
-                {isUserNiche ? "Forget" : "Save"}
-            </Button>
-        </Card>
-    );
-}
+import OpportunityCard from "./card";
 
 export function OpportunityFinderDashboard({
     niches,
@@ -112,46 +25,7 @@ export function OpportunityFinderDashboard({
     const [selectedAnalytics, setSelectedAnalytics] = useState<Niche | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<Niche[]>(niches);
-    const [updatedUserNiches, setUpdatedUserNiches] = useState<Niche[]>(userNiches);
     const [orderBy, setOrderBy] = useState<"score" | "recent">("score");
-
-    const handleSaveNiche = async (keyword?: string) => {
-        if (!keyword) return;
-        setLoading(true);
-
-        if (updatedUserNiches.some(niche => niche.keyword === keyword)) {
-            toast.promise(
-                deleteUserNicheByKeyword(keyword).then(res => {
-                    setUpdatedUserNiches(prev => prev.filter(niche => niche.keyword !== keyword));
-                    setLoading(false);
-                    return res;
-                }),
-                {
-                    loading: "Removing...",
-                    success: "Niche forgotten",
-                    error: "Error removing niche",
-                }
-            );
-        } else {
-            // Si no está guardado, añade el nicho
-            toast.promise(
-                saveNiche(keyword).then(res => {
-                    // Busca el nicho en data y lo añade a updatedUserNiches
-                    const newNiche = data.find(niche => niche.keyword === keyword);
-                    if (newNiche) {
-                        setUpdatedUserNiches(prev => [...prev, newNiche]);
-                    }
-                    setLoading(false);
-                    return res;
-                }),
-                {
-                    loading: "Saving...",
-                    success: "Niche saved",
-                    error: "Error saving niche",
-                }
-            );
-        }
-    };
 
     function handleSelectAnalytics(niche?: Niche) {
         if (!niche) {
@@ -284,10 +158,9 @@ export function OpportunityFinderDashboard({
                                 strategy={strategy}
                                 score={score}
                                 onSelectAnalytics={handleSelectAnalytics}
-                                isUserNiche={updatedUserNiches.some(userNiche => userNiche.keyword === niche.keyword)}
-                                loading={loading}
-                                onSave={handleSaveNiche}
-                            />))}
+                                userNiches={userNiches}
+                            />
+                        ))}
                     </section>
                 </>
             )}
