@@ -1,0 +1,16 @@
+
+Dashboard 
+    tutorial / quick access
+                subscription state
+                estrategia selecionada
+                buscador de productos
+                comparador de guardados
+
+Estrategias
+
+Dropdown menu: 
+    Upgrade to Pro
+    ----
+    Account
+    Billing
+    Notifications

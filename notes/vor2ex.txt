@@ -1,0 +1,17 @@
+HERRAMIENTA que ayuda a encontrar productos rentables en Amazon rápidamente
+
+Paránetros predeterminados: 
+
+idioma: en
+Amazon marketplace: com
+Alibaba region: china
+
+Estrategia predeterminada
+    Encontrar productos entre 15$ y 40$
+    alta demanda (ventas mensuales elevadas)
+    marketshare (muchas empresas)
+    bajo rating >4
+    bajas reviews >500
+
+Estrategia atributos: 
+

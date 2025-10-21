@@ -1,0 +1,16 @@
+
+--Vida del usuario first time en la app
+
+register
+verify email
+login
+
+seleciona estrategia 
+
+busca productos en el buscador de amazon de Vor2ex
+comrpueba afinidad de búsquedas con estrategia selecionada
+comprueba proveedor del producto en alibaba
+guarda keywords de interés
+
+compara keywords
+...
