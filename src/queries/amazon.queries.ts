@@ -28,7 +28,7 @@ export const useAmazonProducts = (
     return useQuery({
         queryKey: amazonKeys.productsList(params),
         queryFn: () => api.getProducts(params),
-        enabled: isAuthenticated && !!params.keywords && !!params.endpoint && !!params.marketplace,
+        enabled: isAuthenticated && !!params.keywords,
         staleTime: 5 * 60 * 1000,
         retry: 2,
         ...options,
@@ -48,7 +48,7 @@ export const useAmazonProduct = (
     return useQuery({
         queryKey: amazonKeys.productDetail(asin, endpoint, marketplace),
         queryFn: () => api.getProduct(asin, endpoint, marketplace),
-        enabled: isAuthenticated && !!asin && !!endpoint && !!marketplace,
+        enabled: isAuthenticated && !!asin,
         staleTime: 10 * 60 * 1000,
         retry: 2,
         ...options,
@@ -67,7 +67,7 @@ export const useAmazonProductOffers = (
     return useQuery({
         queryKey: amazonKeys.productOffers(asin, params),
         queryFn: () => api.getProductOffers(asin, params),
-        enabled: isAuthenticated && !!asin && !!params.endpoint && !!params.marketplace,
+        enabled: isAuthenticated && !!asin,
         staleTime: 2 * 60 * 1000,
         retry: 1,
         ...options,
@@ -86,7 +86,7 @@ export const useAmazonFeesEstimate = (
     return useQuery({
         queryKey: amazonKeys.productFees(asin, params),
         queryFn: () => api.getFeesEstimate(asin, params),
-        enabled: isAuthenticated && !!asin && !!params.marketplace && !!params.price,
+        enabled: isAuthenticated && !!asin,
         staleTime: 30 * 60 * 1000,
         retry: 2,
         ...options,
@@ -103,9 +103,7 @@ export const useAmazonNextPage = () => {
         mutationFn: (params: PaginationParams) => api.getNextPage(params),
         onSuccess: (data, variables) => {
             const productParams = {
-                keywords: variables.keywords,
-                endpoint: variables.endpoint,
-                marketplace: variables.marketplace
+                keywords: variables.keywords
             };
             queryClient.setQueryData(amazonKeys.productsList(productParams), data);
         },
@@ -121,9 +119,7 @@ export const useAmazonPreviousPage = () => {
         mutationFn: (params: PaginationParams) => api.getPreviousPage(params),
         onSuccess: (data, variables) => {
             const productParams = {
-                keywords: variables.keywords,
-                endpoint: variables.endpoint,
-                marketplace: variables.marketplace
+                keywords: variables.keywords
             };
             queryClient.setQueryData(amazonKeys.productsList(productParams), data);
         },

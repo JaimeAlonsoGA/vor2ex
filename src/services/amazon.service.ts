@@ -2,27 +2,20 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
 
 export interface ProductsParams {
   keywords: string;
-  endpoint: string;
-  marketplace: string;
   pageSize?: number;
 }
 
 export interface ProductOffersParams {
-  endpoint: string;
-  marketplace: string;
   condition?: 'New' | 'Used' | 'Refurbished';
 }
 
 export interface FeesEstimateParams {
-  marketplace: string;
   price: number;
 }
 
 export interface PaginationParams {
   pageToken: string;
   keywords: string;
-  endpoint: string;
-  marketplace: string;
 }
 
 // Create a service factory that takes the auth session
